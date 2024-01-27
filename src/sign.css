@@ -1,0 +1,18 @@
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .signup-title {
+    font-size: 30px; 
+    margin-bottom: 20px; 
+    /* border: none;
+    outline: none;
+    border-radius: 4px;
+    color: #f12711;
+    color: -webkit-linear-gradient(to right, #f5af19, #f12711);
+    color: linear-gradient(to right, #f5af19, #f12711); */
+  }
+  

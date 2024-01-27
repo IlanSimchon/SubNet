@@ -1,0 +1,24 @@
+.login-container {
+    background-color: #f8f9fa; /* Set background color based on your template */
+    justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  }
+  
+  .login-buttons {
+    margin-top: 20px;
+  }
+  
+.login-title {
+    color: black;
+    display:flex;
+    justify-content: center;
+    margin-top: 60px;
+
+    background: -webkit-linear-gradient(to right, #f5af19, #f12711);
+    background: linear-gradient(to right, #f5af19, #f12711);
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    color: white; 
+  }
