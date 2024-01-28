@@ -1,17 +1,16 @@
 import React from 'react';
 import { Form, Button, Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
-import './login.css'; 
+import './homePage.css'; 
 
-const LoginPage = () => {
+const HomePage = () => {
   const onFinish = (values) => {
     console.log('Received values:', values);
-    // Add your login logic here
   };
 
   return (
-    <div className="login-container">
-      <h1 className="login-title">Find Your Match!</h1>
+    <div className="homePage-container">
+      <h1 className="homePage-title">Find Your Match!</h1>
       <Row justify="center" align="middle" style={{ height: '60vh' }}>
         <Col span={8}>
           <Form
@@ -20,10 +19,8 @@ const LoginPage = () => {
             layout="vertical"
           >
             <Form.Item>
-            <Link to="/login_subtenant">
-                <Button type="default">
-                  Loginn As A Subtenant
-                </Button>
+              <Link to="/login_subtenant">
+                <Button type="default">Login As A Subtenant</Button>
               </Link>
             </Form.Item>
             {/* <Form.Item
@@ -46,18 +43,14 @@ const LoginPage = () => {
               {/* <Button type="primary" htmlType="submit">
                 Login
               </Button> */}
-                <Link to="/login_holder">
-                <Button type="default">
-                  Login As A House Holder
-                </Button>
+              <Link to="/login_holder">
+                <Button type="default">Login As A House Holder</Button>
               </Link>
             </Form.Item>
 
             <Form.Item>
               <Link to="/signup">
-                <Button type="default">
-                  Sign Up
-                </Button>
+                <Button type="default">Sign Up</Button>
               </Link>
             </Form.Item>
           </Form>
@@ -67,4 +60,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default HomePage;

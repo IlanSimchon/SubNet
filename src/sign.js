@@ -1,18 +1,17 @@
 import React from 'react';
 import { Form, Input, Button, Row, Col } from 'antd';
-import './sign.css'; // Add your custom styling if needed
+import './sign.css';
 
 const SignupPage = () => {
   const onFinish = (values) => {
     console.log('Received values:', values);
-    // Add your signup logic here
   };
 
   return (
     <div className="signup-container">
       <Row justify="center" align="middle" style={{ height: '100vh' }}>
         <Col span={8}>
-          <h1 className="signup-title">Sign Up</h1> {/* Title added */}
+          <h1 className="signup-title">Sign Up</h1>
           <Form
             name="signup"
             onFinish={onFinish}
@@ -44,8 +43,7 @@ const SignupPage = () => {
                 { required: true, message: 'Please input your phone number!' },
                 // Add additional phone number validation rules as needed
               ]}
->
-            {/* New input field for phone number */}
+            >
               <Input />
             </Form.Item>
 
