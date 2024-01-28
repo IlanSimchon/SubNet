@@ -1,11 +1,19 @@
 import React from 'react';
-import { Form, Button, Row, Col } from 'antd';
+import { Form, Button, Row, Col, Input, Typography } from 'antd';
 import { Link } from 'react-router-dom';
-import './homePage.css'; 
+import './homePage.css';
+
+const { Text } = Typography;
 
 const HomePage = () => {
-  const onFinish = (values) => {
-    console.log('Received values:', values);
+  const onFinishSubtenant = (values) => {
+    console.log('Logging in as a Subtenant with:', values);
+    // Add logic to handle login as a Subtenant based on values (username, password)
+  };
+
+  const onFinishHouseHolder = (values) => {
+    console.log('Logging in as a House Holder with:', values);
+    // Add logic to handle login as a House Holder based on values (username, password)
   };
 
   return (
@@ -13,17 +21,8 @@ const HomePage = () => {
       <h1 className="homePage-title">Find Your Match!</h1>
       <Row justify="center" align="middle" style={{ height: '60vh' }}>
         <Col span={8}>
-          <Form
-            name="login"
-            onFinish={onFinish}
-            layout="vertical"
-          >
-            <Form.Item>
-              <Link to="/login_subtenant">
-                <Button type="default">Login As A Subtenant</Button>
-              </Link>
-            </Form.Item>
-            {/* <Form.Item
+          <Form name="login" layout="vertical">
+            <Form.Item
               label="Username"
               name="username"
               rules={[{ required: true, message: 'Please input your username!' }]}
@@ -37,21 +36,28 @@ const HomePage = () => {
               rules={[{ required: true, message: 'Please input your password!' }]}
             >
               <Input.Password />
-            </Form.Item> */}
+            </Form.Item>
 
             <Form.Item>
-              {/* <Button type="primary" htmlType="submit">
-                Login
-              </Button> */}
               <Link to="/login_holder">
-                <Button type="default">Login As A House Holder</Button>
+                <Button type="primary" onClick={() => onFinishHouseHolder()}>
+                  Login As A House Holder
+                </Button>
               </Link>
             </Form.Item>
 
             <Form.Item>
-              <Link to="/signup">
-                <Button type="default">Sign Up</Button>
+              <Link to="/login_subtenant">
+                <Button type="primary" onClick={() => onFinishSubtenant()}>
+                  Login As A Subtenant
+                </Button>
               </Link>
+            </Form.Item>
+
+            <Form.Item>
+              <Text>
+                <Link to="/signup">Sign Up</Link> or <Link to="/forgot-password">Forgot Password</Link>
+              </Text>
             </Form.Item>
           </Form>
         </Col>
