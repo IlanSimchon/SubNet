@@ -37,7 +37,7 @@ const HomePage = () => {
             >
               <Input.Password />
             </Form.Item>
-
+            <div className="loggin-buttons-container">
             <Form.Item>
               <Link to="/login_holder">
                 <Button type="primary" onClick={() => onFinishHouseHolder()}>
@@ -59,6 +59,7 @@ const HomePage = () => {
                 <Link to="/signup">Sign Up</Link> or <Link to="/forgot-password">Forgot Password</Link>
               </Text>
             </Form.Item>
+            </div>
           </Form>
         </Col>
       </Row>
