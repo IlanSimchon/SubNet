@@ -1,0 +1,35 @@
+/* ProfilePage.css */
+
+.profile-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .profile-box .ant-card {
+    margin: 8px;
+    flex: 1;
+    max-width: 300px;
+  }
+  
+  .profile-box .ant-avatar {
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 16px;
+  }
+  
+  .profile-box .ant-rate {
+    display: block;
+    margin: 0 auto;
+    margin-top: 16px;
+  }
+  

@@ -47,7 +47,7 @@ const HomePage = () => {
             </Form.Item>
 
             <Form.Item>
-              <Link to="/login_subtenant">
+              <Link to="/sub_profile_page">
                 <Button type="primary" onClick={() => onFinishSubtenant()}>
                   Login As A Subtenant
                 </Button>
