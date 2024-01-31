@@ -1,5 +1,3 @@
-// SubProfilePage.js
-
 import React, { useState } from 'react';
 import { Row, Col, Card, Avatar, Rate, Typography, Upload, message, Button } from 'antd';
 import { UserOutlined, UploadOutlined } from '@ant-design/icons'; // Import icons
@@ -24,11 +22,26 @@ const SubProfilePage = () => {
     <div className="profile-page">
       <Title level={2}>My Profile</Title>
 
-      <Row gutter={[16, 16]}>
+      <Row gutter={[60, 60]}>
         {/* Profile Box */}
         <Col span={24}>
           <div className="profile-box">
-            {/* Left: Profile Photo */}
+            {/* Left: Personal Details and Rating */}
+            <Card>
+              {/* Top Left: Personal Details */}
+              <Title level={4}>Personal Details</Title>
+              <Text>Name: John Doe</Text>
+              <Text>Email: john@example.com</Text>
+              <Text>Location: City, Country</Text>
+              {/* Add more personal details as needed */}
+
+              {/* Bottom Left: Rating */}
+              <Title level={4}>Rating</Title>
+              <Rate allowHalf defaultValue={4.5} />
+              {/* Display additional information related to the rating */}
+            </Card>
+
+            {/* Right: Profile photo */}
             <Card>
               <Upload
                 showUploadList={false}
@@ -40,25 +53,11 @@ const SubProfilePage = () => {
                 onChange={handleUploadChange}
               >
                 <Avatar size={150} icon={profilePhoto ? null : <UserOutlined />} src={profilePhoto} />
-                <div style={{ marginTop: 16 }}>
+                {/* Centered Upload Photo Button */}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                   <Button icon={<UploadOutlined />}>Upload Photo</Button>
                 </div>
               </Upload>
-            </Card>
-
-            {/* Right: Personal Details and Rating */}
-            <Card>
-              {/* Top Right: Personal Details */}
-              <Title level={4}>Personal Details</Title>
-              <Text>Name: John Doe</Text>
-              <Text>Email: john@example.com</Text>
-              <Text>Location: City, Country</Text>
-              {/* Add more personal details as needed */}
-
-              {/* Bottom Right: Rating */}
-              <Title level={4}>Rating</Title>
-              <Rate allowHalf defaultValue={4.5} />
-              {/* Display additional information related to the rating */}
             </Card>
           </div>
         </Col>

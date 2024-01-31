@@ -56,7 +56,7 @@ const HomePage = () => {
 
             <Form.Item>
               <Text>
-                <Link to="/signup">Sign Up</Link> or <Link to="/forgot-password">Forgot Password</Link>
+                <Link to="/signup">Sign Up</Link> or <Link to="/forgot-password">Forgot Password?</Link>
               </Text>
             </Form.Item>
             </div>

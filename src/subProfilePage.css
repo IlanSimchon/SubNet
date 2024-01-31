@@ -19,12 +19,18 @@
     margin: 8px;
     flex: 1;
     max-width: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .profile-box .ant-avatar {
     display: block;
     margin: 0 auto;
-    margin-bottom: 16px;
+    margin-bottom: 45px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   
   .profile-box .ant-rate {
