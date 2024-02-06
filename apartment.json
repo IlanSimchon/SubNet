@@ -1,0 +1,122 @@
+[
+  {
+    "location": "New York City",
+    "pricePerNight": 150,
+    "availability": {
+      "startDate": "2024-02-10",
+      "endDate": "2024-02-15"
+    },
+    "reviews": "Great location, comfortable stay.",
+    "avgRate": 4.5,
+    "connectionDetails": "Free Wi-Fi, cable TV",
+    "photo": "apartment1.jpg"
+  },
+  {
+    "location": "Los Angeles",
+    "pricePerNight": 120,
+    "availability": {
+      "startDate": "2024-02-15",
+      "endDate": "2024-02-20"
+    },
+    "reviews": "Amazing view, cozy atmosphere.",
+    "avgRate": 4.8,
+    "connectionDetails": "High-speed internet, Netflix",
+    "photo": "apartment2.jpg"
+  },
+  {
+    "location": "London",
+    "pricePerNight": 180,
+    "availability": {
+      "startDate": "2024-02-20",
+      "endDate": "2024-02-25"
+    },
+    "reviews": "Perfect location, spacious rooms.",
+    "avgRate": 4.7,
+    "connectionDetails": "Wi-Fi, satellite TV",
+    "photo": "apartment3.jpg"
+  },
+  {
+    "location": "Paris",
+    "pricePerNight": 200,
+    "availability": {
+      "startDate": "2024-02-25",
+      "endDate": "2024-03-01"
+    },
+    "reviews": "Charming place, excellent service.",
+    "avgRate": 4.6,
+    "connectionDetails": "Free Wi-Fi, smart TV",
+    "photo": "apartment4.jpg"
+  },
+  {
+    "location": "Tokyo",
+    "pricePerNight": 170,
+    "availability": {
+      "startDate": "2024-03-01",
+      "endDate": "2024-03-06"
+    },
+    "reviews": "Convenient location, modern amenities.",
+    "avgRate": 4.9,
+    "connectionDetails": "High-speed internet, gaming console",
+    "photo": "apartment5.jpg"
+  },
+  {
+    "location": "Sydney",
+    "pricePerNight": 190,
+    "availability": {
+      "startDate": "2024-03-06",
+      "endDate": "2024-03-11"
+    },
+    "reviews": "Stunning view, luxurious stay.",
+    "avgRate": 4.8,
+    "connectionDetails": "Wi-Fi, streaming services",
+    "photo": "apartment6.jpg"
+  },
+  {
+    "location": "Dubai",
+    "pricePerNight": 220,
+    "availability": {
+      "startDate": "2024-03-11",
+      "endDate": "2024-03-16"
+    },
+    "reviews": "Opulent setting, top-notch amenities.",
+    "avgRate": 4.7,
+    "connectionDetails": "High-speed internet, satellite TV",
+    "photo": "apartment7.jpg"
+  },
+  {
+    "location": "Rome",
+    "pricePerNight": 160,
+    "availability": {
+      "startDate": "2024-03-16",
+      "endDate": "2024-03-21"
+    },
+    "reviews": "Historical charm, comfortable stay.",
+    "avgRate": 4.6,
+    "connectionDetails": "Free Wi-Fi, smart TV",
+    "photo": "apartment8.jpg"
+  },
+  {
+    "location": "Berlin",
+    "pricePerNight": 130,
+    "availability": {
+      "startDate": "2024-03-21",
+      "endDate": "2024-03-26"
+    },
+    "reviews": "Vibrant neighborhood, cozy atmosphere.",
+    "avgRate": 4.5,
+    "connectionDetails": "Wi-Fi, cable TV",
+    "photo": "apartment9.jpg"
+  },
+  {
+    "location": "Barcelona",
+    "pricePerNight": 180,
+    "availability": {
+      "startDate": "2024-03-26",
+      "endDate": "2024-03-31"
+    },
+    "reviews": "Amazing location, stylish decor.",
+    "avgRate": 4.7,
+    "connectionDetails": "High-speed internet, smart TV",
+    "photo": "apartment10.jpg"
+  }
+]

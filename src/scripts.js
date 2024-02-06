@@ -71,8 +71,8 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(data => {
                 console.log('User registered successfully:', data);
 
-                // Redirect to inner.html upon successful sign-in
-                window.location.href = 'inner.html';
+                // Redirect to homePage.html upon successful sign-in
+                window.location.href = 'homePage.html';
             })
             .catch(error => {
                 console.error('Error registering user:', error);
@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
         event.preventDefault();
         const emailInput = document.querySelector('.sign-in input[placeholder="Email"]');
         const passwordInput = document.querySelector('.sign-in input[placeholder="Password"]');
+        const errorMessage = document.getElementById('error-message'); // Added error message element
 
         const userCredentials = {
             email: emailInput.value,
@@ -106,13 +107,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const responseData = await response.json();
             console.log('Sign-in successful:', responseData);
 
-            // Redirect to inner.html upon successful sign-in
-            window.location.href = 'inner.html';
+            // Redirect to homePage.html upon successful sign-in
+            window.location.href = 'homePage.html';
 
             // Optionally, you can perform additional actions here before redirecting.
         } catch (error) {
             console.error('Error signing in:', error.message);
             // Handle the error, e.g., display an error message to the user.
+            errorMessage.innerHTML = 'Incorrect username or password<br>Please try again.';
         }
     });
 });
