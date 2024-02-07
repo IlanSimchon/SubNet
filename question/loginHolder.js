@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Input, Button, Row, Col } from 'antd';
-import './login.css';
+import '../src/login.css';
 
 const LoginHolderPage = () => {
   const [username, setUsername] = useState('');

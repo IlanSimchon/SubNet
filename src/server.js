@@ -18,11 +18,22 @@ app.use((req, res, next) => {
 
 // MongoDB connection
 mongoose.connect('mongodb://localhost:27017/subnet_project');
+
 const userSchema = new mongoose.Schema({
     userName: String,
     password: String,
     email: String,
 });
+
+const apartmentSchema = new mongoose.Schema({
+    location: String,
+    pricePerNight : Number,
+    availability : Object,
+    reviews: [String],
+    avgRate: Number,
+    connectionDetails: String,
+    photo: String
+});//todo: fix type of availability (30)
 
 const User = mongoose.model('User', userSchema);
 
@@ -65,6 +76,25 @@ app.post('/signin', async (req, res) => {
     }
 });
 
+
+
+
+const Apartment = mongoose.model('Apartment', apartmentSchema);
+
+module.exports = Apartment;
+
+
+
+app.get('/Apartments', async (req, res) => {
+    try {
+        const apartments = await Apartment.find({});
+        res.status(200).json(apartments);
+        console.log(apartments)
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
