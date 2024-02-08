@@ -15,7 +15,7 @@ app.use((req, res, next) => {
 
     next();
 });
-const MONGODB_URI ='mongodb+srv://alon:eye4Azvr@cluster0.0ejohog.mongodb.net/subNet';
+const MONGODB_URI ='mongodb+srv://hen:1234@cluster0.0ejohog.mongodb.net/subNet';
 
 
 // MongoDB connection
@@ -89,6 +89,22 @@ const Apartment = mongoose.model('Apartment', apartmentSchema);
 
 module.exports = Apartment;
 
+app.get('/ApartmentByID/:id', async (req, res) => {
+    try {
+        const apartmentId = req.params.id;
+        console.log("looking for: " + apartmentId + " Apartment" )
+        const apartment = await Apartment.findById(apartmentId);
+
+        if (!apartment) {
+            return res.status(404).json({ error: 'Apartment not found' });
+        }
+
+        res.status(200).json(apartment);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
 app.get('/Apartments', async (req, res) => {
@@ -101,6 +117,8 @@ app.get('/Apartments', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
 // Start the server
 const HOST = process.env.HOST || '0.0.0.0';
 app.listen(PORT, HOST, () => {
