@@ -4,8 +4,7 @@ const savedApartments = document.getElementById('savedApartments');
 const sort = document.getElementById('sort');
 const filter = document.getElementById('filter');
 
-// Define your function
-// Define your function
+
 async function displayApartments() {
     try {
         // Fetch apartments from the server

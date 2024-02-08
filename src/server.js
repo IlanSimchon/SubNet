@@ -8,16 +8,22 @@ const PORT = 63341;
 // Enable CORS middleware
 app.use((req, res, next) => {
     // CORS settings
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.setHeader('Access-Control-Allow-Credentials', true);
 
     next();
 });
+const MONGODB_URI ='mongodb+srv://alon:eye4Azvr@cluster0.0ejohog.mongodb.net/subNet';
+
 
 // MongoDB connection
-mongoose.connect('mongodb://localhost:27017/subnet_project');
+mongoose.connect(MONGODB_URI, {
+    tls: true,
+    tlsAllowInvalidCertificates: true,
+    tlsAllowInvalidHostnames: true,
+});
 
 const userSchema = new mongoose.Schema({
     userName: String,
@@ -96,6 +102,7 @@ app.get('/Apartments', async (req, res) => {
     }
 });
 // Start the server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+const HOST = process.env.HOST || '0.0.0.0';
+app.listen(PORT, HOST, () => {
+    console.log(`Server is running on http://${HOST}:${PORT}`);
 });
