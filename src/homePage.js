@@ -225,7 +225,6 @@ class ApartmentManager {
         console.log(maxPrice);
         console.log(rating);
 
-        // Call a function to fetch apartments based on the provided filters
         this.renderFilteredApartments(location, minPrice, maxPrice, rating);
     }
 
