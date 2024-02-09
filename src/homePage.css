@@ -11,13 +11,13 @@
     max-width: 100%;
     min-height: 530px;
     min-width: 1200px;
+    margin-top: 40px;
 }
 
 h1 {
     font-size: 3.5em;
     color: #db9d00;
     margin-bottom: 0px;
-    margin-top: 40px;
     display: contents;
 }
 
@@ -41,7 +41,6 @@ h1 {
 .apartment-box h3 {
     color: #333;
     font-size: 14px;
-    /* Adjust font size for smaller boxes */
     margin-bottom: 10px;
 }
 
@@ -53,32 +52,31 @@ h1 {
 
 #menuButton {
     position: fixed;
-    top: 10px;
-    left: 10px;
+    top: 20px;
+    left: 20px;
     z-index: 999;
     /* Ensure it's on top of other elements */
 }
 
 
-.sidebar {
+.filter-bar {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* Optional: Adjust spacing between filter elements */
+
 #filterForm {
     margin-top: 20px;
     margin-bottom: 40px;
 }
 
-/* Optional: Style the filter button */
+
 #filterForm button {
     margin-top: 10px;
     margin-left: 20px;
     padding: 8px 16px;
     background-color: #007bff;
-    /* Change color as needed */
     color: white;
     border: none;
     border-radius: 4px;
@@ -87,4 +85,23 @@ h1 {
 }
 
 
+.menu-navbar {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 16px;
+}
 
+/* Style sidebar links */
+.menu-navbar a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+}

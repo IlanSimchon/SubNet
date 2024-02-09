@@ -1,32 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inner Page</title>
-    <link rel="stylesheet" href="homePage.css"> 
-    <link rel="stylesheet" href="homePage.css"> 
-</head>
-
-<body>
-<div class="container">
-    <div id="sidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">&times;</a>
-    </div>
-
-    <div class="content">
-        <button id="menuButton">Menu</button>
-        <h1>Find Your Match!</h1>
-
-    </div>
-</div>
-<script src="homePage.js"></script>
-
-</body>
-
-</html>  -->
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,12 +7,21 @@
     <title>Inner Page</title>
     <link rel="stylesheet" href="homePage.css"> <!-- Include the global styles -->
     <link rel="stylesheet" href="homePage.css"> <!-- Include the specific styles for homePage.html -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body>
+    <div id="menu" class="menu">
+        <a href="#home"><i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="#services"><i class="fa fa-fw fa-wrench"></i> Services</a>
+        <a href="#clients"><i class="fa fa-fw fa-user"></i> Clients</a>
+        <a href="#contact"><i class="fa fa-fw fa-envelope"></i> Contact</a>
+
+    </div>
     <div class="container">
         <h1>Find Your Match!</h1>
-        <div id="sidebar" class="sidebar">
+        <div id="filter-bar" class="filter-bar">
             <form id="filterForm">
                 <label for="location">Location:</label>
                 <input type="text" id="location" name="location">
@@ -51,7 +31,6 @@
                 <input type="number" id="maxPrice" name="maxPrice">
                 <button type="submit">Apply Filters</button>
                 <button type="button" id="advancedFilterButton">Advanced Filter</button>
-                <!-- Added Advanced Filter button -->
             </form>
         </div>
         <div class="content">
