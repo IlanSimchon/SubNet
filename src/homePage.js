@@ -8,13 +8,42 @@ class ApartmentManager {
         this.filter = document.getElementById('filter');
         this.menuButton = document.getElementById('menuButton');
         this.sidebar = document.getElementById('sidebar');
+        this.advancedFilterButton = document.getElementById('advancedFilterButton'); // Add reference to the advanced filter button
+
+        // this.advancedFilterButtons.addEventListener('click', this.toggleSidebar.bind(this)); // Add event listener for advanced filter button
 
         // Add event listeners
         // this.menuButton.addEventListener('mouseenter', this.openSidebar.bind(this));
         this.sidebar.addEventListener('submit', this.applyFilters.bind(this));
+        this.advancedFilterButton.addEventListener('click', this.addRatingFilter.bind(this));
+
+        // Add event listeners
+        // this.menuButton.addEventListener('mouseenter', this.openSidebar.bind(this));
 
         window.onload = this.displayApartments.bind(this);
     }
+
+
+    addRatingFilter() {
+        // Create label element for rating
+        const ratingLabel = document.createElement('label');
+        ratingLabel.setAttribute('for', 'rating');
+        ratingLabel.textContent = 'Rating:';
+
+        // Create input element for rating
+        const ratingInput = document.createElement('input');
+        ratingInput.setAttribute('type', 'number');
+        ratingInput.setAttribute('id', 'rating');
+        ratingInput.setAttribute('name', 'rating');
+        ratingInput.setAttribute('min', '0');
+        ratingInput.setAttribute('step', '0.1'); // Specify step attribute to allow decimal values
+
+        // Insert the label and input before the buttons
+        const filterForm = document.getElementById('filterForm');
+        filterForm.insertBefore(ratingInput, filterForm.querySelector('button[type="submit"]'));
+        filterForm.insertBefore(ratingLabel, ratingInput);
+    }
+    // Other methods...
 
 
     // Function to display all apartments
@@ -109,14 +138,15 @@ class ApartmentManager {
     }
 
     // Function to render filtered apartments based on filter criteria
-    async renderFilteredApartments(location, minPrice, maxPrice) {
+    async renderFilteredApartments(location, minPrice, maxPricem, rating) {
         try {
             const url = new URL('http://localhost:63341/Apartments');
             console.log("render fileted");
             const params = {
                 location: location,
                 minPrice: minPrice,
-                maxPrice: maxPrice
+                maxPrice: maxPrice,
+                rating: rating,
             };
             url.search = new URLSearchParams(params).toString();
 
@@ -135,6 +165,10 @@ class ApartmentManager {
                 }
                 // Apply maximum price filter
                 if (params.maxPrice && apartment.pricePerNight > params.maxPrice) {
+                    return false;
+                }
+                // Apply rating filter
+                if (params.rating && apartment.avgRate < params.rating) {
                     return false;
                 }
                 return true;
@@ -194,15 +228,16 @@ class ApartmentManager {
         const location = document.getElementById('location').value;
         const minPrice = parseFloat(document.getElementById('minPrice').value);
         const maxPrice = parseFloat(document.getElementById('maxPrice').value);
+        const rating = parseFloat(document.getElementById('rating').value);
 
         console.log(location);
         console.log(minPrice);
         console.log(maxPrice);
-
+        console.log(rating);
 
         // console.log(location);
         // // Call a function to fetch apartments based on the provided filters
-        this.renderFilteredApartments(location, minPrice, maxPrice);
+        this.renderFilteredApartments(location, minPrice, maxPrice, rating);
     }
 
     // Function to apply filters and fetch data
