@@ -1,3 +1,4 @@
+
 const container = document.getElementById('container');
 const registerBtn = document.getElementById('register');
 const loginBtn = document.getElementById('login');
@@ -36,48 +37,91 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const sendEmailButton = document.getElementById('send-email');
     sendEmailButton.addEventListener('click', function (event) {
-            event.preventDefault();
-            // Add logic to handle sending the reset email (e.g., using AJAX)
-            alert('Email sent successfully!');
-            // You may want to hide the forgot password container or redirect the user
-            // depending on your implementation.
-        });
-    signUpButton.addEventListener('click',function (event) {
+        event.preventDefault();
+        // Add logic to handle sending the reset email (e.g., using AJAX)
+        alert('Email sent successfully!');
+        // You may want to hide the forgot password container or redirect the user
+        // depending on your implementation.
+    });
+    signUpButton.addEventListener("click", function (event) {
         event.preventDefault();
         const userNameInput = document.querySelector('.sign-up input[placeholder="Name"]');
         const emailInput = document.querySelector('.sign-up input[placeholder="Email"]');
+        const phoneInput = document.querySelector('.sign-up input[placeholder="Phone"]');
         const passwordInput = document.querySelector('.sign-up input[placeholder="Password"]');
+        const confirmPasswordInput = document.querySelector('.sign-up input[placeholder="Confirm Password"]');
+        const errorMessage = document.getElementById('dont-match-error');
 
-        const newUser = {
-            userName: userNameInput.value,
-            email: emailInput.value,
-            password: passwordInput.value,
-        };
+        resetErrorStyles([userNameInput, emailInput, phoneInput, passwordInput, confirmPasswordInput])
+
+        if(userNameInput.value && emailInput.value && phoneInput.value && passwordInput.value && confirmPasswordInput.value) {
+            if (passwordInput.value === confirmPasswordInput.value) {
+                const newUser = {
+                    userName: userNameInput.value,
+                    email: emailInput.value,
+                    password: passwordInput.value,
+                    phone: phoneInput.value,
+                };
 
 // Send AJAX request to the server
-        fetch('http://localhost:63341/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newUser),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('User registered successfully:', data);
+                fetch('http://localhost:63341/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newUser),
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! Status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('User registered successfully:', data);
 
-                // Redirect to homePage.html upon successful sign-in
-                window.location.href = 'homePage.html';
-            })
-            .catch(error => {
-                console.error('Error registering user:', error);
-            });
+                        // Redirect to homePage.html upon successful sign-in
+                        window.location.href = 'homePage.html';
+                    })
+                    .catch(error => {
+                        console.error('Error registering user:', error);
+                    });
+            } else {
+                errorMessage.innerHTML = 'Passwords do not match.';
+            }
+        }
+        else
+            {
+                // Validate and apply error styles if needed
+                if (!userNameInput.value.trim()) {
+                    showErrorStyle(userNameInput);
+                }
+                if (!emailInput.value.trim()) {
+                    showErrorStyle(emailInput);
+                }
+                if (!phoneInput.value.trim()) {
+                    showErrorStyle(phoneInput);
+                }
+                if (!passwordInput.value.trim()) {
+                    showErrorStyle(passwordInput);
+                }
+                if (!confirmPasswordInput.value.trim()) {
+                    showErrorStyle(confirmPasswordInput);
+                }
+
+            }
     });
+
+    function showErrorStyle(element) {
+        element.classList.add("error");
+    }
+
+
+    function resetErrorStyles(elements) {
+        elements.forEach(element => {
+            element.classList.remove("error");
+        });
+    }
     signInButton.addEventListener('click', async function (event) {
         event.preventDefault();
         const emailInput = document.querySelector('.sign-in input[placeholder="Email"]');

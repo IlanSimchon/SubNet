@@ -110,6 +110,7 @@ body{
     z-index: 1;
 }
 
+
 .container.active .sign-up{
     transform: translateX(100%);
     opacity: 1;
@@ -217,3 +218,15 @@ body{
     display: block; /* Ensure it is on a new row */
 }
 
+#dont-match-error {
+    color: red;
+    font-weight: bold; /* Make the text bold */
+    margin-top: 1px;
+    text-align: center; /* Center the text */
+    display: block; /* Ensure it is on a new row */
+}
+
+.container input.error {
+    /*border: 2px solid red;*/
+    background-color: #FFD2D2;
+}

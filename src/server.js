@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema({
     userName: String,
     password: String,
     email: String,
+    phone: String
 });
 
 const apartmentSchema = new mongoose.Schema({
@@ -49,8 +50,8 @@ app.use(bodyParser.json());
 // Route to handle user registration
 app.post('/register', async (req, res) => {
     try {
-        const { userName, password, email } = req.body;
-        const newUser = new User({ userName, password, email });
+        const { userName, password, email, phone } = req.body;
+        const newUser = new User({ userName, password, email, phone });
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);
     } catch (error) {
