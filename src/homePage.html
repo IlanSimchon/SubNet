@@ -7,15 +7,36 @@
     <title>Inner Page</title>
     <link rel="stylesheet" href="homePage.css"> <!-- Include the global styles -->
     <link rel="stylesheet" href="homePage.css"> <!-- Include the specific styles for homePage.html -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 
 <body>
-<div class="container">
-    <h1>Welcome to subNet!</h1>
-    <!-- Add other content here based on your design -->
-</div>
-<script src="homePage.js"></script>
+    <div id="menu" class="menu">
+        <a href="file:///C:/Users/chenl/.vscode/SubNet/src/homePage.html"><i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="#login_house_owner"><i class="fa fa-fw fa-wrench"></i> Login As A House Owner</a>
+        <a href="#my_profile"><i class="fa fa-fw fa-user"></i> My Profile</a>
+        <a href="#contact"><i class="fa fa-fw fa-envelope"></i> Contact Us</a>
 
+    </div>
+    <div class="container">
+        <h1>Find Your Match!</h1>
+        <div id="filter-bar" class="filter-bar">
+            <form id="filterForm">
+                <label for="location">Location:</label>
+                <input type="text" id="location" name="location">
+                <label for="minPrice">Minimum Price:</label>
+                <input type="number" id="minPrice" name="minPrice">
+                <label for="maxPrice">Maximum Price:</label>
+                <input type="number" id="maxPrice" name="maxPrice">
+                <button type="submit">Apply Filters</button>
+                <button type="button" id="advancedFilterButton">Advanced Filter</button>
+            </form>
+        </div>
+        <div class="content">
+        </div>
+    </div>
+    <script src="homePage.js"></script>
 </body>
 
 </html>

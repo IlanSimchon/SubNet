@@ -5,43 +5,42 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    /*background: url('back.jpg') center center no-repeat;*/
-    background-size: cover; /* Ensures the image covers the entire container */
-
-    /*background-color: #fff;*/
+    background-size: cover;
     border-radius: 30px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     overflow: hidden;
     max-width: 100%;
     min-height: 530px;
     min-width: 1200px;
+    margin-top: 60px;
 }
 
 h1 {
-    font-size: 3.5em; /* Increase font size */
-    color: #db9d00; /* Change the color to white */
-    margin-bottom: 10px; /* Decrease margin at the bottom */
-    margin-top: -400px; /* Increase margin at the top to move it higher */
+    font-size: 3.5em;
+    color: #db9d00;
+    margin-bottom: 0px;
+    display: contents;
 }
 
-.container {
+.content {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 10 auto;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
 }
 
 .apartment-box {
     box-sizing: border-box;
-    width: calc(50% - 20px); /* 20px is the total margin and padding */
+    width: calc(50% - 20px);
     border: 1px solid #ccc;
     padding: 15px;
-    margin: 0 10px 20px 0; /* Adjust margin for spacing between boxes */
+    margin: 0 10px 20px 0;
 }
 
 .apartment-box h3 {
     color: #333;
-    font-size: 14px; /* Adjust font size for smaller boxes */
+    font-size: 14px;
     margin-bottom: 10px;
 }
 
@@ -49,4 +48,46 @@ h1 {
     max-width: 100%;
     height: auto;
     margin-top: 10px;
+}
+
+#menuButton {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+    /* Ensure it's on top of other elements */
+}
+
+
+.filter-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+#filterForm {
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+
+#filterForm button {
+    margin-top: 10px;
+    margin-left: 20px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+.menu a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
 }
