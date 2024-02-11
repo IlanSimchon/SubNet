@@ -62,7 +62,7 @@ class ApartmentManager {
 
                 for (const apartment of apartments) {
                     // Fetch the apartment image URL
-                    let imageUrl = 'http://localhost:63341/getApartmentPic/${apartment._id}';
+                    let imageUrl = `http://localhost:63341/getApartmentPic/${apartment._id}`;
 
                     // Check if the apartment has a picture
                     const imageResponse = await fetch(imageUrl);

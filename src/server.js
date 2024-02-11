@@ -172,6 +172,7 @@ app.get('/getApartmentPic/:id', async (req, res) => {
     try {
         const apartmentId = req.params.id;
         const apartment = await Apartment.findById(apartmentId);
+        console.log("looking for " + apartmentId)
 
         if (!apartment) {
             return res.status(404).json({ error: 'Apartment not found' });
