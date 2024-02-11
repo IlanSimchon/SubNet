@@ -7,9 +7,9 @@
  h1 {
     font-size: 3em;
     color: #db9d00;
-    margin-top: 60px; /* Remove the space between 20 and px */
+    margin-top: 60px;
     margin-bottom: 0;
-    text-align: center; /* Center the text horizontally */
+    text-align: center;
 }
 
 .content {
@@ -40,9 +40,11 @@
     border-top-right-radius: 5px;
     padding: 20px;
 }
+
 .apartment_details {
     padding: 20px;
 }
+
 .apartment_details h2 {
     margin-top: 0;
     font-size: 24px;
@@ -50,15 +52,22 @@
     border-bottom: 2px solid #ff8c00;
     padding-bottom: 10px;
 }
+
 .apartment_details p {
     margin: 0;
     font-size: 16px;
     color: #666;
     margin-bottom: 10px;
 }
+/* 
 .apartment_details p:first-child {
     margin-top: 10px
+} */
+
+.apartment-details i {
+    margin-right: 18px; /* Adjust the margin as needed */
 }
+
 
 .menu a {
     padding: 20px 10px;

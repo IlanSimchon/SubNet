@@ -92,50 +92,13 @@ class ApartmentManager {
         }
     }
 
-    // Function to display apartment details in a new window
+    // displays a single apartment in a new window
     async displaySingleApartment(apartmentId) {
         let single_apartment = null;
         console.log(apartmentId);
         single_apartment = new Apartment(apartmentId);
         console.log(single_apartment);
         single_apartment.getApartmentDetails();
-        // try {
-        //     const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
-        //     const apartmentDetails = await response.json();
-
-        //     const detailsHTML = `
-        //         <div class="apartment">
-        //             <img src="${apartmentDetails.photo}" alt="Apartment Image">
-        //             <div class="details">
-        //                 <h2>Location: ${apartmentDetails.location}</h2>
-        //                 <p>Price Per Night: ${apartmentDetails.pricePerNight}</p>
-        //                 <p>Availability: ${JSON.stringify(apartmentDetails.availability)}</p>
-        //                 <p>Average Rate: ${apartmentDetails.avgRate}</p>
-        //                 <p>Connection Details: ${apartmentDetails.connectionDetails}</p>
-        //             </div>
-        //         </div>
-        //     `;
-
-        //     const apartmentDetailsPage = window.open('', '_blank');
-        //     apartmentDetailsPage.document.open();
-        //     apartmentDetailsPage.document.write(`
-        //         <html lang="en">
-        //             <head>
-        //                 <meta charset="UTF-8">
-        //                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        //                 <title>Apartment Details</title>
-        //                 <link rel="stylesheet" href="apartment.css">
-        //             </head>
-        //             <body>
-        //                 ${detailsHTML}
-        //             </body>
-        //         </html>
-        //     `);
-        //     apartmentDetailsPage.document.close();
-        // } catch (error) {
-        //     console.error(error);
-        // }
-        // return apartmentId;
     }
 
     // Function to render filtered apartments based on filter criteria

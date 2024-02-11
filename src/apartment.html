@@ -14,13 +14,21 @@
 </head>
 
 <body>
-    <h1>Apartment Details</h1>
-    <img src="back.jpg" alt="Apartment Image">
-
-    <div id="apartment_details">
-        <!-- Dynamic apartment details will be inserted here -->
+    <div id="menu" class="menu">
+        <a href="file:///C:/Users/chenl/.vscode/SubNet/src/homePage.html"><i class="fa fa-fw fa-home"></i> Home</a>
+        <a href="#login_house_owner"><i class="fa fa-fw fa-key"></i> Login As A House Owner</a>
+        <a href="#my_profile"><i class="fa fa-fw fa-user"></i> My Profile</a>
+        <!-- <a href="#contact"><i class="fa fa-fw fa-envelope"></i> Contact Us</a> -->
+        <a href="#log_out"><i class="fa fa-fw fa-lock"></i> Log Out</a>
     </div>
+    <h1>Maybe This Is Your Match...</h1>
+    <div class="apartment">
+        <img src="back.jpg" alt="Apartment Image">
 
+        <div id="apartment_details" class="apartment_details">
+            <!-- Dynamic apartment details will be inserted here -->
+        </div>
+    </div>
     <script>
         // Function to parse URL parameters
         function getUrlParams() {
@@ -36,15 +44,15 @@
         // Get the URL parameters
         const params = getUrlParams();
 
-        // Display apartment details
+        // Display apartment details with icons
         const apartmentDetailsContainer = document.getElementById('apartment_details');
         apartmentDetailsContainer.innerHTML = `
-            <h2>Location: ${params['location']}</h2>
-            <p>Price Per Night: ${params['pricePerNight']}</p>
-            <p>Availability: ${params['availability']}</p>
-            <p>Reviews: ${params['reviews']}</p>
-            <p>Average Rate: ${params['avgRate']}</p>
-            <p>Connection Details: ${params['connectionDetails']}</p>
+            <h2><i class="fas fa-map-marker-alt"></i> Location: ${params['location']}</h2>
+            <p><i class="fas fa-sack-dollar"></i> Price Per Night: ${params['pricePerNight']}</p>
+            <p><i class="far fa-calendar-alt"></i> Availability: ${params['availability']}</p>
+            <p><i class="far fa-star"></i> Reviews: ${params['reviews']}</p>
+            <p><i class="fas fa-star"></i> Average Rate: ${params['avgRate']}</p>
+            <p><i class="far fa-address-card"></i> Connection Details: ${params['connectionDetails']}</p>
         `;
     </script>
 </body>
