@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         resetErrorStyles([userNameInput, emailInput, phoneInput, passwordInput, confirmPasswordInput])
 
-        if(userNameInput.value && emailInput.value && phoneInput.value && passwordInput.value && confirmPasswordInput.value) {
+        if (userNameInput.value && emailInput.value && phoneInput.value && passwordInput.value && confirmPasswordInput.value) {
             if (passwordInput.value === confirmPasswordInput.value) {
                 const newUser = {
                     userName: userNameInput.value,
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     phone: phoneInput.value,
                 };
 
-// Send AJAX request to the server
+                // Send AJAX request to the server
                 fetch('http://localhost:63341/register', {
                     method: 'POST',
                     headers: {
@@ -90,26 +90,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 errorMessage.innerHTML = 'Passwords do not match.';
             }
         }
-        else
-            {
-                // Validate and apply error styles if needed
-                if (!userNameInput.value.trim()) {
-                    showErrorStyle(userNameInput);
-                }
-                if (!emailInput.value.trim()) {
-                    showErrorStyle(emailInput);
-                }
-                if (!phoneInput.value.trim()) {
-                    showErrorStyle(phoneInput);
-                }
-                if (!passwordInput.value.trim()) {
-                    showErrorStyle(passwordInput);
-                }
-                if (!confirmPasswordInput.value.trim()) {
-                    showErrorStyle(confirmPasswordInput);
-                }
-
+        else {
+            // Validate and apply error styles if needed
+            if (!userNameInput.value.trim()) {
+                showErrorStyle(userNameInput);
             }
+            if (!emailInput.value.trim()) {
+                showErrorStyle(emailInput);
+            }
+            if (!phoneInput.value.trim()) {
+                showErrorStyle(phoneInput);
+            }
+            if (!passwordInput.value.trim()) {
+                showErrorStyle(passwordInput);
+            }
+            if (!confirmPasswordInput.value.trim()) {
+                showErrorStyle(confirmPasswordInput);
+            }
+
+        }
     });
 
     function showErrorStyle(element) {

@@ -16,7 +16,7 @@ app.use((req, res, next) => {
 
     next();
 });
-const MONGODB_URI ='mongodb+srv://hen:1234@cluster0.0ejohog.mongodb.net/subNet';
+const MONGODB_URI = 'mongodb+srv://hen:1234@cluster0.0ejohog.mongodb.net/subNet';
 
 
 // MongoDB connection
@@ -35,8 +35,8 @@ const userSchema = new mongoose.Schema({
 
 const apartmentSchema = new mongoose.Schema({
     location: String,
-    pricePerNight : Number,
-    availability : Object,
+    pricePerNight: Number,
+    availability: Object,
     reviews: [String],
     avgRate: Number,
     connectionDetails: String,
@@ -94,7 +94,7 @@ module.exports = Apartment;
 app.get('/ApartmentByID/:id', async (req, res) => {
     try {
         const apartmentId = req.params.id;
-        console.log("looking for: " + apartmentId + " Apartment" )
+        console.log("looking for: " + apartmentId + " Apartment")
         const apartment = await Apartment.findById(apartmentId);
 
         if (!apartment) {

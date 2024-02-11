@@ -15,7 +15,7 @@
 }
 
 h1 {
-    font-size: 3.5em;
+    font-size: 3em;
     color: #db9d00;
     margin-bottom: 0px;
     display: contents;
@@ -28,6 +28,10 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     align-content: center;
+}
+
+body {
+    font-family: Arial, sans-serif;
 }
 
 .apartment-box {
@@ -48,14 +52,6 @@ h1 {
     max-width: 100%;
     height: auto;
     margin-top: 10px;
-}
-
-#menuButton {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 999;
-    /* Ensure it's on top of other elements */
 }
 
 
@@ -86,9 +82,9 @@ h1 {
 
 
 .menu a {
-    padding: 6px 8px 6px 16px;
+    padding: 20px 10px;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 15px;
     color: #818181;
 }
 

@@ -6,18 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apartment Details</title>
     <link rel="stylesheet" href="apartment.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 </head>
+
 <body>
-<div class="apartment">
+    <h1>Apartment Details</h1>
     <img src="back.jpg" alt="Apartment Image">
-    <div class="details">
-        <h2>Location: New York City</h2>
-        <p>Price Per Night: $150</p>
-        <p>Availability: 2024-02-10 to 2024-02-15</p>
-        <p>Reviews: "Great location, comfortable stay."</p>
-        <p>Average Rate: 4.5</p>
-        <p>Connection Details: "Moshe: 0523334444"</p>
+
+    <div id="apartment_details">
+        <!-- Dynamic apartment details will be inserted here -->
     </div>
-</div>
+
+    <script>
+        // Function to parse URL parameters
+        function getUrlParams() {
+            const params = {};
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            for (const [key, value] of urlParams) {
+                params[key] = value;
+            }
+            return params;
+        }
+
+        // Get the URL parameters
+        const params = getUrlParams();
+
+        // Display apartment details
+        const apartmentDetailsContainer = document.getElementById('apartment_details');
+        apartmentDetailsContainer.innerHTML = `
+            <h2>Location: ${params['location']}</h2>
+            <p>Price Per Night: ${params['pricePerNight']}</p>
+            <p>Availability: ${params['availability']}</p>
+            <p>Reviews: ${params['reviews']}</p>
+            <p>Average Rate: ${params['avgRate']}</p>
+            <p>Connection Details: ${params['connectionDetails']}</p>
+        `;
+    </script>
 </body>
+
 </html>
