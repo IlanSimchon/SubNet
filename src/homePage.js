@@ -56,16 +56,15 @@ class ApartmentManager {
                 apartments.forEach(apartment => {
                     const apartmentBox = document.createElement('div');
                     apartmentBox.classList.add('apartment-box');
-
+                    const rateInPercent = 50 / 5 * apartment.avgRate
+                    console.log(rateInPercent)
                     // Set the inner HTML content for the apartment box
                     apartmentBox.innerHTML = `
-                        <h3>Apartment ID: ${apartment._id}</h3>
-                        <p>Location: ${apartment.location}</p>
-                        <p>Price per Night: ${apartment.pricePerNight}</p>
-                        <p>Availability: ${JSON.stringify(apartment.availability)}</p>
-                        <p>Reviews: ${apartment.reviews.join(', ')}</p>
-                        <p>Average Rate: ${apartment.avgRate}</p>
-                        <p>Connection Details: ${apartment.connectionDetails}</p>
+                        <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
+                        <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
+                        <p><i class="fa fa-calendar-alt"></i> ${JSON.stringify(apartment.availability)}</p>
+                        ${generateStarRating(apartment.avgRate)}
+                         <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
                         <img class="apartment-photo" src="back.jpg" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                         <hr>
                     `;
@@ -74,13 +73,14 @@ class ApartmentManager {
                     content.appendChild(apartmentBox);
                 });
 
-                // Add event listener to the images
-                content.querySelectorAll('.apartment-photo').forEach(apartmentPhoto => {
-                    apartmentPhoto.addEventListener('click', () => {
-                        const apartmentId = apartmentPhoto.getAttribute('data-apartment-id');
-                        this.displayApartmentDetails(apartmentId);
+                // Add event listener to the entire apartment box
+                content.querySelectorAll('.apartment-box').forEach(apartmentBox => {
+                    apartmentBox.addEventListener('click', () => {
+                        const apartmentId = apartmentBox.querySelector('.apartment-photo').getAttribute('data-apartment-id');
+                        apartmentManager.displayApartmentDetails(apartmentId);
                     });
                 });
+
             } else {
                 console.log('No apartments found. ' + apartments.length);
             }
@@ -102,7 +102,6 @@ class ApartmentManager {
                         <h2>Location: ${apartmentDetails.location}</h2>
                         <p>Price Per Night: ${apartmentDetails.pricePerNight}</p>
                         <p>Availability: ${JSON.stringify(apartmentDetails.availability)}</p>
-                        <p>Reviews: ${apartmentDetails.reviews.join(', ')}</p>
                         <p>Average Rate: ${apartmentDetails.avgRate}</p>
                         <p>Connection Details: ${apartmentDetails.connectionDetails}</p>
                     </div>
@@ -175,16 +174,15 @@ class ApartmentManager {
 
                     // Set the inner HTML content for the apartment box
                     apartmentBox.innerHTML = `
-                    <h3>Apartment ID: ${apartment._id}</h3>
-                    <p>Location: ${apartment.location}</p>
-                    <p>Price per Night: ${apartment.pricePerNight}</p>
-                    <p>Availability: ${JSON.stringify(apartment.availability)}</p>
-                    <p>Reviews: ${apartment.reviews.join(', ')}</p>
-                    <p>Average Rate: ${apartment.avgRate}</p>
-                    <p>Connection Details: ${apartment.connectionDetails}</p>
+                    <p><strong>Location:</strong> <p><strong>Location:</strong> ${apartment.location}</p>
+                    <p><strong>Price per Night:</strong> ${apartment.pricePerNight}</p>
+                    <p><strong>Availability:</strong> ${JSON.stringify(apartment.availability)}</p>
+                    <p><strong>Average Rate:</strong> ${apartment.avgRate}</p>
+                    <p><strong>Connection Details:</strong> ${apartment.connectionDetails}</p>
                     <img class="apartment-photo" src="back.jpg" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                     <hr>
                 `;
+                    // todo: change the html here to be with icons
 
                     // Append the apartment box to the container
                     content.appendChild(apartmentBox);
@@ -238,3 +236,36 @@ class ApartmentManager {
 
 // Instantiate the ApartmentManager class
 const apartmentManager = new ApartmentManager();
+
+
+function generateStarRating(averageRate) {
+    const maxStars = 5;
+    const filledStars = Math.floor(averageRate); // Use floor to get the integer part
+    const fractionalPart = averageRate - filledStars; // Get the fractional part
+    let starRatingHTML = '<p>';
+
+    for (let i = 1; i <= maxStars; i++) {
+        if (i <= filledStars) {
+            // Add a filled star
+            starRatingHTML += '<i class="fas fa-star"></i>';
+        } else if (i === filledStars + 1) {
+            // Check the fractional part and add appropriate star
+            if (fractionalPart < 0.3) {
+                // Fraction is smaller than 0.3, make it zero
+                starRatingHTML += '<i class="far fa-star"></i>';
+            } else if (fractionalPart <= 0.8) {
+                // Fraction is between 0.3 to 0.8, make it 0.5
+                starRatingHTML += '<i class="fas fa-star-half-alt"></i>';
+            } else {
+                // Fraction is greater than 0.8, make it 1
+                starRatingHTML += '<i class="fas fa-star"></i>';
+            }
+        } else {
+            // Add an empty star
+            starRatingHTML += '<i class="far fa-star"></i>';
+        }
+    }
+
+    starRatingHTML += ` ${averageRate}</p>`;
+    return starRatingHTML;
+}
