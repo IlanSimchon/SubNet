@@ -149,8 +149,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const responseData = await response.json();
+            console.log(responseData)
             console.log('Sign-in successful:', responseData);
 
+            localStorage.setItem('userData', JSON.stringify(responseData));
             // Redirect to homePage.html upon successful sign-in
             window.location.href = 'homePage.html';
 
