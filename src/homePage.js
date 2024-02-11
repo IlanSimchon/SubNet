@@ -108,7 +108,6 @@ class ApartmentManager {
     }
 
     // Function to display apartment details in a new window
-// Function to display apartment details in a new window
     async displayApartmentDetails(apartmentId) {
         try {
             console.log("looking for " + apartmentId);
@@ -227,7 +226,7 @@ class ApartmentManager {
                 content.querySelectorAll('.apartment-photo').forEach(apartmentPhoto => {
                     apartmentPhoto.addEventListener('click', () => {
                         const apartmentId = apartmentPhoto.getAttribute('data-apartment-id');
-                        displayApartmentDetails(apartmentId);
+                        apartmentManager.displayApartmentDetails(apartmentId);
                     });
                 });
             } else {
@@ -260,9 +259,6 @@ class ApartmentManager {
 
         this.renderFilteredApartments(location, minPrice, maxPrice, rating);
     }
-
-
-
 
     closeAdvancedFilter() {
         this.advancedFilterButton.style.display = 'none';

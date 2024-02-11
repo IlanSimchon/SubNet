@@ -11,7 +11,7 @@
 <body>
 
 <div id="menu" class="menu">
-    <a href="file:///C:/Users/chenl/.vscode/SubNet/src/homePage.html"><i class="fa fa-fw fa-home"></i> Home</a>
+    <a href="homePage.html"><i class="fa fa-fw fa-home"></i> Home</a>
     <a href="#login_house_owner" id="login_house_owner"><i class="fa fa-fw fa-wrench"></i> Login As A Client</a>
     <a href="#my_profile"><i class="fa fa-fw fa-user"></i> My Profile</a>
     <a href="#contact"><i class="fa fa-fw fa-envelope"></i> Contact Us</a>
@@ -20,12 +20,33 @@
 <div class="container">
     <h1>my apartments</h1>
     <div class="content"></div>
-</div>
+    <button id="addApartmentBtn" onclick="openAddApartmentTab()">Add New Apartment</button>
+    
+    <!-- Add New Apartment Form (Initially hidden) -->
+    <div id="addApartmentFormContainer" style="display: none;">
+        <h2>Add New Apartment</h2>
+        <label for="locationInput">Location:</label>
+        <form id="addApartmentForm">
+            <input type="text" id="locationInput" required>
 
-<button id="addApartmentBtn" onclick="openAddApartmentTab()">Add New Apartment</button>
+            <label for="priceInput">Price Per Night:</label>
+            <input type="number" id="priceInput" step="0.01" required>
+
+            <label for="startDateInput">Availability - Start Date:</label>
+            <input type="date" id="startDateInput" required>
+
+            <label for="endDateInput">Availability - End Date:</label>
+            <input type="date" id="endDateInput" required>
+
+            <label for="photoInput">Upload Photo:</label>
+            <input type="file" id="photoInput" accept="image/*" required>
+
+            <button type="submit">Add Apartment</button>
+        </form>
+    </div>
+</div>
 
 <script src="homePage.js"></script>
 <script src="house_owner.js"></script>
-
 </body>
 </html>

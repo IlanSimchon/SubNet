@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 const fs = require('fs');
 
 const app = express();
@@ -111,6 +112,29 @@ app.post('/addImageToApartment', async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
+});
+
+// Endpoint to add a new apartment
+app.post('/addApartment', async (req, res) => {
+    try {
+        const newApartment = req.body;
+        const createdApartment = await Apartment.create(newApartment);
+        res.status(201).json(createdApartment);
+    } catch (error) {
+        console.error('Error adding apartment:', error.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Retrieve current user details function
+function getCurrentUser(req) {
+    return req.session.user || null;
+}
+
+// Endpoint to get current user details
+app.get('/getCurrentUser', (req, res) => {
+    const currentUser = getCurrentUser(req);
+    res.json(currentUser);
 });
 
 // Route to get apartment by ID
