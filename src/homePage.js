@@ -112,11 +112,11 @@ class ApartmentManager {
     async displayApartmentDetails(apartmentId) {
         try {
             console.log("looking for " + apartmentId);
-            const response = await fetch('http://localhost:63341/ApartmentByID/${apartmentId}');
+            const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
             const apartmentDetails = await response.json();
 
             // Fetch the apartment image using the getApartmentPic endpoint
-            const imageResponse = await fetch('http://localhost:63341/getApartmentPic/${apartmentId}');
+            const imageResponse = await fetch(`http://localhost:63341/getApartmentPic/${apartmentId}`);
 
             let imageUrl = ''; // Initialize imageUrl variable
 
