@@ -94,7 +94,6 @@ module.exports = Apartment;
 app.get('/ApartmentByID/:id', async (req, res) => {
     try {
         const apartmentId = req.params.id;
-        console.log("looking for: " + apartmentId + " Apartment" )
         const apartment = await Apartment.findById(apartmentId);
 
         if (!apartment) {
@@ -113,7 +112,6 @@ app.get('/Apartments', async (req, res) => {
     try {
         const apartments = await Apartment.find({});
         res.status(200).json(apartments);
-        console.log(apartments)
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
