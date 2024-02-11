@@ -340,6 +340,15 @@ function convertBase64ToBlob(base64String) {
     }
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const contactLink = document.getElementById('contactLink');
+
+    contactLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = 'contact.html';
+    });
+});
+
 
 
 

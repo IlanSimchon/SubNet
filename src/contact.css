@@ -1,0 +1,42 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    width: 80%;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px;
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #dba71a;
+    border-bottom: 2px solid #ff8c00;
+    padding-bottom: 10px;
+}
+
+p {
+    margin: 0;
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+p:first-child {
+    margin-top: 20px;
+}
+
+p {
+    margin: 0;
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 15px;
+}
