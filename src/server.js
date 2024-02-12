@@ -137,14 +137,19 @@ app.post('/addApartment', async (req, res) => {
     }
 });
 
-// Retrieve current user details function
+// A function to retrieve the current user details
 function getCurrentUser(req) {
+<<<<<<< HEAD
     console.log(req.session.user);
+=======
+    // Your logic to retrieve user details, for example, from session
+>>>>>>> 148ea238c3f4ea3e5638aa5785b73f9860a9b150
     return req.session.user || null;
 }
 
 // Endpoint to get current user details
 app.get('/getCurrentUser', (req, res) => {
+<<<<<<< HEAD
     console.log(req.session.user);
     const currentUser = getCurrentUser(req);
     res.json(currentUser);
@@ -169,6 +174,20 @@ app.get('/getUser', async (req, res) => {
         res.status(500).json({error: 'Internal Server Error'});
     }
 });
+=======
+    console.log(req.session); // Log the entire session object
+
+    // Logic to retrieve current user details, e.g., from session
+    try {
+        const currentUser = getCurrentUser(req);
+        res.json(currentUser);
+    } catch (error) {
+        console.error('Error getting current user:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+>>>>>>> 148ea238c3f4ea3e5638aa5785b73f9860a9b150
 
 // Route to get apartment by ID
 app.get('/ApartmentByID/:id', async (req, res) => {
