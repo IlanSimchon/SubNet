@@ -48,19 +48,10 @@ h1 {
 }
 
 .apartment-box img {
-    max-width: 100%;
-    height: auto;
+    height: 232px;
+    width: 348px;
     margin-top: 10px;
 }
-
-/* #menuButton {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 999;
-    /* Ensure it's on top of other elements */
-/* }  */
-
 
 .filter-bar {
     display: flex;
