@@ -1,5 +1,8 @@
 
 // Class representing the apartment management functionality
+
+import { Apartment } from './apartment.js';
+
 class ApartmentManager {
     constructor() {
         // Retrieve user data from localStorage
@@ -95,7 +98,7 @@ class ApartmentManager {
                 content.querySelectorAll('.apartment-box').forEach(apartmentBox => {
                     apartmentBox.addEventListener('click', () => {
                         const apartmentId = apartmentBox.querySelector('.apartment-photo').getAttribute('data-apartment-id');
-                        apartmentManager.displayApartmentDetails(apartmentId);
+                        apartmentManager.displaySingleApartment(apartmentId);
                     });
                 });
 
@@ -108,58 +111,68 @@ class ApartmentManager {
     }
 
     // Function to display apartment details in a new window
-    async displayApartmentDetails(apartmentId) {
-        try {
-            console.log("looking for " + apartmentId);
-            const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
-            const apartmentDetails = await response.json();
+    // async displayApartmentDetails(apartmentId) {
+    //     try {
+    //         console.log("looking for " + apartmentId);
+    //         const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
+    //         const apartmentDetails = await response.json();
 
-            // Fetch the apartment image using the getApartmentPic endpoint
-            const imageResponse = await fetch(`http://localhost:63341/getApartmentPic/${apartmentId}`);
+    //         // Fetch the apartment image using the getApartmentPic endpoint
+    //         const imageResponse = await fetch(`http://localhost:63341/getApartmentPic/${apartmentId}`);
 
-            let imageUrl = ''; // Initialize imageUrl variable
+    //         let imageUrl = ''; // Initialize imageUrl variable
 
-            if (imageResponse.ok) {
-                // If there's a picture available, set the imageUrl to the URL of the apartment image
-                const imageData = await imageResponse.blob(); // Get the image data as Blob
-                imageUrl = URL.createObjectURL(imageData); // Create a URL for the Blob data
-            } else {
-                // If there's no picture available, set the imageUrl to the URL of the generic house image
-                imageUrl = 'house.png';
-            }
+    //         if (imageResponse.ok) {
+    //             // If there's a picture available, set the imageUrl to the URL of the apartment image
+    //             const imageData = await imageResponse.blob(); // Get the image data as Blob
+    //             imageUrl = URL.createObjectURL(imageData); // Create a URL for the Blob data
+    //         } else {
+    //             // If there's no picture available, set the imageUrl to the URL of the generic house image
+    //             imageUrl = 'house.png';
+    //         }
 
-            const detailsHTML = `
-            <div class="apartment">
-                <img src="${imageUrl}" alt="Apartment Image"> <!-- Set the image source -->
-                <div class="details">
-                    <h2>Location: ${apartmentDetails.location}</h2>
-                    <p>Price Per Night: ${apartmentDetails.pricePerNight}</p>
-                    <p>Availability: ${JSON.stringify(apartmentDetails.availability)}</p>
-                    <p>Average Rate: ${apartmentDetails.avgRate}</p>
-                    <p>Connection Details: ${apartmentDetails.connectionDetails}</p>
-                </div>
-            </div>
-        `;
+    //         const detailsHTML = `
+    //         <div class="apartment">
+    //             <img src="${imageUrl}" alt="Apartment Image"> <!-- Set the image source -->
+    //             <div class="details">
+    //                 <h2>Location: ${apartmentDetails.location}</h2>
+    //                 <p>Price Per Night: ${apartmentDetails.pricePerNight}</p>
+    //                 <p>Availability: ${JSON.stringify(apartmentDetails.availability)}</p>
+    //                 <p>Average Rate: ${apartmentDetails.avgRate}</p>
+    //                 <p>Connection Details: ${apartmentDetails.connectionDetails}</p>
+    //             </div>
+    //         </div>
+    //     `;
 
-            const apartmentDetailsPage = window.open('', '_blank');
-            apartmentDetailsPage.document.open();
-            apartmentDetailsPage.document.write(`
-            <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Apartment Details</title>
-                    <link rel="stylesheet" href="apartment.css">
-                </head>
-                <body>
-                    ${detailsHTML}
-                </body>
-            </html>
-        `);
-            apartmentDetailsPage.document.close();
-        } catch (error) {
-            console.error(error);
-        }
+    //         const apartmentDetailsPage = window.open('', '_blank');
+    //         apartmentDetailsPage.document.open();
+    //         apartmentDetailsPage.document.write(`
+    //         <html lang="en">
+    //             <head>
+    //                 <meta charset="UTF-8">
+    //                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    //                 <title>Apartment Details</title>
+    //                 <link rel="stylesheet" href="apartment.css">
+    //             </head>
+    //             <body>
+    //                 ${detailsHTML}
+    //             </body>
+    //         </html>
+    //     `);
+    //         apartmentDetailsPage.document.close();
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+    // }
+
+
+    // displays a single apartment in a new window
+    async displaySingleApartment(apartmentId) {
+        let single_apartment = null;
+        // console.log(apartmentId);
+        single_apartment = new Apartment(apartmentId);
+        // console.log(single_apartment);
+        single_apartment.getApartmentDetails();
     }
 
 
@@ -226,7 +239,7 @@ class ApartmentManager {
                 content.querySelectorAll('.apartment-photo').forEach(apartmentPhoto => {
                     apartmentPhoto.addEventListener('click', () => {
                         const apartmentId = apartmentPhoto.getAttribute('data-apartment-id');
-                        apartmentManager.displayApartmentDetails(apartmentId);
+                        apartmentManager.displaySingleApartment(apartmentId);
                     });
                 });
             } else {

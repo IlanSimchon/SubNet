@@ -48,8 +48,10 @@ const apartmentSchema = new mongoose.Schema({
     owner: String
 });
 
+
 const User = mongoose.model('User', userSchema);
 const Apartment = mongoose.model('Apartment', apartmentSchema);
+module.exports = Apartment;
 
 app.use(bodyParser.json());
 
@@ -140,6 +142,7 @@ app.get('/getCurrentUser', (req, res) => {
 app.get('/ApartmentByID/:id', async (req, res) => {
     try {
         const apartmentId = req.params.id;
+        // console.log("looking for: " + apartmentId + " Apartment")
         const apartment = await Apartment.findById(apartmentId);
 
         if (!apartment) {

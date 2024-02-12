@@ -1,3 +1,7 @@
+		
+body {
+    font-family: Arial, sans-serif;
+}
 
 .container {
     display: flex;
@@ -14,7 +18,7 @@
 }
 
 h1 {
-    font-size: 3.5em;
+    font-size: 3em;
     color: #db9d00;
     margin-bottom: 0px;
     display: contents;
@@ -49,13 +53,13 @@ h1 {
     margin-top: 10px;
 }
 
-#menuButton {
+/* #menuButton {
     position: fixed;
     top: 20px;
     left: 20px;
     z-index: 999;
     /* Ensure it's on top of other elements */
-}
+/* }  */
 
 
 .filter-bar {
@@ -85,9 +89,9 @@ h1 {
 
 
 .menu a {
-    padding: 6px 8px 6px 16px;
+    padding: 20px 10px;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 15px;
     color: #818181;
 }
 
