@@ -34,8 +34,10 @@ h1 {
    min-width: 1200px;
 }
 .apartment img {
-   max-width: 45%;
-   height: auto;
+   /* max-width: 45%; */
+   /* height: auto; */
+   height: 304px;
+   width: 540px;
    border-top-left-radius: 5px;
    border-top-right-radius: 5px;
    padding: 20px;
