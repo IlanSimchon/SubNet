@@ -19,5 +19,21 @@ async function testAddImageToApartment() {
     }
 }
 
-// Call the testAddImageToApartment function to execute the test
-testAddImageToApartment();
+async function testGetUser() {
+    try {
+        // Replace 'testUserName' with the username you want to test
+        const userName = 'ilan';
+
+        // Make a GET request to the getUser endpoint with the userName as a query parameter
+        const response = await axios.get(`http://localhost:63341/getUser?userName=${userName}`);
+
+        console.log(response.data); // Output the response from the server
+    } catch (error) {
+        console.error('Error:', error.response.data); // Output any errors that occurred
+    }
+}
+
+// Call the testGetUser function to execute the test
+testGetUser();
+
+// testAddImageToApartment();
