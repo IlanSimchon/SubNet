@@ -127,14 +127,25 @@ app.post('/addApartment', async (req, res) => {
 
 // Retrieve current user details function
 function getCurrentUser(req) {
-    return req.session.user || null;
+    try {
+        return req.session.user || null;
+    } catch (error) {
+        console.error('Error in getCurrentUser:', error);
+        return null;
+    }
 }
 
 // Endpoint to get current user details
 app.get('/getCurrentUser', (req, res) => {
-    const currentUser = getCurrentUser(req);
-    res.json(currentUser);
+    try {
+        const currentUser = getCurrentUser(req);
+        res.json(currentUser);
+    } catch (error) {
+        console.error('Error in /getCurrentUser endpoint:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
+
 
 // Route to get apartment by ID
 app.get('/ApartmentByID/:id', async (req, res) => {

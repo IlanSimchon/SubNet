@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Function to get current user details from the server
     async function getCurrentUser() {
         try {
-            const response = await fetch('/getCurrentUser');
+            const response = await fetch('http://localhost:63341/getCurrentUser');
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -130,12 +130,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log(addApartmentBtn);  // Check if addApartmentBtn is not null or undefined
 
     // Attach a click event listener to the button
-    addApartmentBtn.addEventListener('click', ()=>{
+    addApartmentBtn.addEventListener('click', async ()=>{
+        await addNewApartment();
+    });
 
+    async function addNewApartment() {
         const addApartmentForm = document.getElementById('addApartmentForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
-
+        
         addApartmentForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
