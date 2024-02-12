@@ -102,43 +102,23 @@ function generateStarRating(averageRate) {
 }
 
 // Add an apartment
-document.addEventListener('DOMContentLoaded', async () => {
-    // Function to get current user details from the server
-    async function getCurrentUser() {
-        try {
-            const response = await fetch('http://localhost:63341/getCurrentUser');
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('Error fetching current user:', error.message);
-            return null;
-        }
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    const addApartmenDetailstBtn = document.getElementById('addApartmenDetailstBtn');
+    addApartmenDetailstBtn.addEventListener('click', openAddApartmentTab);
 
-    // Function to add a new apartment
-    async function addNewApartment() {
-        console.log('Hi! Add your appartment!');
-        const addApartmentForm = document.getElementById('addApartmentForm');
-        addApartmentForm.submit();
-    }
-    
+    async function openAddApartmentTab() {
+        const addApartmentFormContainer = document.getElementById('addApartmentFormContainer');
+        addApartmentFormContainer.style.display = (addApartmentFormContainer.style.display === 'none') ? 'block' : 'none';
 
-    // Get the addApartmentBtn button
-    const addApartmentBtn = document.getElementById('addApartmentBtn');
-    console.log(addApartmentBtn);  // Check if addApartmentBtn is not null or undefined
-
-    // Attach a click event listener to the button
-    addApartmentBtn.addEventListener('click', async ()=>{
-        await addNewApartment();
-    });
-
-    async function addNewApartment() {
         const addApartmentForm = document.getElementById('addApartmentForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
-        
+
+        // Additional elements
+        const apartmentDetailsContainer = document.getElementById('apartmentDetailsContainer');
+        const apartmentDetails = document.getElementById('apartmentDetails');
+        const confirmApartmentBtn = document.getElementById('confirmApartmentBtn');
+
         addApartmentForm.addEventListener('submit', async (event) => {
             event.preventDefault();
 
@@ -148,7 +128,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const endDateInput = document.getElementById('endDateInput');
             const photoInput = document.getElementById('photoInput');
 
-            // Get current user details by calling the server endpoint
             const currentUser = await getCurrentUser();
 
             if (currentUser) {
@@ -157,12 +136,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 formData.append('pricePerNight', priceInput.value);
                 formData.append('availability', JSON.stringify({ startDate: startDateInput.value, endDate: endDateInput.value }));
                 formData.append('photo', photoInput.files[0]); // Assuming you want to upload the first selected file
-
-                // Additional fields
-                formData.append('avgRate', '0'); // Set avgRate to 0
-                formData.append('owner', currentUser.name); // Set owner to the current user's name
+                formData.append('avgRate', '0');
+                formData.append('owner', currentUser.name);
                 formData.append('connectionDetails', JSON.stringify({ email: currentUser.email, phone: currentUser.phone }));
-                formData.append('reviews', '[]'); // Set reviews to an empty array
+                formData.append('reviews', '[]');
 
                 try {
                     const response = await fetch('http://localhost:63341/addApartment', {
@@ -200,15 +177,39 @@ document.addEventListener('DOMContentLoaded', async () => {
                 errorMessage.textContent = 'Could not fetch current user details.';
                 successMessage.textContent = ''; // Clear any previous success message
             }
-        })
-    });
+            // Display apartment details for confirmation
+            apartmentDetails.innerHTML = `
+                <p><strong>Location:</strong> ${locationInput.value}</p>
+                <p><strong>Price Per Night:</strong> ${priceInput.value}</p>
+                <p><strong>Availability:</strong> ${startDateInput.value} to ${endDateInput.value}</p>
+                <!-- Add other details here -->
+                `;
+
+                // Show the apartment details container
+            addApartmentFormContainer.style.display = 'none';
+            apartmentDetailsContainer.style.display = 'block';
+        });
+        // Event listener for confirming apartment details
+        confirmApartmentBtn.addEventListener('click', async () => {
+            // ... (existing code for submitting the form)
+
+            // Hide the details container after confirmation
+            apartmentDetailsContainer.style.display = 'none';
 });
+    }
 
 
-function openAddApartmentTab() {
-    const addApartmentFormContainer = document.getElementById('addApartmentFormContainer');
-    
-    // Toggle the visibility of the form container
-    addApartmentFormContainer.style.display = (addApartmentFormContainer.style.display === 'none') ? 'block' : 'none';
-}
-
+    // Function to get current user details from the server
+    async function getCurrentUser() {
+        try {
+            const response = await fetch('http://localhost:63341/getCurrentUser');
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching current user:', error.message);
+            return null;
+        }
+    }
+});
