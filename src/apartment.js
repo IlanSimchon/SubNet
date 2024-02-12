@@ -25,12 +25,11 @@ export class Apartment {
     async fetchApartmentImage() {
         try {
             // Fetch the apartment image using the apartmentId
-            const imageResponse = await fetch(`http://localhost:63341/getApartmentPic/${this.apartmentId}`);
+            const response = await fetch(`http://localhost:63341/getApartmentPic/${this.apartmentId}`);
 
-            if (imageResponse.ok) {
-                // If there's a picture available, return the image URL
-                const imageData = await imageResponse.blob();
-                return URL.createObjectURL(imageData);
+            if (response.ok) {
+                // If the request is successful, return the URL of the apartment image
+                return response.url;
             } else {
                 // If there's no picture available, return the URL of a default image
                 return 'house.png';
@@ -42,11 +41,11 @@ export class Apartment {
         }
     }
 
+
     async displayApartmentDetails(apartmentDetails) {
         try {
             // Fetch the apartment image URL
             const imageUrl = await this.fetchApartmentImage();
-
             // Construct the query parameters string
             const queryParams = new URLSearchParams({
                 location: apartmentDetails.location,
