@@ -98,7 +98,6 @@ app.post('/signin', async (req, res) => {
 });
 
 // Route to add image to an apartment (also converting the image to base 64)
-// Route to add image to an apartment (also converting the image to base 64)
 app.post('/addImageToApartment', async (req, res) => {
     try {
         const { apartmentId, imagePath } = req.body;
@@ -138,23 +137,22 @@ app.post('/addApartment', async (req, res) => {
     }
 });
 
-// Retrieve current user details function
+// A function to retrieve the current user details
 function getCurrentUser(req) {
-    try {
-        return req.session.user || null;
-    } catch (error) {
-        console.error('Error in getCurrentUser:', error);
-        return null;
-    }
+    // Your logic to retrieve user details, for example, from session
+    return req.session.user || null;
 }
 
 // Endpoint to get current user details
 app.get('/getCurrentUser', (req, res) => {
+    console.log(req.session); // Log the entire session object
+
+    // Logic to retrieve current user details, e.g., from session
     try {
         const currentUser = getCurrentUser(req);
         res.json(currentUser);
     } catch (error) {
-        console.error('Error in /getCurrentUser endpoint:', error);
+        console.error('Error getting current user:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
