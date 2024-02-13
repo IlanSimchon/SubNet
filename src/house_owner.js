@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             endDate: endD
                         },
                         currentUserName,
-                        userData.email + userData.phone,
+                        userData.email + ", " +  userData.phone,
                         [],
                         0
                     );

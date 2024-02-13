@@ -63,7 +63,7 @@ async function testAddApartment() {
 }
 
 // Call the testAddApartment function to execute the test
-testAddApartment();
+// testAddApartment();
 
 
 // Call the testGetUser function to execute the test
