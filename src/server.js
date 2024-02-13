@@ -125,29 +125,36 @@ app.post('/addImageToApartment', async (req, res) => {
 });
 
 
-// Endpoint to add a new apartment
+// Route to add a new apartment
 app.post('/addApartment', async (req, res) => {
     try {
-        const newApartment = req.body;
-        const createdApartment = await Apartment.create(newApartment);
-        res.status(201).json(createdApartment);
+        const { location, pricePerNight, availability, owner, connectionDetails, reviews, avgRate } = req.body;
+
+        // Assuming you have a schema defined for Apartment
+        const newApartment = new Apartment({
+            location,
+            pricePerNight,
+            availability,
+            owner,
+            connectionDetails,
+            reviews,
+            avgRate
+        });
+
+        // Save the new apartment to the database
+        const savedApartment = await newApartment.save();
+
+        console.log("new apartment added, ID: " + savedApartment._id);
+
+        res.status(201).json(savedApartment._id);
+
     } catch (error) {
-        console.error('Error adding apartment:', error.message);
-        res.status(500).json({error: 'Internal Server Error'});
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
     }
 });
 
-// A function to retrieve the current user details
-function getCurrentUser(req) {
-    // Your logic to retrieve user details, for example, from session
-    return req.session.user || null;
-}
 
-// Endpoint to get current user details
-app.get('/getCurrentUser', (req, res) => {
-    const currentUser = getCurrentUser(req);
-    res.json(currentUser);
-});
 
 // Route to get user by name
 app.get('/getUser', async (req, res) => {
@@ -170,14 +177,7 @@ app.get('/getUser', async (req, res) => {
 
     console.log(req.session); // Log the entire session object
 
-    // Logic to retrieve current user details, e.g., from session
-    try {
-        const currentUser = getCurrentUser(req);
-        res.json(currentUser);
-    } catch (error) {
-        console.error('Error getting current user:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+
 });
 
 
@@ -239,9 +239,7 @@ app.get('/getApartmentPic/:id', async (req, res) => {
         }
         // Get the first photo ID from the apartment
         const picId = apartment.photo[0];
-        console.log("#######");
-        console.log("picId: " + picId);
-        console.log("#######");
+
 
         // Find the picture in the pic collection
         const pic = await Pic.findById(picId);

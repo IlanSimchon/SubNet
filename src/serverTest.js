@@ -25,15 +25,48 @@ async function testGetUser() {
         const userName = 'ilan';
 
         // Make a GET request to the getUser endpoint with the userName as a query parameter
-        const response = await axios.get(`http://localhost:63341/getUser?userName=${userName}`);
+        const response = await fetch(`http://localhost:63341/getUser?userName=${userName}`);
 
-        console.log(response.data); // Output the response from the server
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const userData = await response.json();
+        console.log(userData); // Output the response from the server
+    } catch (error) {
+        console.error('Error:', error.message); // Output any errors that occurred
+    }
+}
+
+
+
+async function testAddApartment() {
+    try {
+        // Define the apartment data you want to add
+        const apartmentData = {
+            location: "Test Location",
+            pricePerNight: 100,
+            availability: { start: "2024-02-13", end: "2024-02-20" },
+            owner: "Test Owner",
+            connectionDetails: "Test Connection Details",
+            reviews: [],
+            avgRate: 0
+        };
+
+        // Make a POST request to the addApartment endpoint
+        const response = await axios.post('http://localhost:63341/addApartment', apartmentData);
+
+        console.log( response.data); // Output the response from the server
     } catch (error) {
         console.error('Error:', error.response.data); // Output any errors that occurred
     }
 }
 
+// Call the testAddApartment function to execute the test
+testAddApartment();
+
+
 // Call the testGetUser function to execute the test
-testGetUser();
+// testGetUser();
 
 // testAddImageToApartment();
