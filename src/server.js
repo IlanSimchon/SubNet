@@ -109,6 +109,8 @@ app.post('/addImageToApartment', async (req, res) => {
         // Find the apartment by ID
         const apartment = await Apartment.findById(apartmentId);
 
+        console.log("tring to add image to apartment: " + apartmentId);
+
         if (!apartment) {
             return res.status(404).json({error: 'Apartment not found'});
         }

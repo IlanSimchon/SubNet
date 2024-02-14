@@ -1,4 +1,3 @@
-
 class house_owner {
     constructor() {
         document.addEventListener('DOMContentLoaded', this.displayApartments.bind(this));
@@ -129,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const endDateInput = document.getElementById('endDateInput');
             const photoInput = document.getElementById('photoInput');
 
+
             const currentUserName = await getCurrentUser();
             // Make a GET request to the getUser endpoint with the userName as a query parameter
 
@@ -155,10 +155,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             endDate: endD
                         },
                         currentUserName,
-                        userData.email + ", " +  userData.phone,
+                        userData.email + ", " + userData.phone,
                         [],
                         0
                     );
+                    console.log("apartmentID: " + apartmentID);
                     console.log("photo path: " + photoInput.value); //todo: fix the photo path! ("fake path")
 
 
@@ -177,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!addImageResponse.ok) {
                         throw new Error('Failed to add image to apartment');
                     }
-
+                     //todo: fix: there is a problem with clearing the fields(error)
                     // Clear input fields
                     locationInput.value = '';
                     priceInput.value = '';
@@ -268,18 +269,21 @@ async function AddApartment(location, pricePerNight, availability, owner, connec
             body: JSON.stringify(apartmentData),
         });
 
-
         if (!addApartmentResponse.ok) {
             const errorData = await addApartmentResponse.json();
             throw new Error(`HTTP error! Status: ${addApartmentResponse.status}, Message: ${errorData.error}`);
         }
 
-        // return the added apartment ID
-        return addApartmentResponse.data.toString()
+        // Extract the added apartment ID from the response
+        const addedApartmentId = await addApartmentResponse.json();
+
+        // Return the added apartment ID as a string
+        return addedApartmentId;
 
     } catch (error) {
         console.error('Error:', error.message); // Output any errors that occurred
     }
 }
+
 
 
