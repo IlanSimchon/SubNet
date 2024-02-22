@@ -178,17 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!addImageResponse.ok) {
                         throw new Error('Failed to add image to apartment');
                     }
-                     //todo: fix: there is a problem with clearing the fields(error)
-                    // Clear input fields
-                    locationInput.value = '';
-                    priceInput.value = '';
-                    startDateInput.value = '';
-                    endDateInput.value = '';
-                    photoInput.value = '';
-
-                    // Display success message
-                    successMessage.textContent = 'Apartment added successfully!';
-                    errorMessage.textContent = ''; // Clear any previous error message
+                    refreshPage();
 
                 } catch (error) {
                     console.error('Error adding apartment:', error.message);
@@ -286,4 +276,7 @@ async function AddApartment(location, pricePerNight, availability, owner, connec
 }
 
 
+function refreshPage() {
+    window.location.reload();
+}
 
