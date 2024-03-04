@@ -96,12 +96,12 @@ class ApartmentManager {
                     const apartmentBox = document.createElement('div');
                     apartmentBox.classList.add('apartment-box');
                     apartmentBox.innerHTML = `
+                        <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                         <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
                         <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
                         <p><i class="fa fa-calendar-alt"></i> ${availability}</p> <!-- Display formatted availability here -->
                         ${generateStarRating(apartment.avgRate)}
                         <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
-                        <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                         <hr>
                     `;
 
@@ -179,12 +179,12 @@ class ApartmentManager {
 
                     // Set the inner HTML content for the apartment box
                     apartmentBox.innerHTML = `
+                    <img class="apartment-photo" src="back.jpg" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                     <p><strong>Location:</strong> <p><strong>Location:</strong> ${apartment.location}</p>
                     <p><strong>Price per Night:</strong> ${apartment.pricePerNight}</p>
                     <p><strong>Availability:</strong> ${JSON.stringify(apartment.availability)}</p>
                     <p><strong>Average Rate:</strong> ${apartment.avgRate}</p>
                     <p><strong>Connection Details:</strong> ${apartment.connectionDetails}</p>
-                    <img class="apartment-photo" src="back.jpg" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                     <hr>
                 `;
                     // todo: change the html here to be with icons

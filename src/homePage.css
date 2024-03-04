@@ -24,7 +24,7 @@
 		}
 
 		.content {
-		    max-width: 800px;
+		    max-width: 1200px;
 		    margin: 10 auto;
 		    display: flex;
 		    flex-wrap: wrap;
@@ -34,25 +34,49 @@
 
 		.apartment-box {
 			box-sizing: border-box;
-			width: calc(50% - 20px);
+			width: calc(33.33% - 20px); /* Change from 50% to 33.33% */
 			border: 1px solid #ccc;
-			padding: 15px;
+			padding: 50px;
 			margin: 10px;
 			border-radius: 20px; /* Adjust the value to your desired level of roundness */
+			text-align: left; /* Center text content within the box */
+			overflow: hidden; /* Hide overflow content */
 		}
 
-
 		.apartment-box h3 {
-		    color: #333;
-		    font-size: 14px;
-		    margin-bottom: 10px;
+			color: #333;
+			font-size: 10px;
+			margin-bottom: 20px;
 		}
 
 		.apartment-box img {
-		    height: 232px;
-		    width: 348px;
-		    margin-top: 10px;
+			max-width: 100%; /* Ensure the image does not exceed the box width */
+			height: auto; /* Maintain the aspect ratio of the image */
+			margin-top: 10px;
 		}
+
+
+		/*.apartment-box {*/
+		/*	box-sizing: border-box;*/
+		/*	width: calc(50% - 20px);*/
+		/*	border: 1px solid #ccc;*/
+		/*	padding: 15px;*/
+		/*	margin: 10px;*/
+		/*	border-radius: 20px; !* Adjust the value to your desired level of roundness *!*/
+		/*}*/
+
+
+		/*.apartment-box h3 {*/
+		/*    color: #333;*/
+		/*    font-size: 14px;*/
+		/*    margin-bottom: 10px;*/
+		/*}*/
+
+		/*.apartment-box img {*/
+		/*    height: 232px;*/
+		/*    width: 348px;*/
+		/*    margin-top: 10px;*/
+		/*}*/
 
 		/*.filter-bar {*/
 		/*    display: flex;*/
@@ -67,43 +91,54 @@
 
 		.filter-bar {
 			box-sizing: border-box;
-			width: 80%; /* Adjust the width as needed */
-			margin: 0 auto; /* Center the filter bar horizontally */
-			float: right; /* Float the filter bar to the right */
+			width: 60%;
+			margin: 0 auto;
+			float: right;
 		}
 
 		#filterForm label {
 			box-sizing: border-box;
 			width: 100%;
 			margin-bottom: 15px;
+			display: block;
 		}
 
 		#filterForm input {
 			box-sizing: border-box;
-			width: 20%;
+			width: calc(20% - 5px); /* Adjusted width to account for padding */
 			border: 1px solid #ccc;
-			padding: 5px;
-			margin: 10px ;
-			border-radius: 10px; /* Adjust the value to your desired level of roundness */
-			transition: background-color 0.3s ease; /* Smooth transition for color change */
-
-			/* Default gray color */
+			padding: 8px 16px; /* Adjusted padding for height */
+			margin: 5px;
+			border-radius: 10px;
+			transition: background-color 0.3s ease;
 			background-color: #ccc;
+			display: inline-block;
 		}
-
 
 		#filterForm button {
-		    margin-top: 10px;
-		    margin-left: 20px;
-		    padding: 8px 16px;
-		    background-color: #007bff;
-		    color: white;
-		    border: none;
-		    border-radius: 4px;
-		    cursor: pointer;
-		    transition: background-color 0.3s;
-			float:right;
+			margin-top: 5px;
+			margin-left: 20px;
+			padding: 8px 16px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 10px;
+			cursor: pointer;
+			transition: background-color 0.3s;
+			float: right;
 		}
+
+
+
+		::placeholder {
+		color: #999; /* Adjust the color as needed */
+		font-size: 15px;
+		font-style: normal; /* You can add more styles as needed */
+		font-weight: bold;
+		}
+
+
+
 
 
 		.menu a {
