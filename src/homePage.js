@@ -52,6 +52,25 @@ class ApartmentManager {
         }
 
     }
+
+    // Function to format the availability dates
+    formatAvailabilityDate(availability) {
+        const startDate = new Date(availability.startDate);
+        const endDate = new Date(availability.endDate);
+
+        // Format start date
+        const startDay = startDate.getDate().toString().padStart(2, '0');
+        const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
+        const startYear = startDate.getFullYear();
+
+        // Format end date
+        const endDay = endDate.getDate().toString().padStart(2, '0');
+        const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0');
+        const endYear = endDate.getFullYear();
+
+        return `${startDay}.${startMonth}.${startYear} - ${endDay}.${endMonth}.${endYear}`;
+    }
+
     // Function to display all apartments
     async displayApartments() {
         try {
@@ -72,18 +91,16 @@ class ApartmentManager {
                         imageUrl = 'house.png';
                     }
 
+                    const availability = this.formatAvailabilityDate(apartment.availability);
 
                     const apartmentBox = document.createElement('div');
                     apartmentBox.classList.add('apartment-box');
-                    const rateInPercent = 50 / 5 * apartment.avgRate
-                    console.log(rateInPercent)
-                    // Set the inner HTML content for the apartment box
                     apartmentBox.innerHTML = `
                         <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
                         <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
-                        <p><i class="fa fa-calendar-alt"></i> ${JSON.stringify(apartment.availability)}</p>
+                        <p><i class="fa fa-calendar-alt"></i> ${availability}</p> <!-- Display formatted availability here -->
                         ${generateStarRating(apartment.avgRate)}
-                         <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
+                        <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
                         <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                         <hr>
                     `;

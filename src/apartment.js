@@ -7,6 +7,7 @@ export class Apartment {
         this.getApartmentDetails();
 
     }
+
     async getApartmentDetails() {
         try {
             // Fetch apartment details from the server using apartmentId
@@ -42,10 +43,12 @@ export class Apartment {
     async displayApartmentDetails(apartmentDetails) {
         try {
             const imageUrl = await this.fetchApartmentImage();
+            const availability = this.formatAvailabilityDate(apartmentDetails.availability);
+
             const queryParams = new URLSearchParams({
                 location: apartmentDetails.location,
                 pricePerNight: apartmentDetails.pricePerNight,
-                availability: JSON.stringify(apartmentDetails.availability),
+                availability: availability,
                 reviews: apartmentDetails.reviews,
                 avgRate: apartmentDetails.avgRate,
                 photo: imageUrl,
@@ -57,12 +60,21 @@ export class Apartment {
         } catch (error) {
             console.error('Error displaying apartment details:', error);
         }
+    }
 
-        const likeBtn = document.getElementById('likeBtn');
-        likeBtn.addEventListener('click', () => {
-            this.addToWishList(apartmentDetails);
-            this.toggleLikeButtonColor(likeBtn);
-        });
+    formatAvailabilityDate(availability) {
+        const startDate = new Date(availability.startDate);
+        const endDate = new Date(availability.endDate);
+
+        const startDay = startDate.getDate().toString().padStart(2, '0');
+        const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
+        const startYear = startDate.getFullYear();
+
+        const endDay = endDate.getDate().toString().padStart(2, '0');
+        const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0');
+        const endYear = endDate.getFullYear();
+
+        return `${startDay}.${startMonth}.${startYear} - ${endDay}.${endMonth}.${endYear}`;
     }
 
     toggleLikeButtonColor(likeBtn) {
@@ -70,7 +82,6 @@ export class Apartment {
         likeBtn.classList.toggle('likeBtn-red');
     }
 
-    // Add this function to apartment.js
     async addToWishList(apartmentDetails) {
         try {
             // Fetch user ID or any identifier for the current user from localStorage or your authentication mechanism
@@ -147,13 +158,7 @@ export function onPageLoad() {
     const apartmentImage = document.getElementById('apartment_image');
     apartmentImage.src = params['photo']; // Assuming 'photo' is the parameter containing the image URL
 
-}
-
-// Execute onPageLoad function when the page loads
-document.addEventListener('DOMContentLoaded', ()=> {
-    onPageLoad();
-
-
+    // Add event listeners
     const recommendBtn = document.getElementById('recommendBtn');
     const recommendModal = document.getElementById('recommendModal');
     const closeRecommendModal = document.getElementById('closeRecommendModal');
@@ -176,4 +181,14 @@ document.addEventListener('DOMContentLoaded', ()=> {
         // Close the modal
         recommendModal.style.display = 'none';
     });
-});
+
+    const likeBtn = document.getElementById('likeBtn');
+    likeBtn.addEventListener('click', () => {
+        const apartment = new Apartment(params['apartmentId']);
+        apartment.addToWishList(params);
+        apartment.toggleLikeButtonColor(likeBtn);
+    });
+}
+
+// Execute onPageLoad function when the page loads
+document.addEventListener('DOMContentLoaded', onPageLoad);
