@@ -27,15 +27,18 @@ body {
     background-color: white;
 }
 
-#addApartmentBtn {
+#addApartmenDetailstBtn {
     background-color: #db9d00;
     color: black;
-    padding: 10px;
+    padding: 15px; /* Increased padding for better visibility */
     border: none;
     cursor: pointer;
     position: fixed;
-    top: 100px;
-    right: 20px;
+    top: 120px;
+    left: 20px;
+    border-radius: 10px;
+    font-weight: bold; /* Added font-weight property */
+    font-size: 1.2em; /* Adjusted font-size property */
 }
 
 .container {
@@ -100,4 +103,66 @@ h1 {
     max-width: 100%;
     height: auto;
     margin-top: 10px;
+}
+
+
+.add-apartment-form-container {
+    position: fixed;
+    display: none;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+
+}
+
+.add-apartment-form-container h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.add-apartment-form-container label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.add-apartment-form-container input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.add-apartment-form-container button {
+    background-color: #db9d00;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-apartment-form-container button:hover {
+    background-color: #db9d00;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.close-form-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 16px; /* Adjust the font size as needed */
+    cursor: pointer;
+    color: #333;
+}
+
+.close-form-btn:hover {
+    color: #ff0000; /* Change to your preferred hover color */
 }

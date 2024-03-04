@@ -19,15 +19,17 @@
 </div>
 
 <div class="container">
+<!--    <button id="addApartmenDetailstBtn" onclick="openAddApartmentTab()">Add New Apartment</button>-->
+    <button id="addApartmenDetailstBtn">Add New Apartment</button>
     <h1>My Apartments</h1>
     <div class="content"></div>
-    <button id="addApartmenDetailstBtn" onclick="openAddApartmentTab()">Add New Apartment</button>
-    
+
     <!-- Add New Apartment Form (Initially hidden) -->
-    <div id="addApartmentFormContainer" style="display: none;">
+    <div id="addApartmentFormContainer" class="add-apartment-form-container" style="display: none">
+        <button id="closeFormBtn" class="close-form-btn">&times;</button>
         <h2>Add New Apartment</h2>
-        <label for="locationInput">Location:</label>
         <form id="addApartmentForm">
+            <label for="locationInput">Location:</label>
             <input type="text" id="locationInput" required>
 
             <label for="priceInput">Price Per Night:</label>
@@ -45,7 +47,7 @@
             <button type="submit" id="postApartmentBtn">Add Apartment</button>
         </form>
     </div>
-    
+
     <!-- Container for displaying apartment details and confirmation -->
     <div id="apartmentDetailsContainer" style="display: none;">
         <h2>Apartment Details</h2>
