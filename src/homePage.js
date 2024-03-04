@@ -114,9 +114,7 @@ class ApartmentManager {
     // displays a single apartment in a new window
     async displaySingleApartment(apartmentId) {
         let single_apartment = null;
-        // console.log(apartmentId);
         single_apartment = new Apartment(apartmentId);
-        // console.log(single_apartment);
         single_apartment.getApartmentDetails();
     }
 
