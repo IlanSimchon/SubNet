@@ -110,3 +110,7 @@ h1 {
 #reserveBtn{
    border-color: white;
 }
+
+#recommendModal {
+   display: none;
+}

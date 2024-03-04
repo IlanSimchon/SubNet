@@ -10,59 +10,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
-    <script src="profile.js"></script>
+          href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css">
 </head>
 
 <body>
-    <div id="menu" class="menu">
-        <a href="homePage.html"><i class="fa fa-fw fa-home"></i> Home</a>
-        <a href="house_owner.html"><i class="fa fa-fw fa-key"></i> Login As A House Owner</a>
-        <a href="#my_profile"><i class="fa fa-fw fa-user"></i> My Profile</a>
-        <a href="contact.html"><i class="fa fa-fw fa-envelope"></i> Contact Us</a>
-        <a href="login.html"><i class="fa fa-fw fa-lock"></i> Log Out</a>
+<div id="menu" class="menu">
+    <a href="homePage.html"><i class="fa fa-fw fa-home"></i> Home</a>
+    <a href="house_owner.html"><i class="fa fa-fw fa-key"></i> Login As A House Owner</a>
+    <a href="#my_profile"><i class="fa fa-fw fa-user"></i> My Profile</a>
+    <a href="contact.html"><i class="fa fa-fw fa-envelope"></i> Contact Us</a>
+    <a href="login.html"><i class="fa fa-fw fa-lock"></i> Log Out</a>
+</div>
+<h1>Maybe This Is Your Match...</h1>
+<div class="apartment">
+    <img id="apartment_image" src="back.jpg" alt="Apartment Image">
+
+    <div id="apartment_details" class="apartment_details">
     </div>
-    <h1>Maybe This Is Your Match...</h1>
-    <div class="apartment">
-        <img id="apartment_image" src="back.jpg" alt="Apartment Image">
-
-        <div id="apartment_details" class="apartment_details">
-            <!-- Dynamic apartment details will be inserted here -->
-        </div>
-    </div>
-    <script>
-        // Function to parse URL parameters
-        function getUrlParams() {
-            const params = {};
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            for (const [key, value] of urlParams) {
-                params[key] = value;
-            }
-            return params;
-        }
-
-        // Get the URL parameters
-        const params = getUrlParams();
-
-        // Display apartment details with icons
-        const apartmentDetailsContainer = document.getElementById('apartment_details');
-        apartmentDetailsContainer.innerHTML = `
-            <h2><i class="fas fa-map-marker-alt"></i> Location: ${params['location']}</h2>
-            <p><i class="fas fa-sack-dollar"></i> Price Per Night: ${params['pricePerNight']}</p>
-            <p><i class="far fa-calendar-alt"></i> Availability: ${params['availability']}</p>
-            <p><i class="far fa-star"></i> Reviews: ${params['reviews']}</p>
-            <p><i class="fas fa-star"></i> Average Rate: ${params['avgRate']}</p>
-            <p><i class="far fa-address-card"></i> Connection Details: ${params['connectionDetails']}</p>
-            <!-- Replace the button with a heart icon -->
-            <button id="likeBtn" class="likeBtn-white"><i class="fas fa-heart"></i> Like</button>
-            <button id="reserveBtn">Reserve</button>
-        `;
-
-        // Set the image source to the fetched image URL
-        const apartmentImage = document.getElementById('apartment_image');
-        apartmentImage.src = params['photo']; // Assuming 'photo' is the parameter containing the image URL
-    </script>
+</div>
+<script type="module" src="apartment.js"></script>
 </body>
 
 </html>
