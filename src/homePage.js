@@ -8,7 +8,6 @@ class ApartmentManager {
         // Retrieve user data from localStorage
         const userDataString = localStorage.getItem('userData');
 
-
         this.apartment = document.getElementById('apartment');
         this.login_house_owner = document.getElementById('login_house_owner');
         this.accountPage = document.getElementById('accountPage');
@@ -22,7 +21,6 @@ class ApartmentManager {
         this.filterBar.addEventListener('submit', this.applyFilters.bind(this));
         this.advancedFilterButton.addEventListener('click', this.addRatingFilter.bind(this));
         this.login_house_owner.addEventListener('click', ()=> window.location.href = 'house_owner.html');
-
 
         window.onload = this.displayApartments.bind(this);
     }

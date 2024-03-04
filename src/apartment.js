@@ -62,5 +62,40 @@ export class Apartment {
         } catch (error) {
             console.error('Error displaying apartment details:', error);
         }
+
+        const likeBtn = document.getElementById('likeBtn');
+        likeBtn.addEventListener('click', () => {
+            this.addToWishList(apartmentDetails);
+        });
     }
+
+    // Add this function to apartment.js
+    async addToWishList(apartmentDetails) {
+        try {
+            // Fetch user ID or any identifier for the current user from localStorage or your authentication mechanism
+            const userId = getUserId(); // Implement this function
+
+            // Send a request to the server to add the apartment to the user's wish list
+            const response = await fetch(`http://localhost:63341/addToWishList/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ apartmentDetails }),
+            });
+
+            if (response.ok) {
+                console.log('Apartment added to wish list successfully');
+                // Optionally update the wish list in localStorage if you want to keep it client-side
+                // const updatedWishList = [...getWishList(), apartmentDetails.location];
+                // localStorage.setItem('wishList', JSON.stringify(updatedWishList));
+            } else {
+                console.error('Failed to add apartment to wish list');
+            }
+        } catch (error) {
+            console.error('Error adding apartment to wish list:', error);
+        }
+}
+
+
 }
