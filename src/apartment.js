@@ -49,10 +49,11 @@ export class Apartment {
                 reviews: apartmentDetails.reviews,
                 avgRate: apartmentDetails.avgRate,
                 photo: imageUrl,
-                connectionDetails: apartmentDetails.connectionDetails
+                connectionDetails: apartmentDetails.connectionDetails,
+                apartmentId: this.apartmentId,
             });
 
-            // Redirect to apartment.html with query parameters
+            // Redirect to apartment.html with query parameters, including apartmentId
             window.location.href = `apartment.html?${queryParams.toString()}`;
         } catch (error) {
             console.error('Error displaying apartment details:', error);
@@ -115,6 +116,8 @@ export const params = getUrlParams();
 
 // Function to be executed on page load
 export function onPageLoad() {
+    const params = getUrlParams();
+
     // Display apartment details with icons
     const apartmentDetailsContainer = document.getElementById('apartment_details');
     apartmentDetailsContainer.innerHTML = `
@@ -129,18 +132,6 @@ export function onPageLoad() {
         <button id="reserveBtn">Reserve</button>
         <button id="recommendBtn">Recommend</button>
 
-        <!-- Add modal for recommendation -->
-        <div id="recommendModal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="close" id="closeRecommendModal">&times;</span>
-                <h2>Recommendation</h2>
-                <label for="rating">Rating (1-5):</label>
-                <input type="number" id="rating" name="rating" min="1" max="5" required>
-                <label for="review">Review:</label>
-                <textarea id="review" name="review" rows="4" cols="50" placeholder="Write your review..." required></textarea>
-                <button id="submitRecommendation">Submit</button>
-            </div>
-        </div>
     `;
 
     // Set the image source to the fetched image URL
@@ -148,32 +139,119 @@ export function onPageLoad() {
     apartmentImage.src = params['photo']; // Assuming 'photo' is the parameter containing the image URL
 
 }
+// ... (Your existing code)
 
-// Execute onPageLoad function when the page loads
-document.addEventListener('DOMContentLoaded', ()=> {
+// Function to create a recommendation box
+function createRecommendationBox() {
+    const recommendationBox = document.createElement('div');
+    recommendationBox.id = 'recommendationBox';
+    recommendationBox.classList.add('recommendation-box');
+    recommendationBox.style.display = 'none';
+
+    recommendationBox.innerHTML = `
+        <span class="close" id="closeRecommendationBox">&times;</span>
+        <h2>Recommendation</h2>
+        <label for="rating">Rating (1-5):</label>
+        <input type="number" id="rating" name="rating" min="1" max="5" required>
+        <label for="review">Review:</label>
+        <textarea id="review" name="review" rows="4" cols="50" placeholder="Write your review..." required></textarea>
+        <button id="submitRecommendation">Submit</button>
+    `;
+
+    document.body.appendChild(recommendationBox);
+
+    const closeRecommendationBox = document.getElementById('closeRecommendationBox');
+    closeRecommendationBox.addEventListener('click', () => {
+        recommendationBox.style.display = 'none';
+    });
+
+    return recommendationBox;
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
     onPageLoad();
 
-
     const recommendBtn = document.getElementById('recommendBtn');
-    const recommendModal = document.getElementById('recommendModal');
-    const closeRecommendModal = document.getElementById('closeRecommendModal');
-    const submitRecommendationBtn = document.getElementById('submitRecommendation');
+    const recommendationBox = createRecommendationBox();
+    const ratingInput = document.getElementById('rating');
+    const reviewInput = document.getElementById('review');
+    const errorBox = document.createElement('div');
+    errorBox.id = 'errorBox'; // Add an ID to the error box for easier manipulation
 
     recommendBtn.addEventListener('click', () => {
-        recommendModal.style.display = 'block';
+        recommendationBox.style.display = 'block';
+        errorBox.style.display = 'none'; // Hide error message when opening the box
     });
 
-    closeRecommendModal.addEventListener('click', () => {
-        recommendModal.style.display = 'none';
-    });
+    const submitRecommendationBtn = document.getElementById('submitRecommendation');
 
-    submitRecommendationBtn.addEventListener('click', () => {
-        const rating = document.getElementById('rating').value;
-        const review = document.getElementById('review').value;
+    submitRecommendationBtn.addEventListener('click', async () => {
+        try {
+            const rating = ratingInput.value;
+            const review = reviewInput.value;
 
-        // Use the rating and review as needed (e.g., send to the server, update UI, etc.)
+            // Check if both rating and review are filled
+            if (!rating || !review) {
+                showError("Please fill both the rating and review");
+                return;
+            }
 
-        // Close the modal
-        recommendModal.style.display = 'none';
-    });
+            // Check if rating is in the range 1-5
+            if (rating < 1 || rating > 5) {
+                showError("Rating must be between 1 and 5");
+                return;
+            }
+
+            // Assuming you have the apartment ID stored in a variable 'apartmentId'
+            const apartmentId = params['apartmentId']
+
+            // Fetch the apartment details
+            const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
+            const apartmentDetails = await response.json();
+
+            // Calculate the new average rating
+            const currentAvgRate = apartmentDetails.avgRate || 0;
+            const totalReviews = apartmentDetails.reviews?.length || 0;
+            const newAvgRate = ((currentAvgRate * totalReviews) + parseFloat(rating)) / (totalReviews + 1);
+
+            // Update the apartment with the new average rating and add the review
+            const updateResponse = await fetch(`http://localhost:63341/updateApartment/${apartmentId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    avgRate: newAvgRate,
+                    review: review,
+                }),
+            });
+
+            if (updateResponse.ok) {
+                console.log('Recommendation submitted successfully');
+                // Optionally update the UI to reflect the changes
+            } else {
+                console.error('Failed to submit recommendation');
+            }
+
+            // Close the recommendation box
+            recommendationBox.style.display = 'none';
+        }
+     catch (error) {
+        console.error('Error submitting recommendation:', error);
+    }
+});
+
+    function showError(message) {
+        errorBox.textContent = message;
+
+        // Add one-row class to make the error message one row
+        errorBox.classList.add('one-row');
+
+        // Append errorBox to recommendationBox
+        recommendationBox.appendChild(errorBox);
+
+        // Show the error box
+        errorBox.style.display = 'block';
+    }
 });

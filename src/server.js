@@ -307,3 +307,28 @@ app.post('/addToWishList/:userId', async (req, res) => {
     }
 });
 
+// Add this route to server.js
+app.patch('/updateApartment/:id', async (req, res) => {
+    try {
+        const apartmentId = req.params.id;
+        const { avgRate, review } = req.body;
+
+        // Find the apartment by ID
+        const apartment = await Apartment.findById(apartmentId);
+
+        if (!apartment) {
+            return res.status(404).json({ error: 'Apartment not found' });
+        }
+
+        // Update the apartment with the new average rating and add the review
+        apartment.avgRate = avgRate;
+        apartment.reviews.push(review);
+        await apartment.save();
+
+        res.status(200).json({ message: 'Apartment updated successfully' });
+    } catch (error) {
+        console.error('Error updating apartment:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
