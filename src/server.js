@@ -407,6 +407,7 @@ app.delete('/deletePic/:apartmentId/:picId', async (req, res) => {
         }
         console.log("e");
 
+
         // Delete the picture from the database
         await pic.remove();
 
