@@ -39,6 +39,7 @@ class house_owner {
                         <p><i class="fa fa-calendar-alt"></i> ${JSON.stringify(apartment.availability)}</p>
                         ${generateStarRating(apartment.avgRate)}
                          <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
+                         <p><i class='fas fa-check-circle'> Is Booked: </i> ${apartment.isAvailable}</p> 
                         <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                         <hr>
                     `;
