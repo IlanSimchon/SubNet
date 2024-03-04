@@ -1,7 +1,7 @@
 body {
-    font-family: Arial, sans-serif;
-    padding: 0;
-    background-color: white;
+   font-family: Arial, sans-serif;
+   padding: 0;
+   background-color: white;
 }
 
 h1 {
@@ -33,6 +33,7 @@ h1 {
    min-height: 530px;
    min-width: 1200px;
 }
+
 .apartment img {
    /* max-width: 45%; */
    /* height: auto; */
@@ -63,7 +64,8 @@ h1 {
 }
 
 .apartment-details i {
-   margin-right: 18px; /* Adjust the margin as needed */
+   margin-right: 18px;
+   /* Adjust the margin as needed */
 }
 
 
@@ -80,4 +82,31 @@ h1 {
 
 .owl-carousel {
    margin-top: 20px;
+}
+
+.likeBtn-white{
+   border-color: white;
+   background-color: white;
+   color: red;
+}
+
+.likeBtn-red{
+   border-color: white;
+   background-color: red;
+   color: white;
+}
+
+#likeBtn:hover{
+   border-color: white;
+   background-color: red;
+   color: white;
+}
+
+#reserveBtn:hover {
+   color: white;
+   background-color: #db9d00;
+}
+
+#reserveBtn{
+   border-color: white;
 }

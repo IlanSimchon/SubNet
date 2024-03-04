@@ -44,9 +44,7 @@ export class Apartment {
 
     async displayApartmentDetails(apartmentDetails) {
         try {
-            // Fetch the apartment image URL
             const imageUrl = await this.fetchApartmentImage();
-            // Construct the query parameters string
             const queryParams = new URLSearchParams({
                 location: apartmentDetails.location,
                 pricePerNight: apartmentDetails.pricePerNight,
@@ -66,7 +64,13 @@ export class Apartment {
         const likeBtn = document.getElementById('likeBtn');
         likeBtn.addEventListener('click', () => {
             this.addToWishList(apartmentDetails);
+            this.toggleLikeButtonColor(likeBtn);
         });
+    }
+
+    toggleLikeButtonColor(likeBtn) {
+        likeBtn.classList.toggle('likeBtn-white');
+        likeBtn.classList.toggle('likeBtn-red');
     }
 
     // Add this function to apartment.js
