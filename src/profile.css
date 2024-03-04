@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 0;
+    background-color: white;
+}
+
+.container {
+    max-width: 800px;
+    margin: 10 auto;
+    text-align: center;
+}
+
+h1 {
+    font-size: 3em;
+    color: #db9d00;
+    margin-top: 60px;
+    margin-bottom: 0;
+}
+
+#personalDetails {
+    margin-bottom: 20px;
+}
+
+#personalDetails p {
+    font-size: 16px;
+    color: #333;
+}
+
+#editDetailsBtn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#editDetailsBtn:hover {
+    background-color: #0056b3;
+}
+
+#wishList {
+    list-style: none;
+    padding: 0;
+}
+
+#wishList li {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 10px;
+}

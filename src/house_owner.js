@@ -2,7 +2,7 @@ class house_owner {
     constructor() {
         document.addEventListener('DOMContentLoaded', this.displayApartments.bind(this));
     }
-    
+
     async displayApartments() {
         const userDataString = localStorage.getItem('userData');
         this.userData = JSON.parse(userDataString).user;
@@ -46,7 +46,7 @@ class house_owner {
                     // Append the apartment box to the container
                     content.appendChild(apartmentBox);
                 }
-                
+
                 // Add event listener to the entire apartment box
                 content.querySelectorAll('.apartment-box').forEach(apartmentBox => {
                     apartmentBox.addEventListener('click', () => {
@@ -102,39 +102,22 @@ function generateStarRating(averageRate) {
 }
 
 // Add an apartment
-document.addEventListener('DOMContentLoaded', async () => {
-    // Function to get current user details from the server
-    async function getCurrentUser() {
-        try {
-            const response = await fetch('/getCurrentUser');
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            return await response.json();
-        } catch (error) {
-            console.error('Error fetching current user:', error.message);
-            return null;
-        }
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    const addApartmenDetailstBtn = document.getElementById('addApartmenDetailstBtn');
+    addApartmenDetailstBtn.addEventListener('click', openAddApartmentTab);
 
-    // Function to add a new apartment
-    async function addNewApartment() {
-        console.log('Hi! Add your appartment!');
-        const addApartmentForm = document.getElementById('addApartmentForm');
-        addApartmentForm.submit();
-    }
-    
-
-    // Get the addApartmentBtn button
-    const addApartmentBtn = document.getElementById('addApartmentBtn');
-    console.log(addApartmentBtn);  // Check if addApartmentBtn is not null or undefined
-
-    // Attach a click event listener to the button
-    addApartmentBtn.addEventListener('click', ()=>{
+    async function openAddApartmentTab() {
+        const addApartmentFormContainer = document.getElementById('addApartmentFormContainer');
+        addApartmentFormContainer.style.display = (addApartmentFormContainer.style.display === 'none') ? 'block' : 'none';
 
         const addApartmentForm = document.getElementById('addApartmentForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
+
+        // Additional elements
+        const apartmentDetailsContainer = document.getElementById('apartmentDetailsContainer');
+        const apartmentDetails = document.getElementById('apartmentDetails');
+        const confirmApartmentBtn = document.getElementById('confirmApartmentBtn');
 
         addApartmentForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -145,43 +128,57 @@ document.addEventListener('DOMContentLoaded', async () => {
             const endDateInput = document.getElementById('endDateInput');
             const photoInput = document.getElementById('photoInput');
 
-            // Get current user details by calling the server endpoint
-            const currentUser = await getCurrentUser();
 
-            if (currentUser) {
-                const formData = new FormData();
-                formData.append('location', locationInput.value);
-                formData.append('pricePerNight', priceInput.value);
-                formData.append('availability', JSON.stringify({ startDate: startDateInput.value, endDate: endDateInput.value }));
-                formData.append('photo', photoInput.files[0]); // Assuming you want to upload the first selected file
+            const currentUserName = await getCurrentUser();
+            // Make a GET request to the getUser endpoint with the userName as a query parameter
 
-                // Additional fields
-                formData.append('avgRate', '0'); // Set avgRate to 0
-                formData.append('owner', currentUser.name); // Set owner to the current user's name
-                formData.append('connectionDetails', JSON.stringify({ email: currentUser.email, phone: currentUser.phone }));
-                formData.append('reviews', '[]'); // Set reviews to an empty array
-
+            let startD;
+            if (currentUserName) {
                 try {
-                    const response = await fetch('http://localhost:63341/addApartment', {
-                        method: 'POST',
-                        body: formData,
-                    });
+                    const response = await fetch(`http://localhost:63341/getUser?userName=${currentUserName}`);
 
                     if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(`HTTP error! Status: ${response.status}, Message: ${errorData.error}`);
+                        throw new Error(`HTTP error! Status: ${response.status}`);
                     }
+                    const userData = await response.json();
 
-                    // Clear input fields
-                    locationInput.value = '';
-                    priceInput.value = '';
-                    startDateInput.value = '';
-                    endDateInput.value = '';
-                    photoInput.value = '';
+                    console.log(userData);
 
-                    // Display success message
-                    successMessage.textContent = 'Apartment added successfully!';
-                    errorMessage.textContent = ''; // Clear any previous error message
+
+                    let startD = startDateInput.value;
+                    let endD = endDateInput.value
+                    let apartmentID = await AddApartment(
+                        locationInput.value,
+                        parseFloat(priceInput.value),
+                        {
+                            startDate: startD,
+                            endDate: endD
+                        },
+                        currentUserName,
+                        userData.email + ", " + userData.phone,
+                        [],
+                        0
+                    );
+                    console.log("apartmentID: " + apartmentID);
+                    console.log("photo path: " + photoInput.value); //todo: fix the photo path! ("fake path")
+
+
+                    // Send POST request to addImageToApartment endpoint with apartment ID and image path
+                    const addImageResponse = await fetch('http://localhost:63341/addImageToApartment', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            apartmentId: apartmentID,
+                            imagePath: photoInput.value
+                        })
+                    });
+
+                    if (!addImageResponse.ok) {
+                        throw new Error('Failed to add image to apartment');
+                    }
+                    refreshPage();
 
                 } catch (error) {
                     console.error('Error adding apartment:', error.message);
@@ -197,15 +194,89 @@ document.addEventListener('DOMContentLoaded', async () => {
                 errorMessage.textContent = 'Could not fetch current user details.';
                 successMessage.textContent = ''; // Clear any previous success message
             }
-        })
-    });
+            // Display apartment details for confirmation
+            apartmentDetails.innerHTML = `
+                <p><strong>Location:</strong> ${locationInput.value}</p>
+                <p><strong>Price Per Night:</strong> ${priceInput.value}</p>
+                <p><strong>Availability:</strong> ${startDateInput.value} to ${endDateInput.value}</p>
+                <!-- Add other details here -->
+                `;
+
+            // Show the apartment details container
+            addApartmentFormContainer.style.display = 'none';
+            apartmentDetailsContainer.style.display = 'block';
+        });
+        // Event listener for confirming apartment details
+        confirmApartmentBtn.addEventListener('click', async () => {
+            // ... (existing code for submitting the form)
+
+            // Hide the details container after confirmation
+            apartmentDetailsContainer.style.display = 'none';
+        });
+    }
+
+
+    // Function to get current username
+    async function getCurrentUser() {
+        try {
+            // Retrieve user data from localStorage
+            const userDataString = localStorage.getItem('userData');
+            if (userDataString) {
+                // Parse the user data JSON string
+                const userData = JSON.parse(userDataString);
+                // Return the user's name
+                return userData.user.userName;
+            } else {
+                console.error('User data not found in localStorage');
+                return null;
+            }
+        } catch (error) {
+            console.error('Error getting current user:', error);
+            return null;
+        }
+    }
+
 });
 
 
-function openAddApartmentTab() {
-    const addApartmentFormContainer = document.getElementById('addApartmentFormContainer');
-    
-    // Toggle the visibility of the form container
-    addApartmentFormContainer.style.display = (addApartmentFormContainer.style.display === 'none') ? 'block' : 'none';
+async function AddApartment(location, pricePerNight, availability, owner, connectionDetails, reviews, avgRate) {
+    try {
+        const apartmentData = {
+            location,
+            pricePerNight,
+            availability,
+            owner,
+            connectionDetails,
+            reviews,
+            avgRate
+        };
+
+        const addApartmentResponse = await fetch('http://localhost:63341/addApartment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(apartmentData),
+        });
+
+        if (!addApartmentResponse.ok) {
+            const errorData = await addApartmentResponse.json();
+            throw new Error(`HTTP error! Status: ${addApartmentResponse.status}, Message: ${errorData.error}`);
+        }
+
+        // Extract the added apartment ID from the response
+        const addedApartmentId = await addApartmentResponse.json();
+
+        // Return the added apartment ID as a string
+        return addedApartmentId;
+
+    } catch (error) {
+        console.error('Error:', error.message); // Output any errors that occurred
+    }
+}
+
+
+function refreshPage() {
+    window.location.reload();
 }
 

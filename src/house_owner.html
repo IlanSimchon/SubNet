@@ -21,7 +21,7 @@
 <div class="container">
     <h1>My Apartments</h1>
     <div class="content"></div>
-    <button id="addApartmentBtn" onclick="openAddApartmentTab()">Add New Apartment</button>
+    <button id="addApartmenDetailstBtn" onclick="openAddApartmentTab()">Add New Apartment</button>
     
     <!-- Add New Apartment Form (Initially hidden) -->
     <div id="addApartmentFormContainer" style="display: none;">
@@ -42,8 +42,15 @@
             <label for="photoInput">Upload Photo:</label>
             <input type="file" id="photoInput" accept="image/*" required>
 
-            <button type="submit">Add Apartment</button>
+            <button type="submit" id="postApartmentBtn">Add Apartment</button>
         </form>
+    </div>
+    
+    <!-- Container for displaying apartment details and confirmation -->
+    <div id="apartmentDetailsContainer" style="display: none;">
+        <h2>Apartment Details</h2>
+        <div id="apartmentDetails"></div>
+        <button id="confirmApartmentBtn">Confirm Details</button>
     </div>
 </div>
 
