@@ -46,7 +46,7 @@ const apartmentSchema = new mongoose.Schema({
     connectionDetails: String,
     photo: [String],
     owner: String,
-    isAvailable: { type: Boolean, default: true }
+    isBooked: { type: Boolean, default: false }
 });
 
 
@@ -308,7 +308,7 @@ app.post('/addToWishList/:userId', async (req, res) => {
 });
 
 // Add this route to server.js
-app.patch('/updateApartment/:id', async (req, res) => {
+app.patch('/updateApartmentAvgNReviews/:id', async (req, res) => {
     try {
         const apartmentId = req.params.id;
         const { avgRate, review } = req.body;
@@ -332,3 +332,87 @@ app.patch('/updateApartment/:id', async (req, res) => {
     }
 });
 
+// Route to update apartment details (location, pricePerNight, review, connectionDetails, isBooked)
+app.patch('/updateApartment/:id', async (req, res) => {
+    try {
+        const apartmentId = req.params.id;
+        const { location, pricePerNight, review, connectionDetails, isBooked } = req.body;
+        // Find the apartment by ID
+        const apartment = await Apartment.findById(apartmentId);
+
+        if (!apartment) {
+            return res.status(404).json({ error: 'Apartment not found' });
+        }
+
+        // Update apartment fields if they are provided in the request body
+        if (location) {
+            apartment.location = location;
+        }
+
+        if (pricePerNight) {
+            apartment.pricePerNight = pricePerNight;
+        }
+
+        if (review) {
+            apartment.reviews.push(review);
+        }
+
+        if (connectionDetails) {
+            apartment.connectionDetails = connectionDetails;
+        }
+
+        if (isBooked !== undefined) {
+            apartment.isBooked = isBooked;
+        }
+
+        // Save the updated apartment
+        await apartment.save();
+
+        res.status(200).json({ message: 'Apartment updated successfully', apartment });
+    } catch (error) {
+        console.error('Error updating apartment:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Route to delete a picture from the database
+app.delete('/deletePic/:apartmentId/:picId', async (req, res) => {
+    try {
+        const { apartmentId, picId } = req.params;
+
+        // Find the apartment by ID
+        const apartment = await Apartment.findById(apartmentId);
+
+        if (!apartment) {
+            return res.status(404).json({ error: 'Apartment not found' });
+        }
+        console.log("a");
+
+        // Find the picture by ID
+        const pic = await Pic.findById(picId);
+        console.log("b");
+
+        if (!pic) {
+            return res.status(404).json({ error: 'Picture not found' });
+        }
+
+        // Remove the picture ID from the apartment's 'photo' array
+        const index = apartment.photo.indexOf(picId);
+        console.log("c");
+
+        if (index !== -1) {
+            apartment.photo.splice(index, 1);
+            console.log("d");
+            await apartment.save();
+        }
+        console.log("e");
+
+        // Delete the picture from the database
+        await pic.remove();
+
+        res.status(200).json({ message: 'Picture deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting picture:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});

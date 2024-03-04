@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const newAvgRate = ((currentAvgRate * totalReviews) + parseFloat(rating)) / (totalReviews + 1);
 
             // Update the apartment with the new average rating and add the review
-            const updateResponse = await fetch(`http://localhost:63341/updateApartment/${apartmentId}`, {
+            const updateResponse = await fetch(`http://localhost:63341/updateApartmentAvgNReviews/${apartmentId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

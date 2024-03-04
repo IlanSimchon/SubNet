@@ -62,6 +62,71 @@ async function testAddApartment() {
     }
 }
 
+
+//WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+// Function to test deleting a picture from the database
+async function testDeletePic(apartmentId, picId) {
+    try {
+        // Send a DELETE request to the server endpoint
+        const response = await fetch(`http://localhost:63341/deletePic/${apartmentId}/${picId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            console.log('Picture deleted successfully');
+        } else {
+            const errorMessage = await response.text();
+            console.error('Error deleting picture:', errorMessage);
+        }
+    } catch (error) {
+        console.error('Error deleting picture:', error.message);
+    }
+}
+
+// Function to test updating apartment details
+async function testUpdateApartment(apartmentId, updatedDetails) {
+    try {
+        // Send a PATCH request to the server endpoint
+        const response = await fetch(`http://localhost:63341/updateApartment/${apartmentId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedDetails)
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            console.log('Apartment updated successfully:', data);
+        } else {
+            const errorMessage = await response.text();
+            console.error('Error updating apartment:', errorMessage);
+        }
+    } catch (error) {
+        console.error('Error updating apartment:', error.message);
+    }
+}
+
+// Example usage
+const apartmentId = '65d70668db113ff7941f5831';
+const picId = '65d70668db113ff7941f5833';
+
+const updatedDetails = {
+    location: 'New Location',
+    pricePerNight: 150,
+    review: 'Great place to stay!',
+    connectionDetails: 'Updated connection details',
+    isBooked: false
+};
+
+// Test deleting a picture
+testDeletePic(apartmentId, picId);
+
+// Test updating apartment details
+// testUpdateApartment(apartmentId, updatedDetails);
+
+//WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
+
 // Call the testAddApartment function to execute the test
 // testAddApartment();
 
