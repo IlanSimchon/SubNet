@@ -140,7 +140,7 @@ export function onPageLoad() {
         <p><i class="far fa-star"></i> Reviews: ${params['reviews']}</p>
         <p><i class="fas fa-star"></i> Average Rate: ${params['avgRate']}</p>
         <p><i class="far fa-address-card"></i> Connection Details: ${params['connectionDetails']}</p>
-        <!-- Replace the button with a heart icon -->
+        
         <button id="likeBtn" class="likeBtn-white"><i class="fas fa-heart"></i> Like</button>
         <button id="reserveBtn">Reserve</button>
         <button id="recommendBtn">Recommend</button>
@@ -180,6 +180,31 @@ function createRecommendationBox() {
     return recommendationBox;
 }
 
+// Function to create an approvement box
+function createReservationApprovedBox() {
+    const approvementBox = document.createElement('div');
+    approvementBox.id = 'approvementBox';
+    approvementBox.classList.add('approvementBox-box');
+    approvementBox.style.display = 'none';
+
+    approvementBox.innerHTML = `
+        <span class="close" id="closeReserveApprovementBox">&times;</span>
+        <h2>Reservation Approved!</h2>
+        <p>Thank you for choosing us! <br>
+        For cancelation contact the house owner via email.<br>
+        Enjoy your stay!</p>
+    `;
+
+    document.body.appendChild(approvementBox);
+
+    const closeReserveApprovementBox = document.getElementById('closeReserveApprovementBox');
+    closeReserveApprovementBox.addEventListener('click', () => {
+        approvementBox.style.display = 'none';
+    });
+
+    return approvementBox;
+}
+
 
 document.addEventListener('DOMContentLoaded', () => {
     onPageLoad();
@@ -190,6 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const reviewInput = document.getElementById('review');
     const errorBox = document.createElement('div');
     const reserveBtn = document.getElementById('reserveBtn');
+    const approvementBox = createReservationApprovedBox();
 
     errorBox.id = 'errorBox'; // Add an ID to the error box for easier manipulation
 
@@ -202,11 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const apartmentId = params['apartmentId'];
 
-            // Fetch the current apartment details
             const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
             const apartmentDetails = await response.json();
 
-            // Toggle the isBooked property
             const updatedIsBooked = !apartmentDetails.isBooked;
 
             // Send a PATCH request to update the isBooked property
@@ -222,6 +246,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (updateResponse.ok) {
                 console.log('Apartment reservation status updated successfully');
+                approvementBox.style.display = 'block';
+                errorBox.style.display = 'none';
                 // Optionally update the UI to reflect the changes
             } else {
                 console.error('Failed to update apartment reservation status');
@@ -284,10 +310,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Close the recommendation box
             recommendationBox.style.display = 'none';
         }
-     catch (error) {
-        console.error('Error submitting recommendation:', error);
-    }
-});
+        catch (error) {
+            console.error('Error submitting recommendation:', error);
+        }
+    });
 
     function showError(message) {
         errorBox.textContent = message;
