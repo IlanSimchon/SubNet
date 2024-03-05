@@ -43,7 +43,7 @@ class house_owner {
                         <p><i class="fa fa-calendar-alt"></i> ${JSON.stringify(apartment.availability)}</p>
                         ${generateStarRating(apartment.avgRate)}
                          <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
-                         <p><i class='fas fa-check-circle'> Is Booked: </i> ${apartment.isAvailable}</p> 
+                         <p><i class='fas fa-check-circle'> Is Booked: </i> ${apartment.isBooked}</p> 
                         <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                         <hr>
                     `;
@@ -108,10 +108,10 @@ function generateStarRating(averageRate) {
 
 
 async function openAddApartmentTab() {
-    if(addApartmentFormContainer.style.display === 'none'){
+    if (addApartmentFormContainer.style.display === 'none') {
         addApartmentFormContainer.style.display = 'block';
     }
-    else{
+    else {
         addApartmentFormContainer.style.display = 'none';
         return
     }
