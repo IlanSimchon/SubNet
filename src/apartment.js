@@ -131,12 +131,21 @@ export const params = getUrlParams();
 export function onPageLoad() {
     const params = getUrlParams();
 
+    // Parse availability dates// Parse availability dates
+    const availability = JSON.parse(params['availability']);
+    const startDate = new Date(availability.startDate);
+    const endDate = new Date(availability.endDate);
+
+    // Format dates
+    const formattedStartDate = `${startDate.getDate()}.${startDate.getMonth() + 1}.${startDate.getFullYear()}`;
+    const formattedEndDate = `${endDate.getDate()}.${endDate.getMonth() + 1}.${endDate.getFullYear()}`;
+
     // Display apartment details with icons
     const apartmentDetailsContainer = document.getElementById('apartment_details');
     apartmentDetailsContainer.innerHTML = `
         <h2><i class="fas fa-map-marker-alt"></i> Location: ${params['location']}</h2>
         <p><i class="fas fa-sack-dollar"></i> Price Per Night: ${params['pricePerNight']}</p>
-        <p><i class="far fa-calendar-alt"></i> Availability: ${params['availability']}</p>
+        <p><i class="far fa-calendar-alt"></i> Availability: ${formattedStartDate} - ${formattedEndDate}</p>
         <p><i class="far fa-star"></i> Reviews: ${params['reviews']}</p>
         <p><i class="fas fa-star"></i> Average Rate: ${params['avgRate']}</p>
         <p><i class="far fa-address-card"></i> Connection Details: ${params['connectionDetails']}</p>
