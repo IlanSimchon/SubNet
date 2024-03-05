@@ -111,6 +111,12 @@ h1 {
    border-color: white;
 }
 
+#cancelResBtn{
+   border-color: white;
+   background-color: #db9d00;
+   color: white;
+}
+
 #recommendModal {
    display: none;
 }

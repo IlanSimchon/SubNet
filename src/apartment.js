@@ -151,7 +151,7 @@ export function onPageLoad() {
         <p><i class="far fa-address-card"></i> Connection Details: ${params['connectionDetails']}</p>
         
         <button id="likeBtn" class="likeBtn-white"><i class="fas fa-heart"></i> Like</button>
-        <button id="reserveBtn">Reserve</button>
+        <div id="buttonContainer"></div>
         <button id="recommendBtn">Recommend</button>
 
     `;
@@ -160,6 +160,35 @@ export function onPageLoad() {
     const apartmentImage = document.getElementById('apartment_image');
     apartmentImage.src = params['photo']; // Assuming 'photo' is the parameter containing the image URL
 
+    // Get the button container
+    const buttonContainer = document.getElementById('buttonContainer');
+
+    // Check if the apartment is booked
+    const isBooked = params['isBooked'] === 'true';
+    console.log(params[isBooked]);
+    // Create either reserveBtn or cancelBtn based on the isBooked status
+    const reserveOrCancelBtn = isBooked ? createCancelBtn() : createReserveBtn();
+
+    // Append the button to the container
+    buttonContainer.appendChild(reserveOrCancelBtn);
+}
+
+// Function to create a reserve button
+function createReserveBtn() {
+    console.log('created reserve buttn');
+    const reserveBtn = document.createElement('button');
+    reserveBtn.id = 'reserveBtn';
+    reserveBtn.textContent = 'Reserve';
+    return reserveBtn;
+}
+
+// Function to create a cancel reservation button
+function createCancelBtn() {
+    console.log('created cancel buttn');
+    const cancelResBtn = document.createElement('button');
+    cancelResBtn.id = 'cancelResBtn';
+    cancelResBtn.textContent = 'Cancel Reservation';
+    return cancelResBtn;
 }
 
 // Function to create a recommendation box
@@ -257,10 +286,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Apartment reservation status updated successfully');
                 approvementBox.style.display = 'block';
                 errorBox.style.display = 'none';
-                // Optionally update the UI to reflect the changes
-            } else {
-                console.error('Failed to update apartment reservation status');
-            }
+            
+                // Hide the reserveBtn and show the cancelResBtn
+                reserveBtn.style.display = 'none';
+                const cancelResBtn = createCancelBtn();
+                buttonContainer.appendChild(cancelResBtn);
+                } else {
+                    console.error('Failed to update apartment reservation status');
+                }
         } catch (error) {
             console.error('Error updating apartment reservation status:', error);
         }
