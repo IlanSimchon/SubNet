@@ -65,37 +65,6 @@ export class Apartment {
         });
     }
 
-    // Function to display reservation approved message
-    showReservationApprovedMessage() {
-        // Create a popup window
-        const popup = document.createElement('div');
-        popup.classList.add('popup');
-        popup.innerHTML = `
-            <div class="popup-content">
-                <span class="close" onclick="this.parentElement.style.display='none'">&times;</span>
-                <p>Reservation Approved! <br>
-                <p>Thank you for choosing us<br>
-                Enjoy your stay!</p>
-            </div>
-        `;
-        document.body.appendChild(popup);
-    }
-
-    // Function to display reservation cacelation message
-    showReservationCacelationMessage() {
-        // Create a popup window
-        const popup = document.createElement('div');
-        popup.classList.add('popup');
-        popup.innerHTML = `
-            <div class="popup-content">
-                <span class="close" onclick="this.parentElement.style.display='none'">&times;</span>
-                <p>Reservation was canceld <br>
-                Sorry it was not your match..</p>
-            </div>
-        `;
-        document.body.appendChild(popup);
-    }
-
     toggleLikeButtonColor(likeBtn) {
         likeBtn.classList.toggle('likeBtn-white');
         likeBtn.classList.toggle('likeBtn-red');
