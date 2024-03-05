@@ -178,7 +178,7 @@ function createReserveBtn() {
     console.log('created reserve buttn');
     const reserveBtn = document.createElement('button');
     reserveBtn.id = 'reserveBtn';
-    reserveBtn.textContent = 'Reserve';
+    reserveBtn.textContent = 'Reserve Apartment';
     return reserveBtn;
 }
 
@@ -252,6 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratingInput = document.getElementById('rating');
     const reviewInput = document.getElementById('review');
     const errorBox = document.createElement('div');
+    const buttonContainer = document.getElementById('buttonContainer');
     const reserveBtn = document.getElementById('reserveBtn');
     const approvementBox = createReservationApprovedBox();
 
@@ -296,6 +297,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
         } catch (error) {
             console.error('Error updating apartment reservation status:', error);
+        }
+    });
+
+    // Add event listener for Cancel Reservation button
+    document.addEventListener('click', async (event) => {
+        if (event.target.id === 'cancelResBtn') {
+            try {
+                const apartmentId = params['apartmentId'];
+
+                const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
+                const apartmentDetails = await response.json();
+
+                const updatedIsBooked = !apartmentDetails.isBooked;
+
+                // Send a PATCH request to update the isBooked property
+                const updateResponse = await fetch(`http://localhost:63341/updateApartment/${apartmentId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        isBooked: updatedIsBooked,
+                    }),
+                });
+
+                if (updateResponse.ok) {
+                    console.log('Apartment reservation status updated successfully');
+
+                    // Replace cancelResBtn with reserveBtn
+                    const cancelResBtn = document.getElementById('cancelResBtn');
+                    cancelResBtn.remove();
+                    reserveBtn.style.display = 'block';
+                } else {
+                    console.error('Failed to update apartment reservation status');
+                }
+            } catch (error) {
+                console.error('Error updating apartment reservation status:', error);
+            }
         }
     });
 
