@@ -73,7 +73,8 @@ export class Apartment {
         popup.innerHTML = `
             <div class="popup-content">
                 <span class="close" onclick="this.parentElement.style.display='none'">&times;</span>
-                <p>Reservation Approved! For cancellation, contact the house owner by email. Enjoy your stay!</p>
+                <p>Reservation Approved! <br>
+                Enjoy your stay!</p>
             </div>
         `;
         document.body.appendChild(popup);
@@ -270,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
             const apartmentDetails = await response.json();
 
-            const updatedIsBooked = !apartmentDetails.isBooked;
+            const updatedIsBooked = true;
 
             // Send a PATCH request to update the isBooked property
             const updateResponse = await fetch(`http://localhost:63341/updateApartment/${apartmentId}`, {
@@ -309,7 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
                 const apartmentDetails = await response.json();
 
-                const updatedIsBooked = !apartmentDetails.isBooked;
+                const updatedIsBooked = false;
 
                 // Send a PATCH request to update the isBooked property
                 const updateResponse = await fetch(`http://localhost:63341/updateApartment/${apartmentId}`, {
