@@ -5,7 +5,6 @@ export class Apartment {
 
         // Call getApartmentDetails method with the apartmentId
         this.getApartmentDetails();
-
     }
     async getApartmentDetails() {
         try {
@@ -64,6 +63,20 @@ export class Apartment {
             this.addToWishList(apartmentDetails);
             this.toggleLikeButtonColor(likeBtn);
         });
+    }
+
+    // Function to display reservation approved message
+    showReservationApprovedMessage() {
+        // Create a popup window
+        const popup = document.createElement('div');
+        popup.classList.add('popup');
+        popup.innerHTML = `
+            <div class="popup-content">
+                <span class="close" onclick="this.parentElement.style.display='none'">&times;</span>
+                <p>Reservation Approved! For cancellation, contact the house owner by email. Enjoy your stay!</p>
+            </div>
+        `;
+        document.body.appendChild(popup);
     }
 
     toggleLikeButtonColor(likeBtn) {
@@ -139,7 +152,6 @@ export function onPageLoad() {
     apartmentImage.src = params['photo']; // Assuming 'photo' is the parameter containing the image URL
 
 }
-// ... (Your existing code)
 
 // Function to create a recommendation box
 function createRecommendationBox() {
@@ -177,11 +189,46 @@ document.addEventListener('DOMContentLoaded', () => {
     const ratingInput = document.getElementById('rating');
     const reviewInput = document.getElementById('review');
     const errorBox = document.createElement('div');
+    const reserveBtn = document.getElementById('reserveBtn');
+
     errorBox.id = 'errorBox'; // Add an ID to the error box for easier manipulation
 
     recommendBtn.addEventListener('click', () => {
         recommendationBox.style.display = 'block';
         errorBox.style.display = 'none'; // Hide error message when opening the box
+    });
+
+    reserveBtn.addEventListener('click', async () => {
+        try {
+            const apartmentId = params['apartmentId'];
+
+            // Fetch the current apartment details
+            const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
+            const apartmentDetails = await response.json();
+
+            // Toggle the isBooked property
+            const updatedIsBooked = !apartmentDetails.isBooked;
+
+            // Send a PATCH request to update the isBooked property
+            const updateResponse = await fetch(`http://localhost:63341/updateApartment/${apartmentId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    isBooked: updatedIsBooked,
+                }),
+            });
+
+            if (updateResponse.ok) {
+                console.log('Apartment reservation status updated successfully');
+                // Optionally update the UI to reflect the changes
+            } else {
+                console.error('Failed to update apartment reservation status');
+            }
+        } catch (error) {
+            console.error('Error updating apartment reservation status:', error);
+        }
     });
 
     const submitRecommendationBtn = document.getElementById('submitRecommendation');
