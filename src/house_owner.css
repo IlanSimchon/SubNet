@@ -30,15 +30,29 @@ body {
 #addApartmenDetailstBtn {
     background-color: #db9d00;
     color: black;
-    padding: 15px; /* Increased padding for better visibility */
+    padding: 15px 19px;
     border: none;
     cursor: pointer;
     position: fixed;
     top: 120px;
     left: 20px;
     border-radius: 10px;
-    font-weight: bold; /* Added font-weight property */
-    font-size: 1.2em; /* Adjusted font-size property */
+    font-weight: bold;
+    font-size: 1em;
+}
+
+#showAll {
+    background-color: #db9d00;
+    color: black;
+    padding: 15px 39px;
+    border: none;
+    cursor: pointer;
+    position: fixed;
+    top: 350px;
+    left: 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1em;
 }
 
 .container {
@@ -146,6 +160,35 @@ h1 {
 
 .add-apartment-form-container button:hover {
     background-color: #db9d00;
+    color: #fff;
+}
+
+#filterByBookedBtn {
+    background-color: #db9d00;
+    color: black;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: fixed;
+    top: 200px;
+    left: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+#filterByAvailableBtn {
+    background-color: #db9d00;
+    color: black;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    position: fixed;
+    top: 275px;
+    left: 20px;
+    font-size: 1rem;
+    font-weight: bold;
 }
 
 .form-header {
@@ -158,11 +201,13 @@ h1 {
 .close-form-btn {
     background-color: transparent;
     border: none;
-    font-size: 16px; /* Adjust the font size as needed */
+    font-size: 16px;
+    /* Adjust the font size as needed */
     cursor: pointer;
     color: #333;
 }
 
 .close-form-btn:hover {
-    color: #ff0000; /* Change to your preferred hover color */
+    color: #ff0000;
+    /* Change to your preferred hover color */
 }
