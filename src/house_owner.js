@@ -231,6 +231,10 @@ document.addEventListener('DOMContentLoaded', () => {
         addApartmentFormContainer.style.display = 'none';
     });
 
+   const showAllButton = document.getElementById('showAll');
+    showAllButton.addEventListener('click', () => {
+        window.location.href = 'house_owner.html';
+        });
 
     // Function to get current username
     async function getCurrentUser() {
