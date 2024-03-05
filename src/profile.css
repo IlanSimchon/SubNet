@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     padding: 0;
     background-color: white;
-}
+ }
 
 .container {
     max-width: 800px;
@@ -15,7 +15,27 @@ h1 {
     color: #db9d00;
     margin-top: 60px;
     margin-bottom: 0;
-}
+    text-align: center;
+ }
+
+ .content {
+    max-width: 800px;
+    margin: 10 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+ }
+ .menu a {
+    padding: 20px 10px;
+    text-decoration: none;
+    font-size: 15px;
+    color: #818181;
+ }
+ 
+ .menu a:hover {
+    color: #007bff;
+ }
 
 #personalDetails {
     margin-bottom: 20px;
