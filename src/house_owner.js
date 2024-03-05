@@ -216,7 +216,6 @@ async function openAddApartmentTab() {
                     [],
                     0
                 );
-                console.log("apartmentID: " + apartmentID);
                 console.log("photo path: " + photoInput.value); //todo: fix the photo path! ("fake path")
 
 
@@ -351,3 +350,21 @@ function refreshPage() {
     window.location.reload();
 }
 
+async function getCurrentUser() {
+    try {
+        // Retrieve user data from localStorage
+        const userDataString = localStorage.getItem('userData');
+        if (userDataString) {
+            // Parse the user data JSON string
+            const userData = JSON.parse(userDataString);
+            // Return the user's name
+            return userData.user.userName;
+        } else {
+            console.error('User data not found in localStorage');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error getting current user:', error);
+        return null;
+    }
+}

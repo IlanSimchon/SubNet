@@ -50,7 +50,9 @@ export class Apartment {
                 photo: imageUrl,
                 connectionDetails: apartmentDetails.connectionDetails,
                 apartmentId: this.apartmentId,
+                isBooked: apartmentDetails.isBooked
             });
+
 
             // Redirect to apartment.html with query parameters, including apartmentId
             window.location.href = `apartment.html?${queryParams.toString()}`;
@@ -70,11 +72,13 @@ export class Apartment {
         likeBtn.classList.toggle('likeBtn-red');
     }
 
+    async getUserId(){return 0};
+
     // Add this function to apartment.js
     async addToWishList(apartmentDetails) {
         try {
             // Fetch user ID or any identifier for the current user from localStorage or your authentication mechanism
-            const userId = getUserId(); // Implement this function
+            const userId = getUserId(); // todo: Implement this function
 
             // Send a request to the server to add the apartment to the user's wish list
             const response = await fetch(`http://localhost:63341/addToWishList/${userId}`, {
@@ -117,6 +121,7 @@ export const params = getUrlParams();
 export function onPageLoad() {
     const params = getUrlParams();
 
+
     // Parse availability dates// Parse availability dates
     const availability = JSON.parse(params['availability']);
     const startDate = new Date(availability.startDate);
@@ -151,7 +156,6 @@ export function onPageLoad() {
 
     // Check if the apartment is booked
     const isBooked = params['isBooked'] === 'true';
-    console.log(params[isBooked]);
     // Create either reserveBtn or cancelBtn based on the isBooked status
     const reserveOrCancelBtn = isBooked ? createCancelBtn() : createReserveBtn();
 
