@@ -4,6 +4,57 @@ const addApartmentFormContainer = document.getElementById('addApartmentFormConta
 class house_owner {
     constructor() {
         document.addEventListener('DOMContentLoaded', this.displayApartments.bind(this));
+
+        const filterByBookedBtn = document.getElementById('filterByBookedBtn');
+        const filterByAvailableBtn = document.getElementById('filterByAvailableBtn');
+
+        const userDataString = localStorage.getItem('userData');
+        this.userData = JSON.parse(userDataString).user;
+        const userNameValue = this.userData.userName;
+        console.log(userNameValue);
+
+        filterByBookedBtn.addEventListener('click', () => this.filterApartments(true, userNameValue));
+        filterByAvailableBtn.addEventListener('click', () => this.filterApartments(false, userNameValue));
+    }
+
+    async filterApartments(isBooked, userNameValue) {
+        const content = document.querySelector('.content');
+        content.innerHTML = '';
+
+        try {
+            const response = await fetch(`http://localhost:63341/Apartments?userName=${userNameValue}`);
+            const apartments = await response.json();
+
+            const filteredApartments = apartments.filter(apartment => apartment.isBooked === isBooked);
+
+            if (filteredApartments.length > 0) {
+                for (const apartment of filteredApartments) {
+                    const imageUrl = `http://localhost:63341/getApartmentPic/${apartment._id}`;
+                    const imageResponse = await fetch(imageUrl);
+                    const imageUrlToShow = imageResponse.ok ? imageUrl : 'house.png';
+
+                    const apartmentBox = document.createElement('div');
+                    apartmentBox.classList.add('apartment-box');
+
+                    apartmentBox.innerHTML = `
+                        <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
+                        <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
+                        <p><i class="fa fa-calendar-alt"></i> ${JSON.stringify(apartment.availability)}</p>
+                        ${generateStarRating(apartment.avgRate)}
+                        <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
+                        <p><i class='fas fa-check-circle'> Is Booked: </i> ${apartment.isBooked}</p> 
+                        <img class="apartment-photo" src="${imageUrlToShow}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
+                        <hr>
+                    `;
+
+                    content.appendChild(apartmentBox);
+                }
+            } else {
+                console.log(`No ${isBooked ? 'booked' : 'available'} apartments found.`);
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
 
@@ -231,10 +282,10 @@ document.addEventListener('DOMContentLoaded', () => {
         addApartmentFormContainer.style.display = 'none';
     });
 
-   const showAllButton = document.getElementById('showAll');
+    const showAllButton = document.getElementById('showAll');
     showAllButton.addEventListener('click', () => {
         window.location.href = 'house_owner.html';
-        });
+    });
 
     // Function to get current username
     async function getCurrentUser() {
