@@ -38,8 +38,6 @@ async function testGetUser() {
     }
 }
 
-
-
 async function testAddApartment() {
     try {
         // Define the apartment data you want to add
@@ -62,8 +60,6 @@ async function testAddApartment() {
     }
 }
 
-
-//WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
 // Function to test deleting a picture from the database
 async function testDeletePic(apartmentId, picId) {
     try {
@@ -119,8 +115,71 @@ const updatedDetails = {
     isBooked: false
 };
 
+
+async function testUpdateUser(userId, password, email, phone) {
+    try {
+        // Make a PATCH request to updateUser route
+        const response = await fetch(`http://localhost:63341/updateUser/${userId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password, email, phone })
+        });
+
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error updating user details:', error);
+    }
+}
+
+async function testMapUserToApartment(userName, apartmentId) {
+    try {
+        // Make a POST request to mapUserToApartment route
+        const response = await fetch('http://localhost:63341/mapUserToApartment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userName, apartmentId })
+        });
+
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error mapping user to apartment:', error);
+    }
+}
+async function testGetUserByApartmentID(apartmentId) {
+    try {
+        // Make a GET request to getUserByApartmentID route
+        const response = await fetch(`http://localhost:63341/getUserByApartmentID/${apartmentId}`);
+
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error getting user by ApartmentID:', error);
+    }
+}
+
+// Example usage:
+testGetUserByApartmentID('65d70668db113ff7941f5831');
+
+
+
+
+// Example usage:
+// testMapUserToApartment('EyalCohen', '65d70668db113ff7941f5831');
+
+
+// Example usage:
+// testUpdateUser('EyalCohen', 'newPassword', 'newemail@example.com', '9876543210');
+
+
+
 // Test deleting a picture
-testDeletePic(apartmentId, picId);
+// testDeletePic(apartmentId, picId);
 
 // Test updating apartment details
 // testUpdateApartment(apartmentId, updatedDetails);

@@ -48,8 +48,13 @@ const apartmentSchema = new mongoose.Schema({
     owner: String,
     isBooked: { type: Boolean, default: false }
 });
+const userApartmentMappingSchema = new mongoose.Schema({
+    userName: String,
+    apartmentId: String
+});
 
-
+// Create model for UserApartmentMapping
+const UserApartmentMapping = mongoose.model('UserApartmentMapping', userApartmentMappingSchema);
 const User = mongoose.model('User', userSchema);
 const Apartment = mongoose.model('Apartment', apartmentSchema);
 const Pic = mongoose.model('Pic', picSchema);
@@ -57,6 +62,8 @@ const Pic = mongoose.model('Pic', picSchema);
 module.exports = Apartment;
 module.exports = User;
 module.exports = Pic;
+module.exports = UserApartmentMapping;
+
 
 
 app.use(bodyParser.json());
@@ -402,10 +409,8 @@ app.delete('/deletePic/:apartmentId/:picId', async (req, res) => {
 
         if (index !== -1) {
             apartment.photo.splice(index, 1);
-            console.log("d");
             await apartment.save();
         }
-        console.log("e");
 
 
         // Delete the picture from the database
@@ -417,3 +422,131 @@ app.delete('/deletePic/:apartmentId/:picId', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+// Route to delete an apartment and its associated pictures
+app.delete('/deleteApartment/:id', async (req, res) => {
+    try {
+        const apartmentId = req.params.id;
+
+        // Find the apartment by ID
+        const apartment = await Apartment.findById(apartmentId);
+
+        if (!apartment) {
+            return res.status(404).json({ error: 'Apartment not found' });
+        }
+
+        // Delete associated pictures
+        for (const picId of apartment.photo) {
+            const pic = await Pic.findById(picId);
+            if (pic) {
+                await pic.remove();
+            }
+        }
+
+        // Delete the apartment
+        await apartment.remove();
+
+        res.status(200).json({ message: 'Apartment and associated pictures deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting apartment and associated pictures:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Route to update user details (password, email, phone)
+app.patch('/updateUser/:name', async (req, res) => {
+    try {
+        const userName = req.params.name;
+        const { password, email, phone } = req.body;
+
+        // Find the user by ID
+        const user = await User.findOne({userName});
+        console.log("USER: " + user.toString());
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Update user fields if they are provided in the request body
+        if (password) {
+            user.password = password;
+        }
+
+        if (email) {
+            user.email = email;
+        }
+
+        if (phone) {
+            user.phone = phone;
+        }
+
+        // Save the updated user
+        await user.save();
+
+        res.status(200).json({ message: 'User details updated successfully', user });
+    } catch (error) {
+        console.error('Error updating user details:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Route to map user to apartment
+app.post('/mapUserToApartment', async (req, res) => {
+    try {
+        const { userName, apartmentId } = req.body;
+
+        // Check if both userName and apartmentId are provided
+        if (!userName || !apartmentId) {
+            return res.status(400).json({ error: 'Both userName and apartmentId are required' });
+        }
+
+        // Check if the user exists
+        const user = await User.findOne({ userName });
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Check if the apartment exists
+        const apartment = await Apartment.findById(apartmentId);
+        if (!apartment) {
+            return res.status(404).json({ error: 'Apartment not found' });
+        }
+
+        // Create a new entry in the user-apartment collection
+        const userApartmentMapping = new UserApartmentMapping({ userName, apartmentId });
+        await userApartmentMapping.save();
+
+        res.status(201).json({ message: 'User mapped to apartment successfully' });
+    } catch (error) {
+        console.error('Error mapping user to apartment:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Route to get user renting an apartment by ApartmentID
+app.get('/getUserByApartmentID/:apartmentId', async (req, res) => {
+    try {
+        const apartmentId = req.params.apartmentId;
+
+        // Find the user-apartment mapping by ApartmentID
+        const userApartmentMapping = await UserApartmentMapping.findOne({ apartmentId });
+
+        if (!userApartmentMapping) {
+            return res.status(404).json({ error: 'No user found for the given apartment ID' });
+        }
+
+        // Find the user by userName from the mapping
+        const user = await User.findOne({ userName: userApartmentMapping.userName });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json({ user });
+    } catch (error) {
+        console.error('Error getting user by ApartmentID:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+
+
