@@ -74,7 +74,23 @@ export class Apartment {
             <div class="popup-content">
                 <span class="close" onclick="this.parentElement.style.display='none'">&times;</span>
                 <p>Reservation Approved! <br>
+                <p>Thank you for choosing us<br>
                 Enjoy your stay!</p>
+            </div>
+        `;
+        document.body.appendChild(popup);
+    }
+
+    // Function to display reservation cacelation message
+    showReservationCacelationMessage() {
+        // Create a popup window
+        const popup = document.createElement('div');
+        popup.classList.add('popup');
+        popup.innerHTML = `
+            <div class="popup-content">
+                <span class="close" onclick="this.parentElement.style.display='none'">&times;</span>
+                <p>Reservation was canceld <br>
+                Sorry it was not your match..</p>
             </div>
         `;
         document.body.appendChild(popup);
@@ -229,8 +245,7 @@ function createReservationApprovedBox() {
     approvementBox.innerHTML = `
         <span class="close" id="closeReserveApprovementBox">&times;</span>
         <h2>Reservation Approved!</h2>
-        <p>Thank you for choosing us! <br>
-        For cancelation contact the house owner via email.<br>
+        <p>Thank you for choosing us<br>
         Enjoy your stay!</p>
     `;
 
@@ -242,6 +257,31 @@ function createReservationApprovedBox() {
     });
 
     return approvementBox;
+}
+
+// Function to create an cancelation box
+function createReservationCancelationBox() {
+    const cancelationBox = document.createElement('div');
+    cancelationBox.id = 'approvementBox';
+    cancelationBox.classList.add('cancelationBox-box');
+    cancelationBox.style.display = 'none';
+
+    cancelationBox.innerHTML = `
+        <span class="close" id="closeCancelationBox">&times;</span>
+        <h2>Reservation Is Cancelled</h2>
+        <p>Sorry it was not your match,<br>
+        Maybe next time..</p>
+    `;
+
+    document.body.appendChild(approvementBox);
+    document.body.appendChild(cancelationBox);
+
+    const closeCancelationBox = document.getElementById('closeCancelationBox');
+    closeCancelationBox.addEventListener('click', () => {
+        cancelationBox.style.display = 'none';
+    });
+
+    return cancelationBox;
 }
 
 
@@ -256,6 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const buttonContainer = document.getElementById('buttonContainer');
     const reserveBtn = document.getElementById('reserveBtn');
     const approvementBox = createReservationApprovedBox();
+    const cancelationBox = createReservationCancelationBox();
 
     errorBox.id = 'errorBox'; // Add an ID to the error box for easier manipulation
 
@@ -325,6 +366,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (updateResponse.ok) {
                     console.log('Apartment reservation status updated successfully');
+                    cancelationBox.style.display = 'block';
+                    errorBox.style.display = 'none';
 
                     // Replace cancelResBtn with reserveBtn
                     const cancelResBtn = document.getElementById('cancelResBtn');
