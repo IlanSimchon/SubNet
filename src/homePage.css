@@ -128,18 +128,12 @@
 			float: right;
 		}
 
-
-
 		::placeholder {
 		color: #999; /* Adjust the color as needed */
 		font-size: 15px;
 		font-style: normal; /* You can add more styles as needed */
 		font-weight: bold;
 		}
-
-
-
-
 
 		.menu a {
 		    padding: 20px 10px;

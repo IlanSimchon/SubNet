@@ -459,7 +459,7 @@ app.patch('/updateUser/:name', async (req, res) => {
         const { password, email, phone } = req.body;
 
         // Find the user by ID
-        const user = await User.findOne({userName});
+        const user = await User.findOne({ userName });
         console.log("USER: " + user.toString());
 
         if (!user) {

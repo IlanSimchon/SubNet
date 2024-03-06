@@ -29,29 +29,28 @@ class ApartmentManager {
     addRatingFilter() {
         // Check if the rating input already exists
         if (!document.getElementById('rating')) {
-            // Create label element for rating
             const ratingLabel = document.createElement('label');
             ratingLabel.setAttribute('for', 'rating');
-            ratingLabel.textContent = 'Rating:';
-
+    
             // Create input element for rating
             const ratingInput = document.createElement('input');
             ratingInput.setAttribute('type', 'number');
             ratingInput.setAttribute('id', 'rating');
             ratingInput.setAttribute('name', 'rating');
             ratingInput.setAttribute('min', '0');
+            ratingInput.setAttribute('max', '5'); // Assuming rating is on a scale of 0 to 5
             ratingInput.setAttribute('step', '0.1'); // Specify step attribute to allow decimal values
-
+            ratingInput.setAttribute('placeholder', 'Rating');
+    
             // Insert the label and input before the buttons
             const filterForm = document.getElementById('filterForm');
             filterForm.insertBefore(ratingInput, filterForm.querySelector('button[type="submit"]'));
             filterForm.insertBefore(ratingLabel, ratingInput);
-
+    
             this.closeAdvancedFilter();
-
         }
-
     }
+    
 
     // Function to format the availability dates
     formatAvailabilityDate(availability) {
