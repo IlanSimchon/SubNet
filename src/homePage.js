@@ -20,7 +20,7 @@ class ApartmentManager {
         // Event listeners
         this.filterBar.addEventListener('submit', this.applyFilters.bind(this));
         this.advancedFilterButton.addEventListener('click', this.addRatingFilter.bind(this));
-        this.login_house_owner.addEventListener('click', ()=> window.location.href = 'house_owner.html');
+        this.login_house_owner.addEventListener('click', () => window.location.href = 'house_owner.html');
 
         window.onload = this.displayApartments.bind(this);
     }
@@ -31,7 +31,7 @@ class ApartmentManager {
         if (!document.getElementById('rating')) {
             const ratingLabel = document.createElement('label');
             ratingLabel.setAttribute('for', 'rating');
-    
+
             // Create input element for rating
             const ratingInput = document.createElement('input');
             ratingInput.setAttribute('type', 'number');
@@ -41,16 +41,16 @@ class ApartmentManager {
             ratingInput.setAttribute('max', '5'); // Assuming rating is on a scale of 0 to 5
             ratingInput.setAttribute('step', '0.1'); // Specify step attribute to allow decimal values
             ratingInput.setAttribute('placeholder', 'Rating');
-    
+
             // Insert the label and input before the buttons
             const filterForm = document.getElementById('filterForm');
             filterForm.insertBefore(ratingInput, filterForm.querySelector('button[type="submit"]'));
             filterForm.insertBefore(ratingLabel, ratingInput);
-    
+
             this.closeAdvancedFilter();
         }
     }
-    
+
 
     // Function to format the availability dates
     formatAvailabilityDate(availability) {
@@ -73,7 +73,7 @@ class ApartmentManager {
     // Function to display all apartments
     async displayApartments() {
         try {
-            const response = await fetch('http://localhost:63341/Apartments');
+            const response = await fetch('http://localhost:63341/apartmentsByBookingStatus/false');
             const apartments = await response.json();
 
             if (apartments.length > 0) {
@@ -117,7 +117,7 @@ class ApartmentManager {
                 });
 
             } else {
-                console.log('No apartments found. ' + apartments.length);
+                console.log('No apartments found');
             }
         } catch (error) {
             console.error(error);
@@ -136,8 +136,7 @@ class ApartmentManager {
     // Function to render filtered apartments based on filter criteria
     async renderFilteredApartments(location, minPrice, maxPrice, rating) {
         try {
-            const url = new URL('http://localhost:63341/Apartments');
-            console.log("render fileted");
+            const url = new URL('http://localhost:63341/apartmentsByBookingStatus/false');
             const params = {
                 location: location,
                 minPrice: minPrice,
@@ -200,7 +199,7 @@ class ApartmentManager {
                     });
                 });
             } else {
-                console.log('No apartments found. ' + apartments.length);
+                console.log('No apartments found.');
             }
         } catch (error) {
             console.error('Error fetching apartments with filters:', error);
@@ -211,7 +210,6 @@ class ApartmentManager {
     applyFilters(event) {
         event.preventDefault();
         const location = document.getElementById('location').value;
-        console.log(location);
         const minPrice = parseFloat(document.getElementById('minPrice').value);
         const maxPrice = parseFloat(document.getElementById('maxPrice').value);
         let rating = 0; // Default rating value is 0
