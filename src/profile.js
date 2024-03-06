@@ -1,3 +1,222 @@
+// ------ Display Current user details --------
+document.addEventListener('DOMContentLoaded', function () { // V
+    // Get the user details when the page is loaded
+    getUserDetails();
+
+    // Add event listener to the Reveal Password button
+    document.getElementById('revealPasswordBtn').addEventListener('click', function () {
+        // Reveal the password
+        revealPassword();
+    });
+});
+
+async function getUserDetails() {
+    const userName = await getCurrentUsername();
+    console.log(userName);
+
+    // Make an AJAX request to the server
+    fetch(`http://localhost:63341/getUser?userName=${userName}`)
+        .then(response => response.json())
+        .then(data => {
+            // Check if the response contains user details
+            console.log(data)
+            if (data.error) {
+                console.error(data.error);
+            } else {
+                // Update the content of the "myDetails" div with user details
+                displayDetails(data);
+            }
+        })
+        .catch(error => console.error('Error fetching user details:', error));
+}
+
+async function getCurrentUsername() {
+    try {
+        // Retrieve user data from localStorage
+        const userDataString = localStorage.getItem('userData');
+        if (userDataString) {
+            // Parse the user data JSON string
+            const userData = JSON.parse(userDataString);
+            // Return the user's name
+            return userData.user.userName;
+        } else {
+            console.error('User data not found in localStorage');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error getting current user:', error);
+        return null;
+    }
+}
+
+// Function to reveal the password
+function revealPassword() {
+    const passwordElement = document.getElementById('userPassword');
+    
+    // Check if the password element exists
+    if (passwordElement) {
+        // Display the password
+        passwordElement.style.display = 'block';
+    }
+}
+
+// Function to update the content of the "myDetails" div with user details
+function displayDetails(user) {
+    const myDetailsDiv = document.getElementById('myDetails');
+    
+    // Create HTML content with user details
+    const detailsHTML = `
+        <p>Username: ${user.userName}</p>
+        <p>Password: <span id="userPassword" style="display: none;">${user.password}</span>
+            <button id="revealPasswordBtn" onclick="togglePassword()">Show/Hide Password</button>
+        </p>
+        <p>Phone Number: ${user.phone}</p>
+        <p>Email: ${user.email}</p>
+    `;
+
+    // Set the HTML content of the "myDetails" div
+    myDetailsDiv.innerHTML = detailsHTML;
+}
+
+// Function to reveal or hide the password - the function is used in a innerHtml inside "displayDetails"
+function togglePassword() {
+    const passwordElement = document.getElementById('userPassword');
+    
+    // Check if the password element exists
+    if (passwordElement) {
+        // Toggle the display of the password
+        passwordElement.style.display = (passwordElement.style.display === 'none') ? 'inline' : 'none';
+    }
+}
+
+
+// ----------- Edit user details --------
+document.addEventListener('DOMContentLoaded', function () {
+    // Add event listener to the Edit Profile button
+    document.getElementById('editProfileBtn').addEventListener('click', function () {
+        editProfileForm();
+    });
+});
+
+let editProfileFormAppended = false; // Variable to track whether the form has been appended
+
+// Function to show/hide the edit profile form
+async function editProfileForm() {
+    // Check if the form has already been appended
+    if (!editProfileFormAppended) {
+        const editProfileForm = document.createElement('div');
+        editProfileForm.id = 'editProfileForm';
+        editProfileForm.className = 'editProfileForm';
+
+        editProfileForm.innerHTML = `
+            <button id="closeEditFormBtn" class="close-form-btn">&times;</button>
+            <form id="EditProfile">
+                <label for="password">Password:</label>
+                <input type="text" id="passwordInput">
+
+                <label for="email">Email:</label>
+                <input type="text" id="emailInput">
+
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phoneInput" required>
+
+                <button type="submit" id="changeDetails">Save Changes</button>
+            </form>`;
+
+        // Add event listener to the close button
+        const closeBtn = editProfileForm.querySelector('#closeEditFormBtn');
+        closeBtn.addEventListener('click', function () {
+            editProfileForm.style.display = 'none';
+            editProfileFormAppended = false;
+        });
+
+        // Add event listener to the form submission
+        const editProfileFormElement = editProfileForm.querySelector('#EditProfile');
+        editProfileFormElement.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Gather values from form inputs
+            const newPassword = document.getElementById('passwordInput').value.trim();
+            const newEmail = document.getElementById('emailInput').value.trim();
+            const newPhone = document.getElementById('phoneInput').value.trim();
+
+            // Check if any input is empty
+            if (newPassword === '' || newEmail === '' || newPhone === '') {
+                alert('Please fill in all fields.');
+                return 0;
+            }
+
+            // Handle the logic to update user details with the new values
+            // (You can replace the following code with your server request logic)
+            console.log('New Password:', newPassword);
+            console.log('New Email:', newEmail);
+            console.log('New Phone:', newPhone);
+
+            // Close the form after handling the submission
+            editProfileForm.style.display = 'none';
+        });
+
+        // Append the form to the body
+        document.body.appendChild(editProfileForm);
+
+        // Set the variable to true to indicate that the form has been appended
+        editProfileFormAppended = true;
+    }
+
+    // Display the form
+    document.getElementById('editProfileForm').style.display = 'block';
+}
+
+
+// Function to create a recommendation box
+function editProfileBox() {
+    const editProfileBox = document.createElement('div');
+    editProfileBox.id = 'editProfileBox';
+    editProfileBox.classList.add('editProfile-Box');
+    editProfileBox.style.display = 'none';
+
+    editProfileBox.innerHTML = `
+        <span class="close" id="closeEditProfileBox">&times;</span>
+        <h2>Edit Your Profile</h2>
+        <label for="email"></label>
+        <input type="text" id="email" name="email">
+        <label for="phone">phone</label>
+        <input type="text" id="phone" name="phone">
+        <button id="submitEditProfile">OK</button>
+    `;
+
+    document.body.appendChild(editProfileBox);
+
+    const closeEditProfileBox = document.getElementById('closeEditProfileBox');
+    closeEditProfileBox.addEventListener('click', () => {
+        closeEditProfileBox.style.display = 'none';
+    });
+
+    return editProfileBox;
+}
+
+
+
+
+
+async function UpdateUser(userId, password, email, phone) { // V
+    try {
+        // Make a PATCH request to updateUser route
+        const response = await fetch(`http://localhost:63341/updateUser/${userId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password, email, phone })
+        });
+
+        const data = await response.json();
+        console.log(data);
+    } catch (error) {
+        console.error('Error updating user details:', error);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     const wishListContainer = document.getElementById('likedApartments');
 
@@ -79,161 +298,5 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Call the function to display user details when the page loads
     await displayUserDetails();
 });
-
-const myDetails = document.getElementById('myDetails');
-
-const editProfile = document.getElementById('editProfileBtn');
-editProfile.addEventListener('click', () => {
-    editProfileBox()
-});
-
-// Function to create a recommendation box
-function editProfileBox() {
-    const editProfileBox = document.createElement('div');
-    editProfileBox.id = 'editProfileBox';
-    editProfileBox.classList.add('editProfile-Box');
-    editProfileBox.style.display = 'none';
-
-    editProfileBox.innerHTML = `
-        <span class="close" id="closeEditProfileBox">&times;</span>
-        <h2>Edit Your Profile</h2>
-        <label for="email"></label>
-        <input type="text" id="email" name="email">
-        <label for="phone">phone</label>
-        <input type="text" id="phone" name="phone">
-        <button id="submitEditProfile">OK</button>
-    `;
-
-    document.body.appendChild(editProfileBox);
-
-    const closeEditProfileBox = document.getElementById('closeEditProfileBox');
-    closeEditProfileBox.addEventListener('click', () => {
-        closeEditProfileBox.style.display = 'none';
-    });
-
-    return editProfileBox;
-}
-
-document.addEventListener('DOMContentLoaded', function () { // V
-    // Get the user details when the page is loaded
-    getUserDetails();
-
-    // Add event listener to the Edit button
-    document.getElementById('editProfileBtn').addEventListener('click', function () {
-        // Show/hide the edit profile form
-        toggleEditProfileForm();
-    });
-
-    // Add event listener to the Reveal Password button
-    document.getElementById('revealPasswordBtn').addEventListener('click', function () {
-        // Reveal the password
-        revealPassword();
-    });
-});
-
-async function getUserDetails() {
-    const userName = await getCurrentUsername();
-    console.log(userName);
-
-    // Make an AJAX request to the server
-    fetch(`http://localhost:63341/getUser?userName=${userName}`)
-        .then(response => response.json())
-        .then(data => {
-            // Check if the response contains user details
-            console.log(data)
-            if (data.error) {
-                console.error(data.error);
-            } else {
-                // Update the content of the "myDetails" div with user details
-                dsiplayDetails(data);
-            }
-        })
-        .catch(error => console.error('Error fetching user details:', error));
-}
-
-async function getCurrentUsername() {
-    try {
-        // Retrieve user data from localStorage
-        const userDataString = localStorage.getItem('userData');
-        if (userDataString) {
-            // Parse the user data JSON string
-            const userData = JSON.parse(userDataString);
-            // Return the user's name
-            return userData.user.userName;
-        } else {
-            console.error('User data not found in localStorage');
-            return null;
-        }
-    } catch (error) {
-        console.error('Error getting current user:', error);
-        return null;
-    }
-}
-
-// Function to reveal the password
-function revealPassword() {
-    const passwordElement = document.getElementById('userPassword');
-    
-    // Check if the password element exists
-    if (passwordElement) {
-        // Display the password
-        passwordElement.style.display = 'block';
-    }
-}
-
-// Function to update the content of the "myDetails" div with user details
-function dsiplayDetails(user) {
-    const myDetailsDiv = document.getElementById('myDetails');
-    
-    // Create HTML content with user details
-    const detailsHTML = `
-        <p>Username: ${user.userName}</p>
-        <p>Password: <span id="userPassword" style="display: none;">${user.password}</span>
-            <button id="revealPasswordBtn" onclick="togglePassword()">Show/Hide Password</button>
-        </p>
-        <p>Phone Number: ${user.phoneNumber}</p>
-        <p>Email: ${user.email}</p>
-    `;
-
-    // Set the HTML content of the "myDetails" div
-    myDetailsDiv.innerHTML = detailsHTML;
-}
-
-// Function to reveal or hide the password
-function togglePassword() { 
-    const passwordElement = document.getElementById('userPassword');
-    
-    // Check if the password element exists
-    if (passwordElement) {
-        // Toggle the display of the password
-        passwordElement.style.display = (passwordElement.style.display === 'none') ? 'inline' : 'none';
-    }
-}
-
-// Function to show/hide the edit profile form
-function toggleEditProfileForm() {
-    const editProfileForm = document.getElementById('editProfileForm');
-
-    // Toggle the display property of the edit profile form
-    editProfileForm.style.display = (editProfileForm.style.display === 'none') ? 'block' : 'none';
-}
-
-async function UpdateUser(userId, password, email, phone) { // V
-    try {
-        // Make a PATCH request to updateUser route
-        const response = await fetch(`http://localhost:63341/updateUser/${userId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ password, email, phone })
-        });
-
-        const data = await response.json();
-        console.log(data);
-    } catch (error) {
-        console.error('Error updating user details:', error);
-    }
-}
 
 // todo: button id="submitEditProfile,  use editProfileBox()
