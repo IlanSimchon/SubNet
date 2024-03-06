@@ -6,6 +6,7 @@ export class Apartment {
         // Call getApartmentDetails method with the apartmentId
         this.getApartmentDetails();
     }
+
     async getApartmentDetails() {
         try {
             // Fetch apartment details from the server using apartmentId
@@ -60,44 +61,11 @@ export class Apartment {
             console.error('Error displaying apartment details:', error);
         }
 
-        const likeBtn = document.getElementById('likeBtn');
-        likeBtn.addEventListener('click', () => {
-            this.addToWishList(apartmentDetails);
-            this.toggleLikeButtonColor(likeBtn);
-        });
     }
 
     toggleLikeButtonColor(likeBtn) {
         likeBtn.classList.toggle('likeBtn-white');
         likeBtn.classList.toggle('likeBtn-red');
-    }
-
-    // Add this function to apartment.js
-    async addToWishList(apartmentDetails) {
-        try {
-            // Fetch user ID or any identifier for the current user from localStorage or your authentication mechanism
-            const userId = getUserId(); // todo: Implement this function
-
-            // Send a request to the server to add the apartment to the user's wish list
-            const response = await fetch(`http://localhost:63341/addToWishList/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ apartmentDetails }),
-            });
-
-            if (response.ok) {
-                console.log('Apartment added to wish list successfully');
-                // Optionally update the wish list in localStorage if you want to keep it client-side
-                // const updatedWishList = [...getWishList(), apartmentDetails.location];
-                // localStorage.setItem('wishList', JSON.stringify(updatedWishList));
-            } else {
-                console.error('Failed to add apartment to wish list');
-            }
-        } catch (error) {
-            console.error('Error adding apartment to wish list:', error);
-        }
     }
 }
 
@@ -137,7 +105,7 @@ export function onPageLoad() {
         <p><i class="far fa-calendar-alt"></i> Availability: ${formattedStartDate} - ${formattedEndDate}</p>
         <p><i class="far fa-star"></i> Reviews: ${params['reviews']}</p>
         <p><i class="fas fa-star"></i> Average Rate: ${params['avgRate']}</p>
-        <p><i class="far fa-address-card"></i> Connection Details: ${params['connectionDetails']}</p>
+        <p><i class="far fa-address-card"></i> Owner Connection Details: ${params['connectionDetails']}</p>
         
         <button id="likeBtn" class="likeBtn-white"><i class="fas fa-heart"></i> Like</button>
         <div id="buttonContainer"></div>
@@ -159,6 +127,13 @@ export function onPageLoad() {
 
     // Append the button to the container
     buttonContainer.appendChild(reserveOrCancelBtn);
+
+    const likeBtn = document.getElementById('likeBtn');
+        likeBtn.addEventListener('click', () => {
+            console.log("you liked this apartment!");
+            //this.addToWishList(apartmentDetails);
+            //this.toggleLikeButtonColor(likeBtn);
+        });
 }
 
 // Function to create a reserve button
@@ -206,6 +181,50 @@ function createRecommendationBox() {
     return recommendationBox;
 }
 
+// -------- Wish List--------------
+/*function addToWishList(apartmentDetails) {
+    const likedApartmentsList = document.getElementById('likedApartments');
+    const apartmentItem = document.createElement('li');
+    apartmentItem.textContent = apartmentDetails;
+    likedApartmentsList.appendChild(apartmentItem);
+}
+
+async function getApartmentDetails() {
+    try {
+        // Fetch apartment details from the server using apartmentId
+        const response = await fetch(`http://localhost:63341/ApartmentByID/${this.apartmentId}`);
+        const apartmentDetails = await response.json();
+
+        // Call a method to display apartment details
+        this.displayApartmentDetails(apartmentDetails);
+    } catch (error) {
+        console.error('Error fetching apartment details:', error);
+    }
+}
+
+document.getElementById('likeBtn').addEventListener('click', function () {
+    const apartmentName = getApartmentDetails();
+    
+    // Assuming updateLikedApartmentsList is defined in this file
+    updateLikedApartmentsList(apartmentName);
+
+    // Send a request to the server to like the apartment
+    fetch(`http://localhost:63341/likeApartment?apartmentName=${apartmentName}`, {
+        method: 'POST',
+        // Add headers if needed
+        // body: JSON.stringify({  }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Apartment liked:', data);
+        // You can update UI or provide feedback to the user
+    })
+    .catch(error => console.error('Error liking apartment:', error));
+});*/
+
+
+
+// -------- Add review and rank----------
 // Function to create an approvement box
 function createReservationApprovedBox() {
     const approvementBox = document.createElement('div');

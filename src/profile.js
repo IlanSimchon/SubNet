@@ -203,7 +203,9 @@ async function UpdateUser(userId, password, email, phone) {
   }
 
 // ------------ apartment wish list ----------
-
+document.getElementById('likeBtn').addEventListener('click', function () {
+    alert("hello!")
+});
 /*document.addEventListener('DOMContentLoaded', async () => {
     const wishListContainer = document.getElementById('likedApartments');
 
