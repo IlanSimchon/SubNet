@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () { // V
 
 async function getUserDetails() {
     const userName = await getCurrentUsername();
-    console.log(userName);
 
     // Make an AJAX request to the server
     fetch(`http://localhost:63341/getUser?userName=${userName}`)
@@ -102,14 +101,19 @@ let editProfileFormAppended = false; // Variable to track whether the form has b
 
 // Function to show/hide the edit profile form
 async function editProfileForm() {
+    let newPassword = "";
+    let newEmail = "";
+    let newPhone = "";
+    
     // Check if the form has already been appended
     if (!editProfileFormAppended) {
         const editProfileForm = document.createElement('div');
         editProfileForm.id = 'editProfileForm';
         editProfileForm.className = 'editProfileForm';
+        editProfileForm.style.display = 'block';
 
         editProfileForm.innerHTML = `
-            <button id="closeEditFormBtn" class="close-form-btn">&times;</button>
+            <button id="closeEditFormBtn" class="closeEditFormBtn">&times;</button>
             <form id="EditProfile">
                 <label for="password">Password:</label>
                 <input type="text" id="passwordInput">
@@ -118,7 +122,7 @@ async function editProfileForm() {
                 <input type="text" id="emailInput">
 
                 <label for="phone">Phone Number</label>
-                <input type="text" id="phoneInput" required>
+                <input type="text" id="phoneInput">
 
                 <button type="submit" id="changeDetails">Save Changes</button>
             </form>`;
@@ -136,15 +140,15 @@ async function editProfileForm() {
             event.preventDefault();
 
             // Gather values from form inputs
-            const newPassword = document.getElementById('passwordInput').value.trim();
-            const newEmail = document.getElementById('emailInput').value.trim();
-            const newPhone = document.getElementById('phoneInput').value.trim();
+            newPassword = document.getElementById('passwordInput').value.trim();
+            newEmail = document.getElementById('emailInput').value.trim();
+            newPhone = document.getElementById('phoneInput').value.trim();
 
             // Check if any input is empty
-            if (newPassword === '' || newEmail === '' || newPhone === '') {
+            /*if (newPassword === '' || newEmail === '' || newPhone === '') {
                 alert('Please fill in all fields.');
                 return 0;
-            }
+            }*/
 
             // Handle the logic to update user details with the new values
             // (You can replace the following code with your server request logic)
@@ -165,43 +169,17 @@ async function editProfileForm() {
 
     // Display the form
     document.getElementById('editProfileForm').style.display = 'block';
+
+    // Send the details to the server
+    const userName = await getCurrentUsername()
+    console.log(userName,newPassword,newEmail,newPhone);
+    await UpdateUser(userName,newPassword,newEmail,newPhone);
 }
-
-
-// Function to create a recommendation box
-function editProfileBox() {
-    const editProfileBox = document.createElement('div');
-    editProfileBox.id = 'editProfileBox';
-    editProfileBox.classList.add('editProfile-Box');
-    editProfileBox.style.display = 'none';
-
-    editProfileBox.innerHTML = `
-        <span class="close" id="closeEditProfileBox">&times;</span>
-        <h2>Edit Your Profile</h2>
-        <label for="email"></label>
-        <input type="text" id="email" name="email">
-        <label for="phone">phone</label>
-        <input type="text" id="phone" name="phone">
-        <button id="submitEditProfile">OK</button>
-    `;
-
-    document.body.appendChild(editProfileBox);
-
-    const closeEditProfileBox = document.getElementById('closeEditProfileBox');
-    closeEditProfileBox.addEventListener('click', () => {
-        closeEditProfileBox.style.display = 'none';
-    });
-
-    return editProfileBox;
-}
-
-
-
-
 
 async function UpdateUser(userId, password, email, phone) { // V
     try {
         // Make a PATCH request to updateUser route
+        console.log(userId);
         const response = await fetch(`http://localhost:63341/updateUser/${userId}`, {
             method: 'PATCH',
             headers: {
@@ -217,7 +195,9 @@ async function UpdateUser(userId, password, email, phone) { // V
     }
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+// ------------ apartment wish list ----------
+
+/*document.addEventListener('DOMContentLoaded', async () => {
     const wishListContainer = document.getElementById('likedApartments');
 
     // Function to get the user ID from localStorage
@@ -297,6 +277,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Call the function to display user details when the page loads
     await displayUserDetails();
-});
+});*/
 
 // todo: button id="submitEditProfile,  use editProfileBox()

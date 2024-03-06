@@ -467,15 +467,15 @@ app.patch('/updateUser/:name', async (req, res) => {
         }
 
         // Update user fields if they are provided in the request body
-        if (password) {
+        if (password !== "") {
             user.password = password;
         }
 
-        if (email) {
+        if (email !== "") {
             user.email = email;
         }
 
-        if (phone) {
+        if (phone !== "") {
             user.phone = phone;
         }
 
