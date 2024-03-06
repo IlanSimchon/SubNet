@@ -1,6 +1,5 @@
 const addApartmentFormContainer = document.getElementById('addApartmentFormContainer');
 
-
 class house_owner {
     constructor() {
         document.addEventListener('DOMContentLoaded', this.displayApartments.bind(this));
@@ -86,30 +85,66 @@ class house_owner {
                     const apartmentBox = document.createElement('div');
                     apartmentBox.classList.add('apartment-box');
                     const rateInPercent = 50 / 5 * apartment.avgRate
-                    console.log(rateInPercent)
+                    const isBooked = (apartment.isBooked === true) ?  'Booked' : 'Available';                    console.log(apartment.isBooked)
+                    console.log(isBooked)
+
+
                     // Set the inner HTML content for the apartment box
                     apartmentBox.innerHTML = `
+                        <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                         <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
                         <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
                         <p><i class="fa fa-calendar-alt"></i> ${JSON.stringify(apartment.availability)}</p>
                         ${generateStarRating(apartment.avgRate)}
                          <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
-                         <p><i class='fas fa-check-circle'> Is Booked: </i> ${apartment.isBooked}</p> 
-                        <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
-                        <hr>
+                       <p><i id="bookedStatus" class='fas fa-check-circle ${apartment.isBooked === true ? 'booked' : 'available'}'> ${isBooked}</i></p>
+
+                        <div id="clientDetailsModal" class="modal">
+                          <div class="modal-content">
+                            <!-- Client details go here -->
+                            <p>Client Details:</p>
+                            <!-- Add more details as needed -->
+                            <span class="close">&times;</span>
+                          </div>
+                        </div>
+                                                   
+                            <hr>
                     `;
+
+                    const bookedStatus = apartmentBox.querySelector('#bookedStatus');
+                    const modal = apartmentBox.querySelector('#clientDetailsModal');
+                    const closeModal = apartmentBox.querySelector('.close');
+
+                    // Add click event listener to the "Booked" text
+                    bookedStatus.addEventListener('click', () => {
+                        // Display the modal
+                        modal.style.display = 'block';
+                    });
+
+                    // Add click event listener to close the modal
+                    closeModal.addEventListener('click', () => {
+                        // Hide the modal
+                        modal.style.display = 'none';
+                    });
+
+                    // Close the modal if the user clicks outside of it
+                    window.addEventListener('click', (event) => {
+                        if (event.target === modal) {
+                            modal.style.display = 'none';
+                        }
+                    });
 
                     // Append the apartment box to the container
                     content.appendChild(apartmentBox);
                 }
 
                 // Add event listener to the entire apartment box
-                content.querySelectorAll('.apartment-box').forEach(apartmentBox => {
-                    apartmentBox.addEventListener('click', () => {
-                        const apartmentId = apartmentBox.querySelector('.apartment-photo').getAttribute('data-apartment-id');
-                        apartmentManager.displayApartmentDetails(apartmentId);
-                    });
-                });
+                // content.querySelectorAll('.apartment-box').forEach(apartmentBox => {
+                //     apartmentBox.addEventListener('click', () => {
+                //         const apartmentId = apartmentBox.querySelector('.apartment-photo').getAttribute('data-apartment-id');
+                //         Apart.displayApartmentDetails(apartmentId);
+                //     });
+                // });
 
             } else {
                 console.log('No apartments found. ' + apartments.length);
@@ -285,70 +320,70 @@ document.addEventListener('DOMContentLoaded', () => {
     showAllButton.addEventListener('click', () => {
         window.location.href = 'house_owner.html';
     });
-
-    // Function to get current username
-    async function getCurrentUser() {
-        try {
-            // Retrieve user data from localStorage
-            const userDataString = localStorage.getItem('userData');
-            if (userDataString) {
-                // Parse the user data JSON string
-                const userData = JSON.parse(userDataString);
-                // Return the user's name
-                return userData.user.userName;
-            } else {
-                console.error('User data not found in localStorage');
-                return null;
-            }
-        } catch (error) {
-            console.error('Error getting current user:', error);
-            return null;
-        }
-    }
-
 });
 
+    // Function to get current username
+    // async function getCurrentUser() {
+    //     try {
+    //         // Retrieve user data from localStorage
+    //         const userDataString = localStorage.getItem('userData');
+    //         if (userDataString) {
+    //             // Parse the user data JSON string
+    //             const userData = JSON.parse(userDataString);
+    //             // Return the user's name
+    //             return userData.user.userName;
+    //         } else {
+    //             console.error('User data not found in localStorage');
+    //             return null;
+    //         }
+    //     } catch (error) {
+    //         console.error('Error getting current user:', error);
+    //         return null;
+    //     }
+    // }
 
-async function AddApartment(location, pricePerNight, availability, owner, connectionDetails, reviews, avgRate) {
-    try {
-        const apartmentData = {
-            location,
-            pricePerNight,
-            availability,
-            owner,
-            connectionDetails,
-            reviews,
-            avgRate
-        };
 
-        const addApartmentResponse = await fetch('http://localhost:63341/addApartment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(apartmentData),
-        });
+    async function AddApartment(location, pricePerNight, availability, owner, connectionDetails, reviews, avgRate) {
+        try {
+            const apartmentData = {
+                location,
+                pricePerNight,
+                availability,
+                owner,
+                connectionDetails,
+                reviews,
+                avgRate
+            };
 
-        if (!addApartmentResponse.ok) {
-            const errorData = await addApartmentResponse.json();
-            throw new Error(`HTTP error! Status: ${addApartmentResponse.status}, Message: ${errorData.error}`);
+            const addApartmentResponse = await fetch('http://localhost:63341/addApartment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(apartmentData),
+            });
+
+            if (!addApartmentResponse.ok) {
+                const errorData = await addApartmentResponse.json();
+                throw new Error(`HTTP error! Status: ${addApartmentResponse.status}, Message: ${errorData.error}`);
+            }
+
+            // Extract the added apartment ID from the response
+            const addedApartmentId = await addApartmentResponse.json();
+
+            // Return the added apartment ID as a string
+            return addedApartmentId;
+
+        } catch (error) {
+            console.error('Error:', error.message); // Output any errors that occurred
         }
-
-        // Extract the added apartment ID from the response
-        const addedApartmentId = await addApartmentResponse.json();
-
-        // Return the added apartment ID as a string
-        return addedApartmentId;
-
-    } catch (error) {
-        console.error('Error:', error.message); // Output any errors that occurred
     }
-}
 
 
-function refreshPage() {
-    window.location.reload();
-}
+    function refreshPage() {
+        window.location.reload();
+    }
+
 
 async function getCurrentUser() {
     try {
@@ -368,3 +403,5 @@ async function getCurrentUser() {
         return null;
     }
 }
+
+
