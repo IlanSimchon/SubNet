@@ -53,12 +53,23 @@ const userApartmentMappingSchema = new mongoose.Schema({
     apartmentId: String
 });
 
-// Create model for UserApartmentMapping
+const userLikedApartmentSchema = new mongoose.Schema({
+    userId: String,
+    apartmentId: String
+});
+
+
+
+
+
+// Create models
+const UserLikedApartment = mongoose.model('UserLikedApartment', userLikedApartmentSchema);
 const UserApartmentMapping = mongoose.model('UserApartmentMapping', userApartmentMappingSchema);
 const User = mongoose.model('User', userSchema);
 const Apartment = mongoose.model('Apartment', apartmentSchema);
 const Pic = mongoose.model('Pic', picSchema);
 
+module.exports = UserLikedApartment;
 module.exports = Apartment;
 module.exports = User;
 module.exports = Pic;
@@ -566,4 +577,38 @@ app.get('/apartmentsByBookingStatus/:isBooked', async (req, res) => {
 });
 
 
+// Route to add apartment to user's liked apartments
+app.post('/likeApartment', async (req, res) => {
+    try {
+        const { userId, apartmentId } = req.body;
 
+        // Check if both userId and apartmentId are provided
+        if (!userId || !apartmentId) {
+            return res.status(400).json({ error: 'Both userId and apartmentId are required' });
+        }
+
+        // Create a new entry in the UserLikedApartment collection
+        const userLikedApartment = new UserLikedApartment({ userId, apartmentId });
+        await userLikedApartment.save();
+
+        res.status(201).json({ message: 'Apartment added to liked apartments successfully' });
+    } catch (error) {
+        console.error('Error adding apartment to liked apartments:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Route to get apartments liked by a user
+app.get('/likedApartments/:userId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        // Find all apartments liked by the user
+        const likedApartments = await UserLikedApartment.find({ userId });
+
+        res.status(200).json(likedApartments);
+    } catch (error) {
+        console.error('Error getting liked apartments:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});

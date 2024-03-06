@@ -178,10 +178,49 @@ async function testApartmentsByBookingStatus() {
         console.error('Error:', error.response ? error.response.data : error.message);
     }
 }
+// Function to add an apartment to a user's liked apartments
+async function addApartmentToLiked(userId, apartmentId) {
+    try {
+        // Make a POST request to the server to add the apartment to liked apartments
+        const response = await fetch('http://localhost:63341/likeApartment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId, apartmentId })
+        });
+
+        const data = await response.json();
+        console.log(data.message); // Output success message
+    } catch (error) {
+        console.error('Error adding apartment to liked apartments:', error);
+    }
+}
+
+// Function to get apartments liked by a user
+async function getLikedApartments(userId) {
+    try {
+        // Make a GET request to the server to get liked apartments
+        const response = await fetch(`http://localhost:63341/likedApartments/${userId}`);
+        const data = await response.json();
+        console.log(data); // Output liked apartments
+    } catch (error) {
+        console.error('Error getting liked apartments:', error);
+    }
+}
+
+// Usage example:
+// Add apartment with ID 'apartment123' to user with ID 'user123' liked apartments
+// addApartmentToLiked('EyalCohen', '65d70668db113ff7941f5831');
+
+// Get apartments liked by user with ID 'user123'
+getLikedApartments('EyalCohen');
+
+
+
 
 // Call the function to test
-testApartmentsByBookingStatus();
-
+// testApartmentsByBookingStatus();
 
 // Example usage:
 // testGetUserByApartmentID('65d70668db113ff7941f5831');
