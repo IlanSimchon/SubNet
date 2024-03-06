@@ -548,5 +548,17 @@ app.get('/getUserByApartmentID/:apartmentId', async (req, res) => {
     }
 });
 
+// Route to get all apartments based on isBooked status
+app.get('/apartmentsByBookingStatus/:isBooked', async (req, res) => {
+    try {
+        const isBooked = req.params.isBooked.toLowerCase() === 'true'; // Convert string to boolean
+        const apartments = await Apartment.find({ isBooked });
+        res.status(200).json(apartments);
+    } catch (error) {
+        console.error('Error getting apartments by booking status:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 
 

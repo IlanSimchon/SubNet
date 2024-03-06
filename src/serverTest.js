@@ -163,8 +163,28 @@ async function testGetUserByApartmentID(apartmentId) {
     }
 }
 
+
+
+async function testApartmentsByBookingStatus() {
+    try {
+        // Send request to get all booked apartments
+        const bookedApartmentsResponse = await axios.get('http://localhost:63341/apartmentsByBookingStatus/true');
+        console.log('Booked Apartments:', bookedApartmentsResponse.data);
+
+        // Send request to get all available apartments
+        const availableApartmentsResponse = await axios.get('http://localhost:63341/apartmentsByBookingStatus/false');
+        console.log('Available Apartments:', availableApartmentsResponse.data);
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+    }
+}
+
+// Call the function to test
+testApartmentsByBookingStatus();
+
+
 // Example usage:
-testGetUserByApartmentID('65d70668db113ff7941f5831');
+// testGetUserByApartmentID('65d70668db113ff7941f5831');
 
 
 
