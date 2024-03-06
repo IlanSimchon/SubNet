@@ -466,16 +466,21 @@ app.patch('/updateUser/:name', async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
 
+        console.log("u r the best");
+        console.log(password+", "+ email+", "+ phone)
         // Update user fields if they are provided in the request body
         if (password !== "") {
+            console.log("the password:"+password);
             user.password = password;
         }
 
         if (email !== "") {
+            console.log("the email:"+email);
             user.email = email;
         }
 
         if (phone !== "") {
+            console.log("the phone:"+phone);
             user.phone = phone;
         }
 

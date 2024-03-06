@@ -90,21 +90,34 @@ function togglePassword() {
 
 
 // ----------- Edit user details --------
-document.addEventListener('DOMContentLoaded', function () {
+
+document.addEventListener('DOMContentLoaded', async function () {
     // Add event listener to the Edit Profile button
-    document.getElementById('editProfileBtn').addEventListener('click', function () {
-        editProfileForm();
+    document.getElementById('editProfileBtn').addEventListener('click', async function () {
+      try {
+        const { userName, newPassword, newEmail, newPhone } = await editProfileForm();
+  
+        // Form submitted successfully, update user details
+        await UpdateUser(userName.id, newPassword, newEmail, newPhone);
+  
+        console.log('User details updated successfully!');
+      } catch (error) {
+        console.error('Error updating user details:', error);
+        // Handle error gracefully, e.g., display an error message to the user
+      }
     });
-});
+  });
 
 let editProfileFormAppended = false; // Variable to track whether the form has been appended
 
 // Function to show/hide the edit profile form
 async function editProfileForm() {
-    let newPassword = "";
-    let newEmail = "";
-    let newPhone = "";
-    
+    const userName = await getCurrentUsername();
+    let newPassword = userName.password || '';
+    let newEmail = userName.email || '';
+    let newPhone = userName.phone || '';
+    //let details = {newPassword, newEmail, newPhone}
+
     // Check if the form has already been appended
     if (!editProfileFormAppended) {
         const editProfileForm = document.createElement('div');
@@ -115,13 +128,13 @@ async function editProfileForm() {
         editProfileForm.innerHTML = `
             <button id="closeEditFormBtn" class="closeEditFormBtn">&times;</button>
             <form id="EditProfile">
-                <label for="password">Password:</label>
+                <label for="newPassword">Password:</label>
                 <input type="text" id="passwordInput">
 
-                <label for="email">Email:</label>
+                <label for="newEmail">Email:</label>
                 <input type="text" id="emailInput">
 
-                <label for="phone">Phone Number</label>
+                <label for="newPhone">Phone Number</label>
                 <input type="text" id="phoneInput">
 
                 <button type="submit" id="changeDetails">Save Changes</button>
@@ -143,15 +156,9 @@ async function editProfileForm() {
             newPassword = document.getElementById('passwordInput').value.trim();
             newEmail = document.getElementById('emailInput').value.trim();
             newPhone = document.getElementById('phoneInput').value.trim();
-
-            // Check if any input is empty
-            /*if (newPassword === '' || newEmail === '' || newPhone === '') {
-                alert('Please fill in all fields.');
-                return 0;
-            }*/
-
-            // Handle the logic to update user details with the new values
-            // (You can replace the following code with your server request logic)
+            console.log("details changed:"+ newPassword, newEmail, newPhone);
+            UpdateUser(userName, newPassword, newEmail, newPhone);
+            
             console.log('New Password:', newPassword);
             console.log('New Email:', newEmail);
             console.log('New Phone:', newPhone);
@@ -169,31 +176,31 @@ async function editProfileForm() {
 
     // Display the form
     document.getElementById('editProfileForm').style.display = 'block';
-
-    // Send the details to the server
-    const userName = await getCurrentUsername()
-    console.log(userName,newPassword,newEmail,newPhone);
-    await UpdateUser(userName,newPassword,newEmail,newPhone);
+    // Return the updated details as an object
+    return { userName: userName.id, newPassword, newEmail, newPhone };
 }
 
-async function UpdateUser(userId, password, email, phone) { // V
+async function UpdateUser(userId, password, email, phone) {
     try {
-        // Make a PATCH request to updateUser route
-        console.log(userId);
-        const response = await fetch(`http://localhost:63341/updateUser/${userId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ password, email, phone })
-        });
-
-        const data = await response.json();
-        console.log(data);
+      const response = await fetch(`http://localhost:63341/updateUser/${userId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password, email, phone })
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error updating user details: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      return data; // Return the parsed JSON data (optional)
     } catch (error) {
-        console.error('Error updating user details:', error);
+      console.error('Error updating user details:', error);
+      throw error; // Re-throw the error for handling in the calling function
     }
-}
+  }
 
 // ------------ apartment wish list ----------
 
