@@ -72,8 +72,6 @@ export class Apartment {
         likeBtn.classList.toggle('likeBtn-red');
     }
 
-    async getUserId(){return 0};
-
     // Add this function to apartment.js
     async addToWishList(apartmentDetails) {
         try {
