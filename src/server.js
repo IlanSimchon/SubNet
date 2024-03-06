@@ -586,7 +586,7 @@ app.post('/likeApartment', async (req, res) => {
         if (!userId || !apartmentId) {
             return res.status(400).json({ error: 'Both userId and apartmentId are required' });
         }
-
+        console.log({ userId, apartmentId });
         // Create a new entry in the UserLikedApartment collection
         const userLikedApartment = new UserLikedApartment({ userId, apartmentId });
         await userLikedApartment.save();
@@ -609,6 +609,30 @@ app.get('/likedApartments/:userId', async (req, res) => {
         res.status(200).json(likedApartments);
     } catch (error) {
         console.error('Error getting liked apartments:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Route to remove an apartment from a user's liked apartments
+app.delete('/likeApartment', async (req, res) => {
+    try {
+        const { userId, apartmentId } = req.query;
+
+        // Check if both userId and apartmentId are provided
+        if (!userId || !apartmentId) {
+            return res.status(400).json({ error: 'Both userId and apartmentId are required' });
+        }
+
+        // Find and remove the corresponding record from the UserLikedApartment collection
+        const result = await UserLikedApartment.findOneAndDelete({ userId, apartmentId });
+
+        if (!result) {
+            return res.status(404).json({ error: 'Apartment not found in liked apartments' });
+        }
+
+        res.status(200).json({ message: 'Apartment removed from liked apartments successfully' });
+    } catch (error) {
+        console.error('Error removing apartment from liked apartments:', error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
