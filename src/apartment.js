@@ -139,25 +139,6 @@ export function onPageLoad() {
     });   
 }
 
-// Function to add an apartment to a user's liked apartments - ???
-async function addApartmentToLiked(userId, apartmentId) {
-    try {
-        // Make a POST request to the server to add the apartment to liked apartments
-        const response = await fetch('http://localhost:63341/likeApartment', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ userId, apartmentId })
-        });
-
-        const data = await response.json();
-        console.log(data.message); // Output success message
-    } catch (error) {
-        console.error('Error adding apartment to liked apartments:', error);
-    }
-}
-
 // Function to add or remove an apartment from a user's liked apartments
 async function addOrRemoveApartment(userId, apartmentId) {
     try {
@@ -178,6 +159,26 @@ async function addOrRemoveApartment(userId, apartmentId) {
         }
     } catch (error) {
         console.error('Error checking or updating liked apartments:', error);
+    }
+}
+
+
+// Function to add an apartment to a user's liked apartments
+async function addApartmentToLiked(userId, apartmentId) {
+    try {
+        // Make a POST request to the server to add the apartment to liked apartments
+        const response = await fetch('http://localhost:63341/likeApartment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId, apartmentId })
+        });
+
+        const data = await response.json();
+        console.log(data.message); // Output success message
+    } catch (error) {
+        console.error('Error adding apartment to liked apartments:', error);
     }
 }
 

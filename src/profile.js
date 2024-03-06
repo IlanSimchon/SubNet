@@ -1,5 +1,5 @@
 // ------ Display Current user details --------
-document.addEventListener('DOMContentLoaded', function () { // V
+document.addEventListener('DOMContentLoaded', function () {
     // Get the user details when the page is loaded
     getUserDetails();
 
@@ -203,43 +203,146 @@ async function UpdateUser(userId, password, email, phone) {
   }
 
 // ------------ apartment wish list ----------
-document.getElementById('likeBtn').addEventListener('click', function () {
-    alert("hello!")
-});
-/*document.addEventListener('DOMContentLoaded', async () => {
-    const wishListContainer = document.getElementById('likedApartments');
+document.getElementById('likedApartments').addEventListener('DOMContentLoaded', async () => {
+    const username = getCurrentUsername();
 
-    // Function to get the user ID from localStorage
-    async function getUserId() {
-        const userData = localStorage.getItem('userData');
-        if (userData) {
-            const user = JSON.parse(userData);
-            return user._id; // Adjust this based on the structure of your user data
-        }
-        return null; // Return null if user data is not available
+    // Call the function to get liked apartments for the current user
+    const likedApartments = await getLikedApartments(username);
+    console.log("likedApartments:"+ likedApartments)
+
+    // Update the HTML content of the wishListContainer
+    for(let aptId of likedApartments){
+        console.log(aptId);
+        //displayApartments(aptId);
     }
 
-    // Function to display user details
-    async function displayUserDetails() {
-        const userDetailsContainer = document.getElementById('personalDetails');
+})
 
-        try {
-            // Fetch user details from the server using the user ID
-            const response = await fetch(`http://localhost:63341/getUser/${await getUserId()}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+// Function to display all apartments
+/*async function displayApartments() {
+    try {
+        const response = await fetch('http://localhost:63341/apartmentsByBookingStatus/false');
+        const apartments = await response.json();
+
+        if (apartments.length > 0) {
+            const content = document.querySelector('.content');
+
+            for (const apartment of apartments) {
+                // Fetch the apartment image URL
+                let imageUrl = `http://localhost:63341/getApartmentPic/${apartment._id}`;
+
+                // Check if the apartment has a picture
+                const imageResponse = await fetch(imageUrl);
+                if (!imageResponse.ok) {
+                    // If there's no picture, use the generic house image
+                    imageUrl = 'house.png';
+                }
+
+                const availability = this.formatAvailabilityDate(apartment.availability);
+
+                const apartmentBox = document.createElement('div');
+                apartmentBox.classList.add('apartment-box');
+                apartmentBox.innerHTML = `
+                    <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
+                    <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
+                    <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
+                    <p><i class="fa fa-calendar-alt"></i> ${availability}</p> <!-- Display formatted availability here -->
+                    <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
+                    <hr>
+                `;
+
+                // Append the apartment box to the container
+                content.appendChild(apartmentBox);
             }
 
-            const userDetails = await response.json();
+            // Add event listener to the entire apartment box
+            content.querySelectorAll('.apartment-box').forEach(apartmentBox => {
+                apartmentBox.addEventListener('click', () => {
+                    const apartmentId = apartmentBox.querySelector('.apartment-photo').getAttribute('data-apartment-id');
+                    apartmentManager.displaySingleApartment(apartmentId);
+                });
+            });
 
-            // Display user details in the userDetailsContainer
-            userDetailsContainer.innerHTML = `
-                <p><strong>User ID:</strong> ${userDetails._id}</p>
-                <p><strong>Username:</strong> ${userDetails.userName}</p>
-                <p><strong>Email:</strong> ${userDetails.email}</p>
-                <p><strong>Phone:</strong> ${userDetails.phone}</p>
-            `;
+        } else {
+            console.log('No apartments found');
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
 
+
+// displays a single apartment in a new window
+async function displaySingleApartment(apartmentId) {
+    let single_apartment = null;
+    single_apartment = new Apartment(apartmentId);
+    single_apartment.getApartmentDetails();
+}*/
+
+/*async function displayApartments(apartmentId){
+    const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
+    const apartmentDetails = await response.json();
+    displayApartmentDetails(apartmentDetails);
+}
+
+async function displayApartmentDetails(apartmentDetails) {
+    try {
+        const imageUrl = await this.fetchApartmentImage();
+        const queryParams = new URLSearchParams({
+            location: apartmentDetails.location,
+            pricePerNight: apartmentDetails.pricePerNight,
+            availability: JSON.stringify(apartmentDetails.availability),
+            reviews: apartmentDetails.reviews,
+            avgRate: apartmentDetails.avgRate,
+            photo: imageUrl,
+            connectionDetails: apartmentDetails.connectionDetails,
+            apartmentId: this.apartmentId,
+            isBooked: apartmentDetails.isBooked
+        });
+
+
+        // Redirect to apartment.html with query parameters, including apartmentId
+        window.location.href = `profile.html?${queryParams.toString()}`;
+    } catch (error) {
+        console.error('Error displaying apartment details:', error);
+    }
+
+    async function fetchApartmentImage() {
+        try {
+            // Fetch the apartment image using the apartmentId
+            const response = await fetch(`http://localhost:63341/getApartmentPic/${this.apartmentId}`);
+    
+            if (response.ok) {
+                // If the request is successful, return the URL of the apartment image
+                return response.url;
+            } else {
+                // If there's no picture available, return the URL of a default image
+                return 'house.png';
+            }
+        } catch (error) {
+            console.error('Error fetching apartment image:', error);
+            // Return the URL of a default image in case of an error
+            return 'house.png';
+        }
+    }
+}*/
+
+// Function to get liked apartments for a user
+async function getLikedApartments(userId) {
+    try {
+        // Make a GET request to the server to get liked apartments
+        const response = await fetch(`http://localhost:63341/likedApartments/${userId}`);
+        const data = await response.json();
+        return data; // Return the liked apartments
+    } catch (error) {
+        console.error('Error getting liked apartments:', error);
+        return []; // Return an empty array in case of an error
+    }
+}
+
+/*
+
+    
             // Display user's wish list
             const wishList = JSON.parse(localStorage.getItem('wishList')) || [];
 
