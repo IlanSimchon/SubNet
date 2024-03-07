@@ -56,6 +56,23 @@ class house_owner {
         }
     }
 
+    // Function to format the availability dates
+    formatAvailabilityDate(availability) {
+        const startDate = new Date(availability.startDate);
+        const endDate = new Date(availability.endDate);
+
+        // Format start date
+        const startDay = startDate.getDate().toString().padStart(2, '0');
+        const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
+        const startYear = startDate.getFullYear();
+
+        // Format end date
+        const endDay = endDate.getDate().toString().padStart(2, '0');
+        const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0');
+        const endYear = endDate.getFullYear();
+
+        return `${startDay}.${startMonth}.${startYear} - ${endDay}.${endMonth}.${endYear}`;
+    }
 
     async displayApartments() {
         const userDataString = localStorage.getItem('userData');
@@ -66,7 +83,6 @@ class house_owner {
         try {
             const response = await fetch(`http://localhost:63341/Apartments?userName=${userNameValue}`);
             const apartments = await response.json();
-            console.log(apartments.length)
             if (apartments.length > 0) {
                 const content = document.querySelector('.content');
 
@@ -81,6 +97,7 @@ class house_owner {
                         imageUrl = 'house.png';
                     }
 
+                    const availability = this.formatAvailabilityDate(apartment.availability);
 
                     const apartmentBox = document.createElement('div');
                     apartmentBox.classList.add('apartment-box');
@@ -94,36 +111,63 @@ class house_owner {
                         <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
                         <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
                         <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
-                        <p><i class="fa fa-calendar-alt"></i> ${JSON.stringify(apartment.availability)}</p>
+                        <p><i class="fa fa-calendar-alt"></i> ${availability}</p>
                         ${generateStarRating(apartment.avgRate)}
-                         <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
-                       <p><i id="bookedStatus" class='fas fa-check-circle ${apartment.isBooked === true ? 'booked' : 'available'}'> ${isBooked}</i></p>
+                        <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
+                        <p><i id="bookedStatus" class='fas fa-check-circle ${apartment.isBooked === true ? 'booked' : 'available'}'> ${isBooked}</i></p>
+                        <button class="delete-button" data-apartment-id="${apartment._id}"><i class="fas fa-trash"></i> Delete</button>
 
                         <div id="clientDetailsModal" class="modal">
                           <div class="modal-content">
                             <!-- Client details go here -->
                             <p>Client Details:</p>
                             <!-- Add more details as needed -->
-                            <span class="close">&times;</span>
+                            <button id="close"><span class="close">&times;</span></button>
                           </div>
                         </div>
                                                    
                             <hr>
                     `;
 
+
                     const bookedStatus = apartmentBox.querySelector('#bookedStatus');
                     const modal = apartmentBox.querySelector('#clientDetailsModal');
-                    const closeModal = apartmentBox.querySelector('.close');
+                    const closeModal = apartmentBox.querySelector('#close');
 
                     // Add click event listener to the "Booked" text
-                    bookedStatus.addEventListener('click', () => {
-                        // Display the modal
-                        modal.style.display = 'block';
-                    });
+                    bookedStatus.addEventListener('click', async () => {
+                        const status = bookedStatus.textContent.trim().toLowerCase();
+                        console.log(status);
+                        if(status === 'booked') {
+                            const apartmentID = apartment._id
+                            try {
+                                // Make a GET request to getUserByApartmentID route
+                                const response = await fetch(`http://localhost:63341/getUserByApartmentID/${apartmentID}`);
+
+                                const data = await response.json();
+                                console.log(data);
+                                if (data) {
+                                    // Update modal content with user details
+                                    const modalContent = modal.querySelector('.modal-content');
+                                    modalContent.innerHTML = `
+                                <p id="modal-title">Client Details:</p>
+                                <p id="userName">User Name: ${data.user.userName}</p>
+                                <p id="Phone">Phone: ${data.user.phone}</p>
+                                <span class="close">&times;</span>
+        `;
+                                }
+                            } catch (error) {
+                                console.error('Error getting user by ApartmentID:', error);
+                            }
+                            // Display the modal
+                            modal.style.display = 'block';
+                        }
+                        });
 
                     // Add click event listener to close the modal
                     closeModal.addEventListener('click', () => {
                         // Hide the modal
+                        console.log("inside!")
                         modal.style.display = 'none';
                     });
 
@@ -134,9 +178,47 @@ class house_owner {
                         }
                     });
 
+
+
                     // Append the apartment box to the container
                     content.appendChild(apartmentBox);
                 }
+
+// Assuming you have the apartments container with the class "content"
+                const apartmentsContainer = document.querySelector('.content');
+                console.log(apartmentsContainer);
+
+                apartmentsContainer.addEventListener('click', async function (event) {
+                    if (event.target.classList.contains('delete-button')) {
+                        const apartmentId = event.target.dataset.apartmentId;
+                        console.log(apartmentId)
+                        try {
+                            // Call the server to delete the apartment
+                            const response = await fetch(`http://localhost:63341/deleteApartment/${apartmentId}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                            });
+
+                            if (response.ok) {
+                                // Apartment deleted successfully
+                                console.log(`Apartment with ID ${apartmentId} deleted`);
+                                // Optionally, remove the apartment box from the UI
+                                const apartmentBox = event.target.closest('.apartment-box');
+                                if (apartmentBox) {
+                                    apartmentBox.remove();
+                                }
+                            } else {
+                                // Handle error response from the server
+                                const errorData = await response.json();
+                                console.error(`Error deleting apartment: ${errorData.error}`);
+                            }
+                        } catch (error) {
+                            console.error('Error deleting apartment:', error.message);
+                        }
+                    }
+                });
 
                 // Add event listener to the entire apartment box
                 // content.querySelectorAll('.apartment-box').forEach(apartmentBox => {

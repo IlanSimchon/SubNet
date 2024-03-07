@@ -1,3 +1,8 @@
+const approvementBox = createReservationApprovedBox();
+const cancelationBox = createReservationCancelationBox();
+const userDataString = localStorage.getItem('userData');
+
+
 export class Apartment {
     constructor(apartmentId) {
         // Initialize apartment ID
@@ -106,11 +111,11 @@ export function onPageLoad() {
         <p><i class="far fa-star"></i> Reviews: ${params['reviews']}</p>
         <p><i class="fas fa-star"></i> Average Rate: ${params['avgRate']}</p>
         <p><i class="far fa-address-card"></i> Owner Connection Details: ${params['connectionDetails']}</p>
-        
-        <button id="likeBtn" class="likeBtn-white"><i class="fas fa-heart"></i> Like</button>
-        <div id="buttonContainer"></div>
-        <button id="recommendBtn">Recommend</button>
 
+        <div id="buttonContainer">        
+        <button id="likeBtn" class="likeBtn-white"><i class="fas fa-heart"></i> Like</button>
+        <button id="recommendBtn">Recommend</button>
+</div>
     `;
 
     // Set the image source to the fetched image URL
@@ -285,8 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const errorBox = document.createElement('div');
     const buttonContainer = document.getElementById('buttonContainer');
     const reserveBtn = document.getElementById('reserveBtn');
-    const approvementBox = createReservationApprovedBox();
-    const cancelationBox = createReservationCancelationBox();
 
     errorBox.id = 'errorBox'; // Add an ID to the error box for easier manipulation
 
@@ -312,6 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({
                     isBooked: updatedIsBooked,
+                    // userName:
                 }),
             });
 
@@ -329,6 +333,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
         } catch (error) {
             console.error('Error updating apartment reservation status:', error);
+        }
+        try {
+            const apartmentId = params['apartmentId']
+            const userData = JSON.parse(userDataString);
+            const userName = userData["user"]["userName"];
+            // Make a POST request to mapUserToApartment route
+            const response = await fetch('http://localhost:63341/mapUserToApartment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userName, apartmentId })
+            });
+
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Error mapping user to apartment:', error);
         }
     });
 

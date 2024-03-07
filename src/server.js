@@ -435,26 +435,23 @@ app.delete('/deletePic/:apartmentId/:picId', async (req, res) => {
 });
 // Route to delete an apartment and its associated pictures
 app.delete('/deleteApartment/:id', async (req, res) => {
+    console.log("apartment!")
     try {
         const apartmentId = req.params.id;
 
-        // Find the apartment by ID
+        // Delete associated pictures
         const apartment = await Apartment.findById(apartmentId);
-
         if (!apartment) {
             return res.status(404).json({ error: 'Apartment not found' });
         }
 
-        // Delete associated pictures
         for (const picId of apartment.photo) {
-            const pic = await Pic.findById(picId);
-            if (pic) {
-                await pic.remove();
-            }
+            // Delete the picture directly from the database using deleteOne()
+            await Pic.deleteOne({ _id: picId });
         }
 
         // Delete the apartment
-        await apartment.remove();
+        await Apartment.deleteOne({ _id: apartmentId });
 
         res.status(200).json({ message: 'Apartment and associated pictures deleted successfully' });
     } catch (error) {
