@@ -133,12 +133,92 @@ export function onPageLoad() {
     // Append the button to the container
     buttonContainer.appendChild(reserveOrCancelBtn);
 
+    // like button
     const likeBtn = document.getElementById('likeBtn');
-        likeBtn.addEventListener('click', () => {
-            console.log("you liked this apartment!");
-            //this.addToWishList(apartmentDetails);
-            //this.toggleLikeButtonColor(likeBtn);
+    likeBtn.addEventListener('click', async () => {
+        console.log("you liked this apartment!");
+        const apartmentId = params['apartmentId'];
+        const username = await getCurrentUsername();
+        console.log(username, apartmentId);
+        await addOrRemoveApartment(username, apartmentId);            
+    });   
+}
+
+// Function to add or remove an apartment from a user's liked apartments
+async function addOrRemoveApartment(userId, apartmentId) {
+    try {
+        // Check if the combination already exists
+        const checkResponse = await fetch(`http://localhost:63341/likedApartments/${userId}`);
+        const existingLikedApartments = await checkResponse.json();
+
+        const userIdExists = existingLikedApartments.some(record => record.apartmentId === apartmentId);
+
+        if (userIdExists) {
+            // The combination already exists, remove it
+            await removeApartmentFromLiked(userId, apartmentId);
+            alert('Apartment removed from wish list');
+        } else {
+            // The combination doesn't exist, add it
+            await addApartmentToLiked(userId, apartmentId);
+            alert('Apartment added to wish list');
+        }
+    } catch (error) {
+        console.error('Error checking or updating liked apartments:', error);
+    }
+}
+
+
+// Function to add an apartment to a user's liked apartments
+async function addApartmentToLiked(userId, apartmentId) {
+    try {
+        // Make a POST request to the server to add the apartment to liked apartments
+        const response = await fetch('http://localhost:63341/likeApartment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ userId, apartmentId })
         });
+
+        const data = await response.json();
+        console.log(data.message); // Output success message
+    } catch (error) {
+        console.error('Error adding apartment to liked apartments:', error);
+    }
+}
+
+// Function to remove an apartment from a user's liked apartments
+async function removeApartmentFromLiked(userId, apartmentId) {
+    try {
+        // Make a DELETE request to the server to remove the apartment from liked apartments
+        const response = await fetch(`http://localhost:63341/likeApartment?userId=${userId}&apartmentId=${apartmentId}`, {
+            method: 'DELETE',
+        });
+
+        const data = await response.json();
+        console.log(data.message); // Output success message
+    } catch (error) {
+        console.error('Error removing apartment from liked apartments:', error);
+    }
+}
+
+async function getCurrentUsername() {
+    try {
+        // Retrieve user data from localStorage
+        const userDataString = localStorage.getItem('userData');
+        if (userDataString) {
+            // Parse the user data JSON string
+            const userData = JSON.parse(userDataString);
+            // Return the user's name
+            return userData.user.userName;
+        } else {
+            console.error('User data not found in localStorage');
+            return null;
+        }
+    } catch (error) {
+        console.error('Error getting current user:', error);
+        return null;
+    }
 }
 
 // Function to create a reserve button

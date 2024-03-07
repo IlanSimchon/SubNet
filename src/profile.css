@@ -163,23 +163,6 @@ h1, h2 {
     border: 1px solid #ddd;
     background-color: #f9f9f9;
 }
-
-/* Add more styles as needed */
-/* Add this to your existing CSS styles */
-
-/* Styles for the edit profile form */
-/* Add this to your existing CSS styles */
-
-/* Styles for the edit profile form */
-/* Add this to your existing CSS styles */
-
-/* Styles for the edit profile form */
-/* Add this to your existing CSS styles */
-
-/* Styles for the edit profile form */
-/* Add this to your existing CSS styles */
-
-/* Styles for the edit profile form */
 #editProfileForm {
     position: fixed;
     top: 50%;
@@ -188,11 +171,12 @@ h1, h2 {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 15px; /* Added rounded borders */
-    padding: 40px;
     width: 500px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     display: none;
     text-align: center; /* Center-align text */
+    padding: 40px; /* Adjusted padding */
+
 }
 
 #closeEditFormBtn {
