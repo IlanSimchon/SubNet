@@ -3,7 +3,7 @@
 
 import { Apartment } from './apartment.js';
 
-class ApartmentManager {
+export class ApartmentManager {
     constructor() {
         // Retrieve user data from localStorage
         const userDataString = localStorage.getItem('userData');

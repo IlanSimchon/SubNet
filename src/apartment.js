@@ -266,49 +266,6 @@ function createRecommendationBox() {
     return recommendationBox;
 }
 
-// -------- Wish List--------------
-/*function addToWishList(apartmentDetails) {
-    const likedApartmentsList = document.getElementById('likedApartments');
-    const apartmentItem = document.createElement('li');
-    apartmentItem.textContent = apartmentDetails;
-    likedApartmentsList.appendChild(apartmentItem);
-}
-
-async function getApartmentDetails() {
-    try {
-        // Fetch apartment details from the server using apartmentId
-        const response = await fetch(`http://localhost:63341/ApartmentByID/${this.apartmentId}`);
-        const apartmentDetails = await response.json();
-
-        // Call a method to display apartment details
-        this.displayApartmentDetails(apartmentDetails);
-    } catch (error) {
-        console.error('Error fetching apartment details:', error);
-    }
-}
-
-document.getElementById('likeBtn').addEventListener('click', function () {
-    const apartmentName = getApartmentDetails();
-    
-    // Assuming updateLikedApartmentsList is defined in this file
-    updateLikedApartmentsList(apartmentName);
-
-    // Send a request to the server to like the apartment
-    fetch(`http://localhost:63341/likeApartment?apartmentName=${apartmentName}`, {
-        method: 'POST',
-        // Add headers if needed
-        // body: JSON.stringify({  }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Apartment liked:', data);
-        // You can update UI or provide feedback to the user
-    })
-    .catch(error => console.error('Error liking apartment:', error));
-});*/
-
-
-
 // -------- Add review and rank----------
 // Function to create an approvement box
 function createReservationApprovedBox() {

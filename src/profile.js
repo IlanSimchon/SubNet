@@ -1,3 +1,6 @@
+// import { Apartment } from './apartment.js';
+// import { apartmentManager } from './homePage.js';
+
 // ------ Display Current user details --------
 document.addEventListener('DOMContentLoaded', function () {
     // Get the user details when the page is loaded
@@ -203,20 +206,87 @@ async function UpdateUser(userId, password, email, phone) {
   }
 
 // ------------ apartment wish list ----------
-document.getElementById('likedApartments').addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    const wishListContainer = document.getElementById('likedApartment');
+    const username = await getCurrentUsername();
+
+    // Call the function to get liked apartments for the current user
+    const likedApartments = await getLikedApartments(username);
+
+    // Update the HTML content of the wishListContainer
+    for (let apt of likedApartments) {
+        console.log(apt.apartmentId);
+        displayApartments(apt.apartmentId);
+    }
+});
+
+document.getElementById('wishList').addEventListener('DOMContentLoaded', async () => {
     const username = getCurrentUsername();
 
     // Call the function to get liked apartments for the current user
     const likedApartments = await getLikedApartments(username);
-    console.log("likedApartments:"+ likedApartments)
+    console.log(likedApartments)
 
     // Update the HTML content of the wishListContainer
-    for(let aptId of likedApartments){
-        console.log(aptId);
-        //displayApartments(aptId);
-    }
+    const likedApartmentContainer = document.getElementById('likedApartmentContainer');
+    const likedApartment = document.getElementById('likedApartment');
 
-})
+     // Display apartment details for confirmation
+     likedApartment.innerHTML = `
+        <p><strong>Location:</strong> "hii"</p>
+        <p><strong>Price Per Night:</strong> hii"</p>
+        <p><strong>Availability:</strong> hii"</p> 
+     `;
+
+    // Iterate through liked apartments and display each one
+    for (const apt of likedApartments) {
+        console.log(apt.apartmentId);
+        displayApartments(likedApartmentContainer, apt.apartmentId);
+    }
+});
+
+// Function to display apartments (adjust this function based on how you want to display apartments)
+async function displayApartments(apartmentId) {
+    try {
+        // Fetch apartment details from the server using apartmentId
+        const apartmentDetails = await getApartmentDetails(apartmentId);
+
+        // Create HTML elements for each property and append them to the wishListContainer
+        const apartmentElement = document.createElement('li');
+        apartmentElement.innerHTML = `
+            <p>Apartment ID: ${apartmentId}</p>
+            <p>Location: ${apartmentDetails.location}</p>
+            <p>Price per Night: ${apartmentDetails.pricePerNight}</p>
+            <p>Availability: ${apartmentDetails.availability}</p>
+        `;
+
+        document.getElementById('likedApartment').appendChild(apartmentElement);
+    } catch (error) {
+        console.error('Error displaying apartment details:', error);
+    }
+}
+
+async function getApartmentDetails(apartmentId) {
+    try {
+        // Fetch apartment details from the server using apartmentId
+        const response = await fetch(`http://localhost:63341/ApartmentByID/${apartmentId}`);
+        const apartmentDetails = await response.json();
+        console.log("apartmentDetails:", apartmentDetails)
+        return apartmentDetails
+    } catch (error) {
+        console.error('Error fetching apartment details:', error);
+    }
+}
+
+
+// Function to display apartments (adjust this function based on how you want to display apartments)
+/*function displayApartments(apartmentId) {
+    // Add logic to display apartment with the given ID
+    // For example, you can create a new HTML element and append it to the wishListContainer
+    const apartmentElement = document.createElement('li');
+    apartmentElement.textContent = `Apartment ID: ${apartmentId}`;
+    document.getElementById('likedApartment').appendChild(apartmentElement);
+}*/
 
 // Function to display all apartments
 /*async function displayApartments() {

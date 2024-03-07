@@ -372,7 +372,6 @@ async function openAddApartmentTab() {
                 <p><strong>Location:</strong> ${locationInput.value}</p>
                 <p><strong>Price Per Night:</strong> ${priceInput.value}</p>
                 <p><strong>Availability:</strong> ${startDateInput.value} to ${endDateInput.value}</p>
-                <!-- Add other details here -->
                 `;
 
         // Show the apartment details container
