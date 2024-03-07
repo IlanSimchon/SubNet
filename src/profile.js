@@ -2,6 +2,8 @@
 // import { apartmentManager } from './homePage.js';
 
 // ------ Display Current user details --------
+// import {ApartmentManager} from "./homePage";
+
 document.addEventListener('DOMContentLoaded', function () {
     // Get the user details when the page is loaded
     getUserDetails();
@@ -54,7 +56,7 @@ async function getCurrentUsername() {
 // Function to reveal the password
 function revealPassword() {
     const passwordElement = document.getElementById('userPassword');
-    
+
     // Check if the password element exists
     if (passwordElement) {
         // Display the password
@@ -65,7 +67,7 @@ function revealPassword() {
 // Function to update the content of the "myDetails" div with user details
 function displayDetails(user) {
     const myDetailsDiv = document.getElementById('myDetails');
-    
+
     // Create HTML content with user details
     const detailsHTML = `
         <p>Username: ${user.userName}</p>
@@ -83,7 +85,7 @@ function displayDetails(user) {
 // Function to reveal or hide the password - the function is used in a innerHtml inside "displayDetails"
 function togglePassword() {
     const passwordElement = document.getElementById('userPassword');
-    
+
     // Check if the password element exists
     if (passwordElement) {
         // Toggle the display of the password
@@ -97,19 +99,19 @@ function togglePassword() {
 document.addEventListener('DOMContentLoaded', async function () {
     // Add event listener to the Edit Profile button
     document.getElementById('editProfileBtn').addEventListener('click', async function () {
-      try {
-        const { userName, newPassword, newEmail, newPhone } = await editProfileForm();
-  
-        // Form submitted successfully, update user details
-        await UpdateUser(userName.id, newPassword, newEmail, newPhone);
-  
-        console.log('User details updated successfully!');
-      } catch (error) {
-        console.error('Error updating user details:', error);
-        // Handle error gracefully, e.g., display an error message to the user
-      }
+        try {
+            const { userName, newPassword, newEmail, newPhone } = await editProfileForm();
+
+            // Form submitted successfully, update user details
+            await UpdateUser(userName.id, newPassword, newEmail, newPhone);
+
+            console.log('User details updated successfully!');
+        } catch (error) {
+            console.error('Error updating user details:', error);
+            // Handle error gracefully, e.g., display an error message to the user
+        }
     });
-  });
+});
 
 let editProfileFormAppended = false; // Variable to track whether the form has been appended
 
@@ -161,7 +163,7 @@ async function editProfileForm() {
             newPhone = document.getElementById('phoneInput').value.trim();
             console.log("details changed:"+ newPassword, newEmail, newPhone);
             UpdateUser(userName, newPassword, newEmail, newPhone);
-            
+
             console.log('New Password:', newPassword);
             console.log('New Email:', newEmail);
             console.log('New Phone:', newPhone);
@@ -185,25 +187,25 @@ async function editProfileForm() {
 
 async function UpdateUser(userId, password, email, phone) {
     try {
-      const response = await fetch(`http://localhost:63341/updateUser/${userId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ password, email, phone })
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error updating user details: ${response.statusText}`);
-      }
-  
-      const data = await response.json();
-      return data; // Return the parsed JSON data (optional)
+        const response = await fetch(`http://localhost:63341/updateUser/${userId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password, email, phone })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error updating user details: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data; // Return the parsed JSON data (optional)
     } catch (error) {
-      console.error('Error updating user details:', error);
-      throw error; // Re-throw the error for handling in the calling function
+        console.error('Error updating user details:', error);
+        throw error; // Re-throw the error for handling in the calling function
     }
-  }
+}
 
 // ------------ apartment wish list ----------
 document.addEventListener('DOMContentLoaded', async () => {
@@ -219,51 +221,91 @@ document.addEventListener('DOMContentLoaded', async () => {
         displayApartments(apt.apartmentId);
     }
 });
-
-document.getElementById('wishList').addEventListener('DOMContentLoaded', async () => {
-    const username = getCurrentUsername();
-
-    // Call the function to get liked apartments for the current user
-    const likedApartments = await getLikedApartments(username);
-    console.log(likedApartments)
-
-    // Update the HTML content of the wishListContainer
-    const likedApartmentContainer = document.getElementById('likedApartmentContainer');
-    const likedApartment = document.getElementById('likedApartment');
-
-     // Display apartment details for confirmation
-     likedApartment.innerHTML = `
-        <p><strong>Location:</strong> "hii"</p>
-        <p><strong>Price Per Night:</strong> hii"</p>
-        <p><strong>Availability:</strong> hii"</p> 
-     `;
-
-    // Iterate through liked apartments and display each one
-    for (const apt of likedApartments) {
-        console.log(apt.apartmentId);
-        displayApartments(likedApartmentContainer, apt.apartmentId);
-    }
-});
+//
+// document.getElementById('wishList').addEventListener('DOMContentLoaded', async () => {
+//     const username = getCurrentUsername();
+//
+//     // Call the function to get liked apartments for the current user
+//     const likedApartments = await getLikedApartments(username);
+//     console.log("liked: ",likedApartments)
+//
+//     // // Update the HTML content of the wishListContainer
+//     // const likedApartmentContainer = document.getElementById('likedApartmentContainer');
+//     // const likedApartment = document.getElementById('likedApartment');
+//     //
+//     // // Display apartment details for confirmation
+//     // likedApartment.innerHTML = `
+//     //     <p><strong>Location:</strong> "hii"</p>
+//     //     <p><strong>Price Per Night:</strong> hii"</p>
+//     //     <p><strong>Availability:</strong> hii"</p>
+//     //  `;
+//     //
+//     // // Iterate through liked apartments and display each one
+//     // for (const apt of likedApartments) {
+//     //     console.log(apt.apartmentId);
+//     displayApartments(likedApartments);
+//
+// });
 
 // Function to display apartments (adjust this function based on how you want to display apartments)
 async function displayApartments(apartmentId) {
+    console.log("apartment: " , apartmentId)
+    // ApartmentManager.displaySingleApartment(apartmentId);
     try {
         // Fetch apartment details from the server using apartmentId
-        const apartmentDetails = await getApartmentDetails(apartmentId);
+        const apartment = await getApartmentDetails(apartmentId);
 
-        // Create HTML elements for each property and append them to the wishListContainer
-        const apartmentElement = document.createElement('li');
-        apartmentElement.innerHTML = `
-            <p>Apartment ID: ${apartmentId}</p>
-            <p>Location: ${apartmentDetails.location}</p>
-            <p>Price per Night: ${apartmentDetails.pricePerNight}</p>
-            <p>Availability: ${apartmentDetails.availability}</p>
-        `;
+        const content = document.querySelector('.content');
 
-        document.getElementById('likedApartment').appendChild(apartmentElement);
+
+        let imageUrl = `http://localhost:63341/getApartmentPic/${apartment._id}`;
+        const availability = formatAvailabilityDate(apartment.availability);
+
+        const apartmentBox = document.createElement('div');
+        apartmentBox.classList.add('apartment-box');
+        apartmentBox.innerHTML = `
+                    <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
+                    <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
+                    <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
+                    <p><i class="fa fa-calendar-alt"></i> ${availability}</p> <!-- Display formatted availability here -->
+                    ${generateStarRating(apartment.avgRate)}
+                    <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
+                    <hr>
+                `;
+
+        // Append the apartment box to the container
+        content.appendChild(apartmentBox);
+
+
+            // Add event listener to the entire apartment box
+            // content.querySelectorAll('.apartment-box').forEach(apartmentBox => {
+            //     apartmentBox.addEventListener('click', () => {
+            //         const apartmentId = apartmentBox.querySelector('.apartment-photo').getAttribute('data-apartment-id');
+            //         apartmentManager.displaySingleApartment(apartmentId);
+            //     });
+            // });
+
+
     } catch (error) {
-        console.error('Error displaying apartment details:', error);
+        console.error(error);
     }
+
+
+
+//         // Create HTML elements for each property and append them to the wishListContainer
+//         const apartmentElement = document.createElement('li');
+//         apartmentElement.innerHTML = `
+//             <p>Apartment ID: ${apartmentId}</p>
+//             <p>Location: ${apartmentDetails.location}</p>
+//             <p>Price per Night: ${apartmentDetails.pricePerNight}</p>
+//             <p>Availability: ${apartmentDetails.availability}</p>
+//         `;
+//
+//         document.getElementById('likedApartment').appendChild(apartmentElement);
+//     } catch (error) {
+//         console.error('Error displaying apartment details:', error);
+//     }
+// }
 }
 
 async function getApartmentDetails(apartmentId) {
@@ -460,5 +502,56 @@ async function getLikedApartments(userId) {
     // Call the function to display user details when the page loads
     await displayUserDetails();
 });*/
+
+
+function generateStarRating(averageRate) {
+    const maxStars = 5;
+    const filledStars = Math.floor(averageRate); // Use floor to get the integer part
+    const fractionalPart = averageRate - filledStars; // Get the fractional part
+    let starRatingHTML = '<p>';
+
+    for (let i = 1; i <= maxStars; i++) {
+        if (i <= filledStars) {
+            // Add a filled star
+            starRatingHTML += '<i class="fas fa-star"></i>';
+        } else if (i === filledStars + 1) {
+            // Check the fractional part and add appropriate star
+            if (fractionalPart < 0.3) {
+                // Fraction is smaller than 0.3, make it zero
+                starRatingHTML += '<i class="far fa-star"></i>';
+            } else if (fractionalPart <= 0.8) {
+                // Fraction is between 0.3 to 0.8, make it 0.5
+                starRatingHTML += '<i class="fas fa-star-half-alt"></i>';
+            } else {
+                // Fraction is greater than 0.8, make it 1
+                starRatingHTML += '<i class="fas fa-star"></i>';
+            }
+        } else {
+            // Add an empty star
+            starRatingHTML += '<i class="far fa-star"></i>';
+        }
+    }
+
+    starRatingHTML += ` ${averageRate}</p>`;
+    return starRatingHTML;
+}
+
+function formatAvailabilityDate(availability) {
+    console.log(availability)
+    const startDate = new Date(availability.startDate);
+    const endDate = new Date(availability.endDate);
+
+    // Format start date
+    const startDay = startDate.getDate().toString().padStart(2, '0');
+    const startMonth = (startDate.getMonth() + 1).toString().padStart(2, '0');
+    const startYear = startDate.getFullYear();
+
+    // Format end date
+    const endDay = endDate.getDate().toString().padStart(2, '0');
+    const endMonth = (endDate.getMonth() + 1).toString().padStart(2, '0');
+    const endYear = endDate.getFullYear();
+
+    return `${startDay}.${startMonth}.${startYear} - ${endDay}.${endMonth}.${endYear}`;
+}
 
 // todo: button id="submitEditProfile,  use editProfileBox()

@@ -2,35 +2,40 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="profile.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page Subtenant</title>
+    <link rel="stylesheet" href="homePage.css"> <!-- Include the global styles -->
+    <link rel="stylesheet" href="homePage.css"> <!-- Include the specific styles for homePage.html -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 </head>
 <body>
-    <div id="menu" class="menu">
-        <a href="homePage.html"><i class="fa fa-fw fa-home"></i> Home</a>
-        <a href="house_owner.html"><i class="fa fa-fw fa-key"></i> Login As A House Owner</a>
-        <a href="profile.html"><i class="fa fa-fw fa-user"></i> My Profile</a>
-        <a href="contact.html"><i class="fa fa-fw fa-envelope"></i> Contact Us</a>
-        <a href="login.html"><i class="fa fa-fw fa-lock"></i> Log Out</a>
-    </div>
-    <div id="profileContainer">
-        <h1>My Profile</h1>
-        <div id="personalDetails">
-            <h2>
-                Your details
-            </h2>
-            <div id="myDetails" class="myDetails">
-                <!-- Displays the current user details here -->
-            </div>
-        </div>
-        <button id="editProfileBtn">Edit Your Details</button>
-        <div id="editProfileForm" class="editProfileForm" style="display: none;">
+<div id="menu" class="menu">
+    <a href="homePage.html"><i class="fa fa-fw fa-home"></i> Home</a>
+    <a href="house_owner.html"><i class="fa fa-fw fa-key"></i> Login As A House Owner</a>
+    <a href="profile.html"><i class="fa fa-fw fa-user"></i> My Profile</a>
+    <a href="contact.html"><i class="fa fa-fw fa-envelope"></i> Contact Us</a>
+    <a href="login.html"><i class="fa fa-fw fa-lock"></i> Log Out</a>
+</div>
+<div id="profileContainer">
+    <h1>My Profile</h1>
+    <div id="personalDetails">
+        <div id="myDetails" class="myDetails">
+            <!-- Displays the current user details here -->
         </div>
     </div>
-    <div id="likedApartmentContainer">
-        <h2>Apartments that I Liked</h2>
-        <div id = "likedApartment">
-            <!-- Display liked apartments here -->
-        </div>
+    <button id="editProfileBtn">Edit Your Details</button>
+    <div id="editProfileForm" class="editProfileForm" style="display: none;">
     </div>
-    <script src="profile.js"></script>
+</div>
+<h2 style="color: #db9d00">Apartments that I Liked</h2>
+<div id="likedApartmentContainer" class="content">
+    <div id = "likedApartment">
+        <!-- Display liked apartments here -->
+    </div>
+</div>
+<script src="profile.js"></script>
 </body>
 </html>

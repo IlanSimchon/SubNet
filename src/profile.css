@@ -79,7 +79,7 @@ ul {
 }
 /* Add this to your existing CSS styles */
 
-.likedApartmentsHeading {
+h2 {
     color: #db9d00;
     text-align: center;
     font-size: 2em;
@@ -233,4 +233,39 @@ h1, h2 {
 
 #changeDetails:hover {
     background-color: #45a049;
+}
+
+
+
+.content {
+    max-width: 1200px;
+    margin: 30px auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+}
+
+.apartment-box {
+    box-sizing: border-box;
+    width: calc(33.33% - 20px); /* Change from 50% to 33.33% */
+    border: 1px solid #ccc;
+    padding: 50px;
+    margin: 10px;
+    border-radius: 20px; /* Adjust the value to your desired level of roundness */
+    text-align: left; /* Center text content within the box */
+    overflow: hidden; /* Hide overflow content */
+}
+
+.apartment-box h3 {
+    color: #333;
+    font-size: 10px;
+    margin-bottom: 20px;
+}
+
+.apartment-box img {
+    max-width: 100%; /* Ensure the image does not exceed the box width */
+    height: auto; /* Maintain the aspect ratio of the image */
+    width: auto;
+    margin-top: 5px;
 }

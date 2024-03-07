@@ -3,7 +3,7 @@
 
 import { Apartment } from './apartment.js';
 
-export class ApartmentManager {
+class ApartmentManager {
     constructor() {
         // Retrieve user data from localStorage
         const userDataString = localStorage.getItem('userData');
@@ -170,22 +170,45 @@ export class ApartmentManager {
             content.innerHTML = ''; // Clear existing content
 
             if (filteredApartments.length > 0) {
-                filteredApartments.forEach(apartment => {
+                filteredApartments.forEach(async apartment => {
                     // Create a div element for each apartment
                     const apartmentBox = document.createElement('div');
                     apartmentBox.classList.add('apartment-box');
 
-                    // Set the inner HTML content for the apartment box
-                    apartmentBox.innerHTML = `
-                    <img class="apartment-photo" src="back.jpg" alt="Apartment Photo" data-apartment-id="${apartment._id}">
-                    <p><strong>Location:</strong> <p><strong>Location:</strong> ${apartment.location}</p>
-                    <p><strong>Price per Night:</strong> ${apartment.pricePerNight}</p>
-                    <p><strong>Availability:</strong> ${JSON.stringify(apartment.availability)}</p>
-                    <p><strong>Average Rate:</strong> ${apartment.avgRate}</p>
-                    <p><strong>Connection Details:</strong> ${apartment.connectionDetails}</p>
-                    <hr>
-                `;
-                    // todo: change the html here to be with icons
+                    const availability = this.formatAvailabilityDate(apartment.availability);
+
+                    // Fetch the apartment image URL
+                    let imageUrl = `http://localhost:63341/getApartmentPic/${apartment._id}`;
+
+                    try {
+                        // Try fetching the image
+                        const imageResponse = await fetch(imageUrl);
+                        if (imageResponse.ok) {
+                            // If image fetch is successful, use the retrieved image
+                            apartmentBox.innerHTML = `
+                                <img class="apartment-photo" src="${imageUrl}" alt="Apartment Photo" data-apartment-id="${apartment._id}">
+                                <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
+                                <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
+                                <p><i class="fa fa-calendar-alt"></i> ${availability}</p>
+                                ${generateStarRating(apartment.avgRate)}</p>
+                                <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
+                                <hr>
+                            `;
+                        } else {
+                            // If image fetch fails, use a placeholder image
+                            apartmentBox.innerHTML = `
+                                <img class="apartment-photo" src="house.png" alt="Placeholder Image" data-apartment-id="${apartment._id}">
+                                <p><i class='fas fa-map-marker-alt'></i> ${apartment.location}</p>
+                                <p><i class="fas fa-sack-dollar"></i> ${apartment.pricePerNight} per night</p>
+                                <p><i class="fa fa-calendar-alt"></i> ${availability}</p>
+                                ${generateStarRating(apartment.avgRate)}</p>
+                                <p><i class="fa fa-address-card"></i> ${apartment.connectionDetails}</p>
+                                <hr>
+                            `;
+                        }
+                    } catch (error) {
+                        console.error('Error fetching apartment image:', error);
+                    }
 
                     // Append the apartment box to the container
                     content.appendChild(apartmentBox);
