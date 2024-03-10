@@ -5,7 +5,7 @@
 # SubNet - Your Platform for Sublets and Social Connections
 
 Welcome to SubNet, your go-to platform for subletting and meaningful social connections. Whether you're a homeowner looking to rent your space for a short period or an individual in search of a short-term rental, SubNet is here to simplify the process for you. Additionally, we aim to bridge the generation gap by connecting older individuals in need of companionship with younger people willing to offer assistance in exchange for a place to live.
-# Running SubNet
+## Running SubNet
 
 To run the SubNet platform locally, follow these simple steps:
 
