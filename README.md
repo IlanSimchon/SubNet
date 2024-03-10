@@ -5,7 +5,15 @@
 # SubNet - Your Platform for Sublets and Social Connections
 
 Welcome to SubNet, your go-to platform for subletting and meaningful social connections. Whether you're a homeowner looking to rent your space for a short period or an individual in search of a short-term rental, SubNet is here to simplify the process for you. Additionally, we aim to bridge the generation gap by connecting older individuals in need of companionship with younger people willing to offer assistance in exchange for a place to live.
+# Running SubNet
 
+To run the SubNet platform locally, follow these simple steps:
+
+1. **Start the Server:**
+   Open your terminal and navigate to the `src` folder of the project. Run the following command to start the server:
+   ```bash
+   node server.js
+After successfully starting the server, keep the terminal running, and open the **login.html** file in your preferred web browser to access the SubNet platform locally.   
 ## Features
 
 - **Effortless Subletting**: Easily list your property for short-term rentals or find the perfect sublet for your needs.
